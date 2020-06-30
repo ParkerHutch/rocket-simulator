@@ -168,7 +168,8 @@ public class Particle extends Entity {
 		fade();
 		setLifetime(getLifetime() - timeElapsed);
 		bounceOffGround(timeElapsed);
-		applyVelocity(timeElapsed);
+		applyForces(timeElapsed);
+		//applyVelocity(timeElapsed);
 		
 		
 	}

@@ -1,3 +1,4 @@
+import javafx.animation.AnimationTimer;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.ArcType;
@@ -42,11 +43,12 @@ public class Rocket extends Entity {
 	 * @param fuel the initial fuel amount of the Rocket
 	 * @param groundY the y-coordinate of the top of the ground
 	 */
-	Rocket(double x, double y, double fuel, double groundY) {
+	Rocket(double x, double y, double fuel, double groundY, AnimationTimer animator, GraphicsContext gc) {
 		
+		// TODO Cut down on parameters like animator and gc by moving RocketComputer out of here
 		super(x, y);
 		this.fuel = fuel;
-		this.computer = new RocketComputer(this, groundY);
+		this.computer = new RocketComputer(0, 0, 100, 800, this, groundY, animator);
 		//maneuverCalculator = new ManeuverCalculator(this, groundY);
 		this.engines = new RocketEngine [] {
 				new RocketEngine(groundY, getEngineConeWidth(), getEngineConeHeight(), 
@@ -64,6 +66,7 @@ public class Rocket extends Entity {
 				new ParticleEmitter(4, 8, groundY, 
 						new Color[] {Color.WHITE}, rcsXOffset, rcsYoffset, 
 						90, Color.RED)
+				
 		};
 	}
 
@@ -286,12 +289,12 @@ public class Rocket extends Entity {
 		
 		double distanceToTargetAngle = targetAngle - getDirection();
 		
-		if (distanceToTargetAngle < 0) {
+		if (distanceToTargetAngle < 0 && getVelocity().getY() > 0) {
 			
 			getRCSThrusters()[0].setOn(true);
 			getRCSThrusters()[1].setOn(false);
 			
-		} else if (distanceToTargetAngle != 0){
+		} else if (distanceToTargetAngle != 0 && getVelocity().getY() > 0){
 			
 			getRCSThrusters()[0].setOn(false);
 			getRCSThrusters()[1].setOn(true);
@@ -303,7 +306,7 @@ public class Rocket extends Entity {
 			
 			setDirection(targetAngle);
 			
-		} else {
+		} else if (getVelocity().getY() > 0){
 			
 			if (distanceToTargetAngle < 0) {
 
@@ -362,20 +365,12 @@ public class Rocket extends Entity {
 			double safetyMargin = 5; // TODO Implement this better
 			setEnginesOn(getComputer().getManeuverCalculator().shouldBurn(safetyMargin));
 			
-					/*	
-			if (!(getVelocity().getDirection() <= 225 || 
-					getVelocity().getDirection() >= 315)) {
-				*/
-			// TODO Remove this
-			if (true || !(getVelocity().getDirection() <= 200 || 
-					getVelocity().getDirection() >= 340)) {
-				pointInDirection(getVelocity().getDirection() - 180, timeElapsed);
+			pointInDirection(getVelocity().getDirection() - 180, timeElapsed);
 				
-			}
-			
-			applyGravity(timeElapsed);
+			//applyGravity(timeElapsed); TODO Remove this method completely
 			applyThrust(timeElapsed);
-			applyVelocity(timeElapsed); // This should always be last
+			applyForces(timeElapsed); // should be last
+			//applyVelocity(timeElapsed); // This should always be last
 			
 		}
 		
@@ -390,6 +385,8 @@ public class Rocket extends Entity {
 			rcsThruster.tick(timeElapsed);
 			
 		}
+		
+		getComputer().tick(timeElapsed);
 		
 		
 	}
@@ -442,14 +439,7 @@ public class Rocket extends Entity {
 	public void draw(GraphicsContext gc) {
 		
 		getComputer().draw(gc);
-		/*
-		gc.setLineWidth(3);
-		// Draw velocity vector TODO Add arrow part, make this an actual method(later put in OnboardComputer)
-		gc.setStroke(Color.YELLOW);
-		gc.strokeLine(getX(), getY() + getHeight() / 2, 
-				getX() + getVelocity().getX(), 
-				getY() + getHeight() / 2 + getVelocity().getY());
-				*/
+		
 		gc.save();
 		
 		rotateGraphicsContext(gc);
@@ -487,14 +477,6 @@ public class Rocket extends Entity {
 		
 		gc.restore();
 		
-		
-		
-		
-		
-		
 	}
-	
-	
-	
 	
 }

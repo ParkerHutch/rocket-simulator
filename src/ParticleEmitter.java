@@ -1,5 +1,5 @@
-import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedList;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
@@ -9,7 +9,7 @@ public class ParticleEmitter extends Entity {
 	private double width = 0; 
 	private double height = 0;
 	
-	ArrayList<Particle> particles = new ArrayList<Particle>();
+	LinkedList<Particle> particles = new LinkedList<Particle>();
 	private double particleSpawnRate = 0; // TODO Rename to secondsPerParticle
 	private double particleBurstAmount = 10;
 	private double particleLaunchAngle = 0;
@@ -77,11 +77,11 @@ public class ParticleEmitter extends Entity {
 		this.on = on;
 	}
 
-	public ArrayList<Particle> getParticles() {
+	public LinkedList<Particle> getParticles() {
 		return particles;
 	}
 
-	public void setParticles(ArrayList<Particle> particles) {
+	public void setParticles(LinkedList<Particle> particles) {
 		this.particles = particles;
 	}
 

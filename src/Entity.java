@@ -11,6 +11,9 @@ abstract class Entity {
 	private Color color = Color.WHITE;
 	
 	private Vector2D velocity = new Vector2D();
+	private Vector2D acceleration = new Vector2D();
+	
+	private boolean visible = true;
 	
 	Entity() {}
 	
@@ -146,6 +149,14 @@ abstract class Entity {
 		this.velocity = velocity;
 	}
 
+	public Vector2D getAcceleration() {
+		return acceleration;
+	}
+
+	public void setAcceleration(Vector2D acceleration) {
+		this.acceleration = acceleration;
+	}
+
 	/**
 	 * Adds the x and y components of the Entity's velocity vector to its x and
 	 * y position.
@@ -155,6 +166,27 @@ abstract class Entity {
 		
 		setX(getX() + getVelocity().getX() * timeElapsed);
 		setY(getY() + getVelocity().getY() * timeElapsed);
+		
+	}
+	
+	/**
+	 * Adds the x and y components of the Entity's acceleration vector to its 
+	 * velocity's x and y components.
+	 * @param timeElapsed the time, in seconds, since the last tick
+	 */
+	public void applyAcceleration(double timeElapsed) {
+		
+		getVelocity().setX(getVelocity().getX() + 
+				getAcceleration().getX() * timeElapsed);
+		getVelocity().setY(getVelocity().getY() + 
+				getAcceleration().getY() * timeElapsed);
+		
+	}
+	
+	public void applyForces(double timeElapsed) {
+		
+		applyVelocity(timeElapsed);
+		applyAcceleration(timeElapsed);
 		
 	}
 	
@@ -173,6 +205,14 @@ abstract class Entity {
 		this.color = color;
 	}
 
+	public boolean isVisible() {
+		return visible;
+	}
+
+	public void setVisible(boolean visible) {
+		this.visible = visible;
+	}
+
 	public void alignWith(Entity target) {
 
 		setX(target.getX() + getxOffset());
@@ -182,14 +222,11 @@ abstract class Entity {
 
 	}
 
-	/*
-	public void alignWith(Entity target, double xShift, double yShift) {
-		
-		setX(target.getX() + xShift);
-		setY(target.getY() + yShift);
-		setVelocity(target.getVelocity());
-		setDirection(target.getDirection());
+	public void alignWith(double x, double y) {
 
-	}*/
-	
+		setX(x + getxOffset());
+		setY(y + getyOffset());
+
+	}
+
 }

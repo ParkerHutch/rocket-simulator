@@ -7,11 +7,9 @@ public class World {
 	
 	private ArrayList<Entity> objects = new ArrayList<Entity>();
 	
-	// TODO Draw sky
-	
 	public static final double GRAVITY = 100; // pixels/second (150 is a nice number)
 	private double groundHeight = 100;
-	private double groundY = -1;
+	private double groundY;
 	private double time = 0; // NOTE: Should this be stored here?
 	
 	private double windowWidth;
@@ -20,12 +18,18 @@ public class World {
 	private boolean centerOnRocketHorizontally = false;
 	private boolean centerOnRocketVertically = false;
 	
+	private MountainManager mountainManager;
+			
 	World() {}
 	
 	public World(double windowWidth, double windowHeight) {
+		
 		this.windowWidth = windowWidth;
 		this.windowHeight = windowHeight;
 		this.groundY = windowHeight - getGroundHeight();
+		this.mountainManager = new MountainManager(
+				windowWidth, 100, 100, groundY);
+		
 	}
 
 	public double getWindowWidth() {
@@ -52,6 +56,14 @@ public class World {
 		this.objects = objects;
 	}
 
+	public MountainManager getMountainManager() {
+		return mountainManager;
+	}
+
+	public void setMountainManager(MountainManager mountainManager) {
+		this.mountainManager = mountainManager;
+	}
+
 	public double getGroundY() {
 		return groundY;
 	}
@@ -59,7 +71,6 @@ public class World {
 	public void setGroundY(double groundY) {
 		this.groundY = groundY;
 	}
-	
 	
 	public double getGroundHeight() {
 		return groundHeight;
@@ -126,20 +137,19 @@ public class World {
 		
 	}
 	
-	
 	public void drawSky(GraphicsContext gc) {
 		
 		gc.setFill(Color.DEEPSKYBLUE);
 		
 		double leftX = -gc.getTransform().getTx();
 		double topY = -gc.getTransform().getTy();
+		
 		// topY is essentially the top Y coordinate of the moving Canvas window
 		// that the player sees
 		gc.fillRect(leftX, 
 				topY, 
 				getWindowWidth(), getWindowHeight());
-		
-		
+
 	}
 	
 	/**
@@ -153,20 +163,10 @@ public class World {
 		double topY = getWindowHeight() - getGroundHeight();
 		// Stretch the ground rectangle to the bottom of the screen
 		double height = topY + getGroundHeight() - gc.getTransform().getTy();
-		gc.fillRect(leftX, 
-				topY, 
-				getWindowWidth(), height);
+		gc.fillRect(leftX, topY, getWindowWidth(), height);
 		
 		
 	}
-	
-	public void drawMountains(GraphicsContext gc) {
-		
-		gc.setFill(new Color(1, 0, 0, 0.5));
-		gc.fillRect(50, getGroundY() - 100, getWindowWidth(), 100);
-		
-	}
-	
 	
 	public void centerOnRocketHorizontally(GraphicsContext gc, Rocket center) {
 
@@ -255,12 +255,11 @@ public class World {
 	 */
 	public void draw(GraphicsContext gc) {
 		
-		//drawSky(gc);
-		drawMountains(gc);
-		
 		alignGraphicsContext(gc);
 		
 		drawSky(gc);
+		
+		getMountainManager().draw(gc); 
 		
 		for (Entity entity : getObjects()) {
 			
@@ -269,6 +268,9 @@ public class World {
 		}
 		
 		drawGround(gc);
+		
+		
+		
 		
 		
 	}

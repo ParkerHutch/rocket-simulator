@@ -4,13 +4,12 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.transform.Affine;
-import javafx.scene.transform.Translate;
 import javafx.stage.Stage;
 
 public class HoverslamSimulator extends Application {
 
 	// TODO: I bet it'd be cool if I graphed altitude vs. time for the rocket
+	
 	private final int WIDTH = 800;
 	private final int HEIGHT = 800;
 
@@ -21,13 +20,62 @@ public class HoverslamSimulator extends Application {
 	private AnimationTimer animator;
 
 	private World world;
+	private Rocket rocket;
 
 	@Override
 	public void init() {
 		
+		root = new Group();
 		world = new World(WIDTH, HEIGHT);
 		world.setCenterOnRocketHorizontally(true);
 		world.setCenterOnRocketVertically(true);
+		
+		animator = new AnimationTimer() {
+
+			long startTime;
+			long currentTime;
+
+			private long lastUpdate;
+
+			@Override
+			public void start() {
+
+				//gc.scale(1, 1);
+				startTime = System.nanoTime();
+				lastUpdate = startTime;
+				super.start();
+
+			}
+			
+			public void clearScreen(GraphicsContext gc) {
+				/*
+				gc.clearRect(gc.getTransform().getTy(), gc.getTransform().getTx(),
+						WIDTH, HEIGHT);
+						*/
+				gc.clearRect(-gc.getTransform().getTx(), -gc.getTransform().getTy(),
+						WIDTH, HEIGHT);
+				
+			}
+			
+			@Override
+			public void handle(long now) {
+
+				clearScreen(gc);
+
+				currentTime = System.nanoTime();
+				double timeSinceLastUpdateSeconds = (now - lastUpdate) / 1_000_000_000.0;
+				
+				// -gc.gettransform.gettx is basically gc x coord
+				
+				world.draw(gc);
+				
+				if (shouldUpdateGame(rocket)) {
+					world.tick(timeSinceLastUpdateSeconds);
+				}
+				lastUpdate = now;
+
+			}
+		};
 		
 		// Create the rockets
 		
@@ -35,8 +83,11 @@ public class HoverslamSimulator extends Application {
 
 			double x = WIDTH / 2; // Math.random() * (WIDTH - 40) + 20;
 			double y = world.getGroundY() - 1000;// Math.random() * (world.getGroundY()) - 80;
-			Rocket rocket = new Rocket(x, y, 100, world.getGroundY());
-			rocket.getVelocity().setX(Math.random() * 500 - 250);//Math.random() * 300 - 150);
+			rocket = new Rocket(x, y, 100, world.getGroundY(), animator, gc);
+			double maxSpeed = 250;
+			rocket.getVelocity().setX(Math.random() * maxSpeed * 2 - maxSpeed);//Math.random() * 300 - 150);
+			//rocket.getVelocity().setX(300);
+			rocket.setAcceleration(new Vector2D(0.0, World.GRAVITY));
 			//rocket.getVelocity().setY(-1000);
 			world.getObjects().add(rocket);
 
@@ -49,103 +100,101 @@ public class HoverslamSimulator extends Application {
 
 		primaryStage.setTitle("Hoverslam Simulation");
 
-		root = new Group();
-
 		primaryScene = new Scene(root, WIDTH, HEIGHT);
 
-		primaryStage.setWidth(WIDTH); // adding these 2 lines fixes drawing errors
+		primaryStage.setWidth(WIDTH); 
 		primaryStage.setHeight(HEIGHT);
-
-		canvas = new Canvas(primaryStage.getWidth(), primaryStage.getHeight());
-
+		
 		canvas = new Canvas(primaryStage.getWidth(), primaryStage.getHeight());
 
 		root.getChildren().add(canvas);
 
+		// NOTE: It's important for these buttons to be added to the root
+		// after the Canvas: they won't receive MouseEvents otherwise.
+		for (CustomButton button : rocket.getComputer().getButtons()) {
+
+			root.getChildren().add(button);
+
+		}
+		
 		gc = canvas.getGraphicsContext2D();
 		
-		animator = new AnimationTimer() {
-
-			long startTime;
-			long currentTime;
-
-			private long lastUpdate;
-
-			@Override
-			public void start() {
-
-				gc.scale(1, 1);
-				startTime = System.nanoTime();
-				lastUpdate = startTime;
-				super.start();
-
-			}
-			
-			public void clearScreen(GraphicsContext gc) {
-				
-				// TODO: maybe make this implementation better so I don't have to
-				// clear the area around all the entities
-				gc.clearRect(gc.getTransform().getTy(), gc.getTransform().getTx(),
-						WIDTH, HEIGHT);
-				
-				/*
-				for (Entity entity : world.getObjects()) {
-					
-					gc.clearRect(entity.getX() - WIDTH, entity.getY() - HEIGHT, WIDTH, HEIGHT);
-					
-				}
-				
-				gc.clearRect(-WIDTH, 0, 2 * WIDTH, HEIGHT);
-				*/
-				
-			}
-			
-			@Override
-			public void handle(long now) {
-
-				//boolean centerOnRocket = true;
-
-				clearScreen(gc);
-
-				currentTime = System.nanoTime();
-				double timeSinceLastUpdateSeconds = (now - lastUpdate) / 1_000_000_000.0;
-				
-				Rocket rocket = (Rocket) world.getObjects().get(0);
-
-				
-				//if (centerOnRocket) {
-					
-					// TODO After adding random terrain features, add code to 
-					// make the camera just follow the Rocket horizontally
-					/*
-					double xTranslate = -rocket.getX() - gc.getTransform().getTx() + WIDTH / 2;
-					double yTranslate = -rocket.getY() + rocket.getHeight() / 2 - gc.getTransform().getTy()
-							+ HEIGHT / 2;
-					
-					gc.translate(xTranslate, yTranslate);
-					*/
-					
-					//world.setCenterOnRocketHorizontally(true);
-					//world.setCenterOnRocketVertically(true);
-					//world.centerOnRocket(gc, rocket);
-					//world.centerOnRocketVertically(gc, rocket);
-					
-					//world.centerOnRocket(gc, rocket);
-				//}
-				
-				// gc.gettransform.gettx is basically gc x coord
-				
-				world.draw(gc);
-				world.tick(timeSinceLastUpdateSeconds);
-
-				lastUpdate = now;
-
-			}
-		};
 		animator.start();
 
+		addKeyboardHandling(primaryScene);
+		addMouseHandling(primaryScene);
+		
+		
 		primaryStage.setScene(primaryScene);
 		primaryStage.show();
+		
+	}
+	
+	/**
+	 * Adds keyboard event(ex. key press) handling to a scene
+	 * @param scene the Scene to add keyboard event handling to
+	 */
+	private void addKeyboardHandling(Scene scene) {
+		
+		KeyboardHandler keyboardHandler = new KeyboardHandler(this);
+		scene.setOnKeyPressed(keyboardHandler);
+		scene.setOnKeyReleased(keyboardHandler);
+	}
+	
+	/**
+	 * Adds mouse event handling to the given Scene
+	 * @param scene the Scene to add mouse event handling to
+	 */
+	private void addMouseHandling(Scene scene) {
+		// adds mouseEvent handling to the given scene
+		MouseHandler mouseHandler = new MouseHandler(this);
+		scene.setOnMouseMoved(mouseHandler);
+		scene.setOnMouseDragged(mouseHandler);
+		scene.setOnMousePressed(mouseHandler);
+		scene.setOnMouseClicked(mouseHandler);
+		scene.setOnMouseReleased(mouseHandler);
+	}
+	
+	public GraphicsContext getGraphicsContext() {
+		return gc;
+	}
+
+	public void setGraphicsContext(GraphicsContext gc) {
+		this.gc = gc;
+	}
+
+	public World getWorld() {
+		return world;
+	}
+
+	public void setWorld(World world) {
+		this.world = world;
+	}
+
+	public AnimationTimer getAnimator() {
+		return animator;
+	}
+
+	public void setAnimator(AnimationTimer animator) {
+		this.animator = animator;
+	}
+	
+	public boolean shouldUpdateGame(Rocket rocket) {
+		
+		// TODO I should be getting the buttons from a UIController or
+		// TODO something, not the Rocket
+		for (CustomButton button : rocket.getComputer().getButtons()) {
+			
+			if (button.getClass() == TogglePlayButton.class) {
+				
+				return ((TogglePlayButton) button).getState().equals("PAUSE");
+				
+			}
+			
+		}
+		
+		return true;
+		
 	}
 
 	public static void main(String[] args) {
