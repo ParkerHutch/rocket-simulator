@@ -6,95 +6,141 @@ import javafx.scene.input.KeyEvent;
  */
 public class KeyboardHandler implements EventHandler<KeyEvent> {
 
-	HoverslamSimulator simulator;
+	String currentKeysPressed = "";
 	
-	boolean toggleAnimator = true;
+	UserControlledRocket userRocket;
+
+	KeyboardHandler(UserControlledRocket userRocket) {
+		
+		this.userRocket = userRocket;
 	
-	KeyboardHandler(HoverslamSimulator simulator) {
-		this.simulator = simulator;
-	}
-
-	private HoverslamSimulator getSimulator() {
-		return simulator;
-	}
-
-	private void setSimulator(HoverslamSimulator simulator) {
-		this.simulator = simulator;
 	}
 
 	public void handle(KeyEvent arg0) {
+
+		String code = arg0.getCode().toString().toUpperCase();
 		
 		if (arg0.getEventType() == KeyEvent.KEY_PRESSED) {
 			
-			String code = arg0.getCode().toString().toUpperCase();
+			
+			if ("WAD".contains(code) && !currentKeysPressed.contains(code)) {
+				
+				currentKeysPressed += code;
+				
+				/*
+				if ("AD".contains(code)) {
+					
+					userRocket.setShouldFireRCS(true);
+					
+				}*/
+				
+			}
+			
+			if (code.equals("I")) {
+				
+				System.out.println("target: " + userRocket.getTargetAngle());
+				System.out.println("direction: " + userRocket.getDirection());
+				
+				
+			}
+
+			/*
+			//String code = arg0.getCode().toString().toUpperCase();
 			System.out.println(code);
 			
-			if (code.equals("SPACE")) {
+			if (code.equals("A")) {
 				
-				if (toggleAnimator) {
-					getSimulator().getAnimator().stop();
-					toggleAnimator = !toggleAnimator;
-				} else {
-					
-					getSimulator().getAnimator().start();
-					toggleAnimator = !toggleAnimator;
-					
-				}
+				userRocket.setTargetAngle(userRocket.getTargetAngle() + 10);
+				
+			}
+			
+			if (code.equals("D")) {
+
+				userRocket.setTargetAngle(userRocket.getTargetAngle() - 10);
+
+			}
+			
+			if (code.equals("W")) {
+				
+				userRocket.setShouldFireEngines(true);
+				
+			} else {
+				
+				userRocket.setShouldFireEngines(false);
+				
+			}*/
+
+		}
+		
+		if (arg0.getEventType() == KeyEvent.KEY_RELEASED) {
+			
+			currentKeysPressed = currentKeysPressed.replace(code, "");
+			
+			if (code.equals("W")) {
+				
+				//userRocket.setShouldFireEngines(false);
+				
+			}
+			
+			if ("AD".contains(code)) {
+				
+				// stop rocket rotation
+				userRocket.setTargetAngle(userRocket.getDirection());
+				userRocket.setShouldFireRCS(false);
 				
 			}
 			
 		}
-			/*
-			if (arg0.getEventType() == KeyEvent.KEY_PRESSED) {
-				
-				String code = arg0.getCode().toString().toUpperCase();
-				
-				if (code.equals("W")) {
-					
-					if (getPlayer().isJumpReady() && !getPlayer().isInsidePortal()) {
-						
-						getPlayer().setyVelocity(-4);
-						getPlayer().setJumpReady(false);
-					}
-					
-					
-				} else if (code.equals("A")) {
-					
-					player.setxVelocity(player.getxVelocity() - 2);
-					
-				} else if (code.equals("D")) {
-					
-					player.setxVelocity(player.getxVelocity() + 2);
-					
-				} else if (code.equals("DIGIT1")) {
-					
-					getLevelManager().switchLevel(0);
-				}
-				
-				if (code.equals("F")) {
-					
-					System.out.println(player);
-					
-				}
-				if (code.equals("P")) {
-					
-					menuManager.showMainMenu();
-					//animator.stop();
-					
-				}
-				if (code.equals("R")) {
-					
-					animator.start();
-					
-				} 
-				if (code.equals("SPACE")) {
-					
-					getLevelManager().getCurrentLevel().restartLevel();
-					
-					
-				}
-				
-			}*/ 
+
+		if (currentKeysPressed.contains("W")) {
+
+			userRocket.setShouldFireEngines(true);
+
+		} else {
+			
+			userRocket.setShouldFireEngines(false);
+			
 		}
 
+		
+		if (currentKeysPressed.contains("A") || currentKeysPressed.contains("D")) {
+			
+			userRocket.setShouldFireRCS(true);
+			
+			if (currentKeysPressed.contains("A")) {
+				
+				userRocket.setTargetAngle(userRocket.getDirection() + 2 * userRocket.getTurnRate());
+				
+			}
+			
+			if (currentKeysPressed.contains("D")) {
+
+				userRocket.setTargetAngle(userRocket.getDirection() - 2 * userRocket.getTurnRate());
+
+			}
+			
+		} else {
+			
+			userRocket.setShouldFireRCS(false);
+			// stop rocket rotation
+			userRocket.setTargetAngle(userRocket.getDirection());
+			userRocket.setShouldFireRCS(false);
+			
+			
+		}
+		
+		
+		
+		
+
 	}
+
+	public UserControlledRocket getUserRocket() {
+		return userRocket;
+	}
+
+	public void setUserRocket(UserControlledRocket userRocket) {
+		this.userRocket = userRocket;
+	}
+
+}

@@ -119,7 +119,8 @@ public class World {
 		
 		for (Entity entity: objects) {
 			
-			if (entity.getClass() == Rocket.class) {
+			if (entity.getClass() == Rocket.class || 
+					entity.getClass() == UserControlledRocket.class) {
 				
 				Rocket rocket = (Rocket) entity;
 				
@@ -129,7 +130,8 @@ public class World {
 					
 				} 
 				
-			}
+			} 
+			
 			
 			entity.tick(timeElapsed);
 			
@@ -225,7 +227,8 @@ public class World {
 
 			for (Entity entity : getObjects()) {
 
-				if (entity.getClass() == Rocket.class) {
+				if (entity.getClass() == Rocket.class || 
+						entity.getClass() == UserControlledRocket.class) {
 
 					Rocket rocket = (Rocket) entity;
 

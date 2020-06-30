@@ -29,16 +29,8 @@ public class MountainManager {
 		return mountainXPoints;
 	}
 
-	public void setMountainXPoints(ArrayList<Double> mountainXPoints) {
-		this.mountainXPoints = mountainXPoints;
-	}
-
 	public ArrayList<Double> getMountainYPoints() {
 		return mountainYPoints;
-	}
-
-	public void setMountainYPoints(ArrayList<Double> mountainYPoints) {
-		this.mountainYPoints = mountainYPoints;
 	}
 
 	public double getxStep() {
@@ -61,11 +53,7 @@ public class MountainManager {
 		return groundY;
 	}
 
-	private void setGroundY(double groundY) {
-		this.groundY = groundY;
-	}
-
-	public double getWindowWidth() {
+	private double getWindowWidth() {
 		return windowWidth;
 	}
 
@@ -80,7 +68,7 @@ public class MountainManager {
 		
 	}
 	
-	public void fillPoints(double windowWidth, int initialGenSize) {
+	private void fillPoints(double windowWidth, int initialGenSize) {
 		
 		//int arrayLength = (int) ((windowWidth / xStep) * coefficient);
 		//setMountainXPoints(new double[arrayLength]);
@@ -163,73 +151,13 @@ public class MountainManager {
 		
 	}
 	
-	/*
-	public void getMountainPolygon(double leftX, double rightX) {
-		
-		// TODO Maybe don't do this, just draw one parallelogram at a time?
-		double margin = xStep;
-		
-		int totalPointsNeeded = 0;
-		int indexStart = -1;
-		int indexEnd = -1;
-		
-		for (int i = 0; i < getMountainXPoints().length && indexEnd == -1; i++) {
-			
-			if (getMountainXPoints()[i] >= leftX - margin) {
-				
-				totalPointsNeeded++;
-				if (indexStart == -1) {
-					
-					indexStart = i;
-					
-				}
-				
-			} else if (getMountainXPoints()[i] > rightX + margin) {
-				
-				indexEnd = i - 1;
-				
-			}
-			
-		}
-		
-		double [] actualXPoints = new double[totalPointsNeeded];
-		actualXPoints[0] = getMountainXPoints()[indexStart];
-		
-		double [] actualYPoints = new double[totalPointsNeeded];
-		actualYPoints[0] = groundY;
-		
-		int actualPointsIterator = 1;
-		
-		for (int j = indexStart; j <= indexEnd; j++) {
-			
-			actualXPoints[actualPointsIterator] = 
-					getMountainXPoints()[j];
-			actualYPoints[actualPointsIterator] = 
-					getMountainYPoints()[j];
-			actualPointsIterator++;
-			
-		}
-		
-		actualXPoints[actualXPoints.length - 1] = actualXPoints[0];
-		actualYPoints[actualYPoints.length - 1] = groundY;
-		
-	}*/
-	
 	public void draw(GraphicsContext gc) {
 		
 		fillViewingWindow(-gc.getTransform().getTx(), 500);
 		gc.setFill(Color.SADDLEBROWN);
 		
-		/*
-		 * TODO Get rid of this
-		gc.fillPolygon(new double [] {0, 0, 1000, 1000, 0},  
-				new double [] {groundY, groundY -100, groundY - 500, groundY, groundY},  5);
-			*/	
-		
-		// TODO Stroke tops of mountains so they look cool
-		
 		for (int i = 0; i < getMountainXPoints().size() - 1; i++) {
-			//double a = getMountainYPoints()[i+1];
+			
 			gc.fillPolygon(
 					new double [] {
 							
@@ -250,6 +178,12 @@ public class MountainManager {
 					5
 					
 			);
+			
+			
+			gc.setStroke(Color.GRAY.darker());
+			gc.setLineWidth(3);
+			gc.strokeLine(getMountainXPoints().get(i), getMountainYPoints().get(i), 
+					getMountainXPoints().get(i+1), getMountainYPoints().get(i+1));
 			
 			
 		}

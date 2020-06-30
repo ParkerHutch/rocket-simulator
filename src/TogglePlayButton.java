@@ -110,18 +110,22 @@ public class TogglePlayButton extends CustomButton {
 	@Override
 	public void draw(GraphicsContext gc) {
 		
-		gc.setFill(getBaseColor());
-		gc.fillRoundRect(getX() - getWidth() / 2, getY(), getWidth(), getHeight(), 10, 10);
-		gc.setStroke(getStrokeColor());
-		gc.strokeRoundRect(getX() - getWidth() / 2, getY(), getWidth(), getHeight(), 10, 10);
-		
-		if (getState().equals("PLAY")) {
+		if (isVisible()) {
 			
-			drawPlaySymbol(gc);
-			
-		} else if (getState().equals("PAUSE")) {
-			
-			drawPauseSymbol(gc);
+			gc.setFill(getBaseColor());
+			gc.fillRoundRect(getX() - getWidth() / 2, getY(), getWidth(), getHeight(), 10, 10);
+			gc.setStroke(getStrokeColor());
+			gc.strokeRoundRect(getX() - getWidth() / 2, getY(), getWidth(), getHeight(), 10, 10);
+
+			if (getState().equals("PLAY")) {
+
+				drawPlaySymbol(gc);
+
+			} else if (getState().equals("PAUSE")) {
+
+				drawPauseSymbol(gc);
+
+			}
 			
 		}
 		

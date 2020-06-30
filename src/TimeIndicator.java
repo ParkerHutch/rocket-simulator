@@ -7,6 +7,7 @@ import javafx.scene.text.TextAlignment;
 
 public class TimeIndicator extends Entity {
 	
+	private boolean paused = false;
 	private double width;
 	private double height;
 	private double internalTime = 0;
@@ -52,6 +53,14 @@ public class TimeIndicator extends Entity {
 
 	public void setInternalTime(double internalTime) {
 		this.internalTime = internalTime;
+	}
+
+	public boolean isPaused() {
+		return paused;
+	}
+
+	public void setPaused(boolean paused) {
+		this.paused = paused;
 	}
 
 	public double getClockHandAngle() {
@@ -181,6 +190,7 @@ public class TimeIndicator extends Entity {
 		if (isVisible()) {
 			
 			// Draw base of the UI element
+			gc.setLineWidth(3);
 			gc.setFill(Color.LIGHTGRAY);
 			gc.fillRoundRect(getX() - getWidth() / 2, getY(), getWidth(), getHeight(), 10, 10);
 			gc.setStroke(Color.BLACK);
@@ -197,11 +207,12 @@ public class TimeIndicator extends Entity {
 	
 	@Override
 	public void tick(double timeElapsed) {
-		
-		// TODO add a clockHandAngleTurnRate, in degrees/second
-		setClockHandAngle(getClockHandAngle() + (timeElapsed * 360));
-		setInternalTime(getInternalTime() + timeElapsed);
-		
+
+		if (!isPaused()) {
+			setClockHandAngle(getClockHandAngle() + (timeElapsed * 360));
+			setInternalTime(getInternalTime() + timeElapsed);
+		}
+
 	}
 	
 	

@@ -1,4 +1,3 @@
-import javafx.animation.AnimationTimer;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.ArcType;
@@ -30,8 +29,10 @@ public class Rocket extends Entity {
 	private RocketEngine [] engines;
 	private ParticleEmitter [] rcsThrusters;
 	
-	private RocketComputer computer;
-	//private ManeuverCalculator maneuverCalculator;
+	private ManeuverCalculator maneuverCalculator;
+	
+	private double landingAngleMargin = 10;
+	private double acceptableLandingVelocity = 100;
 	
 	Rocket() {}
 	
@@ -42,14 +43,13 @@ public class Rocket extends Entity {
 	 * @param y the top y coordinate of the Rocket
 	 * @param fuel the initial fuel amount of the Rocket
 	 * @param groundY the y-coordinate of the top of the ground
+	 * @param userControlled true if the Rocket is to be controlled by a user
 	 */
-	Rocket(double x, double y, double fuel, double groundY, AnimationTimer animator, GraphicsContext gc) {
+	Rocket(double x, double y, double fuel, double groundY) {
 		
-		// TODO Cut down on parameters like animator and gc by moving RocketComputer out of here
 		super(x, y);
 		this.fuel = fuel;
-		this.computer = new RocketComputer(0, 0, 100, 800, this, groundY, animator);
-		//maneuverCalculator = new ManeuverCalculator(this, groundY);
+		this.maneuverCalculator = new ManeuverCalculator(this, groundY);
 		this.engines = new RocketEngine [] {
 				new RocketEngine(groundY, getEngineConeWidth(), getEngineConeHeight(), 
 						0, getHeight() - getEngineConeHeight())
@@ -68,6 +68,7 @@ public class Rocket extends Entity {
 						90, Color.RED)
 				
 		};
+		
 	}
 
 	/** 
@@ -199,14 +200,6 @@ public class Rocket extends Entity {
 		this.engines = engines;
 	}
 
-	public RocketComputer getComputer() {
-		return computer;
-	}
-
-	public void setComputer(RocketComputer computer) {
-		this.computer = computer;
-	}
-
 	public ParticleEmitter[] getRCSThrusters() {
 		return rcsThrusters;
 	}
@@ -231,6 +224,30 @@ public class Rocket extends Entity {
 		this.airborne = airborne;
 	}
 	
+	public double getLandingAngleMargin() {
+		return landingAngleMargin;
+	}
+
+	public void setLandingAngleMargin(double landingAngleMargin) {
+		this.landingAngleMargin = landingAngleMargin;
+	}
+
+	public double getAcceptableLandingVelocity() {
+		return acceptableLandingVelocity;
+	}
+
+	public void setAcceptableLandingVelocity(double acceptableLandingVelocity) {
+		this.acceptableLandingVelocity = acceptableLandingVelocity;
+	}
+
+	public ManeuverCalculator getManeuverCalculator() {
+		return maneuverCalculator;
+	}
+
+	public void setManeuverCalculator(ManeuverCalculator maneuverCalculator) {
+		this.maneuverCalculator = maneuverCalculator;
+	}
+
 	/**
 	 * Applies the force of gravity to the Rocket's velocity vector
 	 * @param timeElapsed the time, in seconds, since the last tick
@@ -284,8 +301,9 @@ public class Rocket extends Entity {
 	 * Rotates the Rocket as fast as it can(as defined by turnRate) towards
 	 * the angle defined by targetAngle
 	 * @param targetAngle the angle to rotate towards, in degrees
+	 * @param timeElapsed the time, in seconds, since the last tick
 	 */
-	private void pointInDirection(double targetAngle, double timeElapsed) {
+	protected void pointInDirection(double targetAngle, double timeElapsed) {
 		
 		double distanceToTargetAngle = targetAngle - getDirection();
 		
@@ -300,7 +318,6 @@ public class Rocket extends Entity {
 			getRCSThrusters()[1].setOn(true);
 			
 		}
-		//if (Math.abs(distanceToTargetAngle) < getTurnRate() * timeElapsed) {
 		
 		if (Math.abs(distanceToTargetAngle) <= getTurnRate() * timeElapsed) {
 			
@@ -342,18 +359,47 @@ public class Rocket extends Entity {
 	 */
 	public void stop() {
 		
-		setAirborne(false);
-		setEnginesOn(false);
-		for (ParticleEmitter rcsThruster : getRCSThrusters()) {
-			
-			rcsThruster.setOn(false);
-			
+		if (isAirborne()) {
+
+			// Turn off visual effects
+			setAirborne(false);
+			setEnginesOn(false);
+
+			for (ParticleEmitter rcsThruster : getRCSThrusters()) {
+
+				rcsThruster.setOn(false);
+
+			}
+
+			// Determine if landing was safe
+			if (getVelocity().getMagnitude() < getAcceptableLandingVelocity()) {
+
+				
+				if (Math.abs(getDirection() - 90) <= getLandingAngleMargin()) {
+
+					// good landing
+					setDirection(90);
+					System.out.println("good landing");
+
+				} else {
+					
+					// Crash
+					
+				}
+
+				
+
+			} else {
+
+				System.out.println("Crash, velocity: " + getVelocity().getMagnitude());
+				// crash
+
+			}
+
+			getVelocity().setX(0);
+			getVelocity().setY(0);
+
 		}
-		//setColor(Color.RED);
-		getVelocity().setX(0);
-		getVelocity().setY(0);
-		setDirection(90);
-		
 		
 	}
 
@@ -362,15 +408,14 @@ public class Rocket extends Entity {
 		
 		if (isAirborne()) {
 			
+			// Automatic hoverslam
 			double safetyMargin = 5; // TODO Implement this better
-			setEnginesOn(getComputer().getManeuverCalculator().shouldBurn(safetyMargin));
-			
+			setEnginesOn(getManeuverCalculator().shouldBurn(safetyMargin));
+
 			pointInDirection(getVelocity().getDirection() - 180, timeElapsed);
-				
-			//applyGravity(timeElapsed); TODO Remove this method completely
+			
 			applyThrust(timeElapsed);
 			applyForces(timeElapsed); // should be last
-			//applyVelocity(timeElapsed); // This should always be last
 			
 		}
 		
@@ -385,9 +430,6 @@ public class Rocket extends Entity {
 			rcsThruster.tick(timeElapsed);
 			
 		}
-		
-		getComputer().tick(timeElapsed);
-		
 		
 	}
 	
@@ -438,8 +480,7 @@ public class Rocket extends Entity {
 	@Override
 	public void draw(GraphicsContext gc) {
 		
-		getComputer().draw(gc);
-		
+		//getComputer().draw(gc);
 		gc.save();
 		
 		rotateGraphicsContext(gc);
@@ -459,9 +500,6 @@ public class Rocket extends Entity {
 		}
 
 		gc.setFill(getColor());
-		
-		// Bounding rectangle
-		//gc.strokeRect(getX() - getWidth() / 2, getY(), getWidth(), getHeight());
 		
 		// Rocket nose cone
 		gc.fillArc(getX() - getCenterTankWidth() / 2, getY(), 

@@ -1,24 +1,23 @@
-
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
-public class AltitudeIndicator extends Entity {
+public class FuelIndicator extends Entity {
 	
 	private double width;
 	private double height;
 	private Rocket rocket;
-	private double maxAltitude;
+	private double maxFuelLevel;
+	private Color baseColor = Color.LIGHTGRAY;
 	
-	public AltitudeIndicator(double xOffset, double yOffset, 
-			double width, double height, Rocket rocket, 
-			double initialAltitude) {
+	public FuelIndicator(double xOffset, double yOffset, 
+			double width, double height, Rocket rocket) {
 		
 		setxOffset(xOffset);
 		setyOffset(yOffset);
 		this.width = width;
 		this.height = height;
 		this.rocket = rocket;
-		this.maxAltitude = initialAltitude;
+		this.maxFuelLevel = rocket.getFuel();
 		
 	}
 
@@ -46,14 +45,22 @@ public class AltitudeIndicator extends Entity {
 		this.height = height;
 	}
 
-	public double getMaxAltitude() {
-		return maxAltitude;
+	public Color getBaseColor() {
+		return baseColor;
 	}
 
-	public void setMaxAltitude(double maxAltitude) {
-		this.maxAltitude = maxAltitude;
+	public void setBaseColor(Color baseColor) {
+		this.baseColor = baseColor;
 	}
-	
+
+	public double getMaxFuelLevel() {
+		return maxFuelLevel;
+	}
+
+	public void setMaxFuelLevel(double maxFuelLevel) {
+		this.maxFuelLevel = maxFuelLevel;
+	}
+
 	public void drawTickMarks(GraphicsContext gc) {
 		
 		gc.setFill(Color.BLACK);
@@ -86,24 +93,16 @@ public class AltitudeIndicator extends Entity {
 		
 	}
 	
-	public void drawRocketAltitudePoint(GraphicsContext gc) {
+	public void drawRocketFuelLevelPoint(GraphicsContext gc) {
 
-		double pointRadius = 3;
+		double currentFuelProportion = getRocket().getFuel() / getMaxFuelLevel();
+		
+		double barHeight = getHeight() * currentFuelProportion;
 
-		double currentAltitudeProportion = getRocket().getManeuverCalculator().calculateAltitude()
-				/ maxAltitude;
+		gc.setFill(Color.LIGHTGREEN.darker());
 
-		double scaledAltitudeY = getY() + getHeight() - pointRadius
-				- (currentAltitudeProportion * (getHeight() - pointRadius));
-
-		// Check to make sure that the dot will be drawn within the bounds
-		// of the AltitudeIndicator (give or take 2 pixels)
-		if (scaledAltitudeY - pointRadius >= getY() - 2 && scaledAltitudeY + pointRadius <= getY() + getHeight() + 2) {
-
-			gc.setFill(Color.BLUE);
-			gc.fillOval(getX() - pointRadius, scaledAltitudeY - pointRadius, pointRadius * 2, pointRadius * 2);
-
-		}
+		gc.fillRoundRect(getX() - getWidth() / 2, getY() + getHeight() - barHeight, 
+				getWidth(), barHeight, 10, 10);
 		
 	}
 	
@@ -111,20 +110,13 @@ public class AltitudeIndicator extends Entity {
 	public void draw(GraphicsContext gc) {
 		
 		// Base rectangle
-		/*
-		gc.setFill(Color.WHITE);
-		gc.fillRect(getX() - getWidth() / 2, getY(), getWidth(), getHeight());
-		*/
-		
 		if (isVisible()) {
-			gc.setFill(Color.LIGHTGRAY);
+			
+			gc.setFill(getBaseColor());
 			gc.fillRoundRect(getX() - getWidth() / 2, getY(), getWidth(), getHeight(), 10, 10);
 
-			// Altitude meter
+			drawRocketFuelLevelPoint(gc);
 			drawTickMarks(gc);
-			// double altitudeBarWidth = getWidth() * (2.0 / 3.0);
-
-			drawRocketAltitudePoint(gc);
 		}
 		
 		
@@ -133,11 +125,9 @@ public class AltitudeIndicator extends Entity {
 	@Override
 	public void tick(double timeElapsed) {
 		
-		double rocketAltitude = 
-				getRocket().getManeuverCalculator().calculateAltitude();
-		if (rocketAltitude > getMaxAltitude()) {
+		if (rocket.getFuel() <= 0) {
 			
-			setMaxAltitude(getMaxAltitude() * 2);
+			setBaseColor(Color.RED);
 			
 		}
 		

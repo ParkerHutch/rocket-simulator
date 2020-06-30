@@ -19,28 +19,29 @@ public class HoverslamSimulator extends Application {
 	private GraphicsContext gc;
 	private AnimationTimer animator;
 
-	private World world;
-	private Rocket rocket;
+	private UserInterface userInterface;
+	
+	private KeyboardHandler keyboardHandler;
+	
+	double maxSpeed = 250;
 
 	@Override
 	public void init() {
 		
 		root = new Group();
-		world = new World(WIDTH, HEIGHT);
+		World world = new World(WIDTH, HEIGHT);
 		world.setCenterOnRocketHorizontally(true);
 		world.setCenterOnRocketVertically(true);
 		
 		animator = new AnimationTimer() {
-
+			
 			long startTime;
-			long currentTime;
 
 			private long lastUpdate;
 
 			@Override
 			public void start() {
-
-				//gc.scale(1, 1);
+				
 				startTime = System.nanoTime();
 				lastUpdate = startTime;
 				super.start();
@@ -48,10 +49,7 @@ public class HoverslamSimulator extends Application {
 			}
 			
 			public void clearScreen(GraphicsContext gc) {
-				/*
-				gc.clearRect(gc.getTransform().getTy(), gc.getTransform().getTx(),
-						WIDTH, HEIGHT);
-						*/
+				
 				gc.clearRect(-gc.getTransform().getTx(), -gc.getTransform().getTy(),
 						WIDTH, HEIGHT);
 				
@@ -62,36 +60,35 @@ public class HoverslamSimulator extends Application {
 
 				clearScreen(gc);
 
-				currentTime = System.nanoTime();
 				double timeSinceLastUpdateSeconds = (now - lastUpdate) / 1_000_000_000.0;
 				
-				// -gc.gettransform.gettx is basically gc x coord
-				
 				world.draw(gc);
+				userInterface.draw(gc);
 				
-				if (shouldUpdateGame(rocket)) {
+				if (shouldUpdateGame()) {
 					world.tick(timeSinceLastUpdateSeconds);
 				}
+				
+				userInterface.tick(timeSinceLastUpdateSeconds);
+				
 				lastUpdate = now;
 
 			}
 		};
 		
-		// Create the rockets
+		// Create the rocket
+		double rocketX = WIDTH  / 2;
+		double rocketY = world.getGroundY() - 500;
+		UserControlledRocket rocket = new UserControlledRocket(rocketX, rocketY, 10, world.getGroundY());
+		keyboardHandler = new KeyboardHandler(rocket);
 		
-		for (int i = 0; i < 1; i++) {
-
-			double x = WIDTH / 2; // Math.random() * (WIDTH - 40) + 20;
-			double y = world.getGroundY() - 1000;// Math.random() * (world.getGroundY()) - 80;
-			rocket = new Rocket(x, y, 100, world.getGroundY(), animator, gc);
-			double maxSpeed = 250;
-			rocket.getVelocity().setX(Math.random() * maxSpeed * 2 - maxSpeed);//Math.random() * 300 - 150);
-			//rocket.getVelocity().setX(300);
-			rocket.setAcceleration(new Vector2D(0.0, World.GRAVITY));
-			//rocket.getVelocity().setY(-1000);
-			world.getObjects().add(rocket);
-
-		}
+		rocket.getVelocity().setX(Math.random() * maxSpeed * 2 - maxSpeed);
+		rocket.setAcceleration(new Vector2D(0.0, World.GRAVITY));
+		world.getObjects().add(rocket);
+		
+		userInterface = new UserInterface(0, 0, 100, 800, 
+				rocket, 
+				world.getGroundY(), getAnimator());
 		
 	}
 
@@ -111,7 +108,7 @@ public class HoverslamSimulator extends Application {
 
 		// NOTE: It's important for these buttons to be added to the root
 		// after the Canvas: they won't receive MouseEvents otherwise.
-		for (CustomButton button : rocket.getComputer().getButtons()) {
+		for (CustomButton button : getUserInterface().getButtons()) {
 
 			root.getChildren().add(button);
 
@@ -119,8 +116,8 @@ public class HoverslamSimulator extends Application {
 		
 		gc = canvas.getGraphicsContext2D();
 		
-		animator.start();
-
+		getAnimator().start();
+		
 		addKeyboardHandling(primaryScene);
 		addMouseHandling(primaryScene);
 		
@@ -136,7 +133,6 @@ public class HoverslamSimulator extends Application {
 	 */
 	private void addKeyboardHandling(Scene scene) {
 		
-		KeyboardHandler keyboardHandler = new KeyboardHandler(this);
 		scene.setOnKeyPressed(keyboardHandler);
 		scene.setOnKeyReleased(keyboardHandler);
 	}
@@ -163,14 +159,6 @@ public class HoverslamSimulator extends Application {
 		this.gc = gc;
 	}
 
-	public World getWorld() {
-		return world;
-	}
-
-	public void setWorld(World world) {
-		this.world = world;
-	}
-
 	public AnimationTimer getAnimator() {
 		return animator;
 	}
@@ -179,11 +167,17 @@ public class HoverslamSimulator extends Application {
 		this.animator = animator;
 	}
 	
-	public boolean shouldUpdateGame(Rocket rocket) {
+	public UserInterface getUserInterface() {
+		return userInterface;
+	}
+
+	public void setUserInterface(UserInterface userInterface) {
+		this.userInterface = userInterface;
+	}
+
+	public boolean shouldUpdateGame() {
 		
-		// TODO I should be getting the buttons from a UIController or
-		// TODO something, not the Rocket
-		for (CustomButton button : rocket.getComputer().getButtons()) {
+		for (CustomButton button : getUserInterface().getButtons()) {
 			
 			if (button.getClass() == TogglePlayButton.class) {
 				
