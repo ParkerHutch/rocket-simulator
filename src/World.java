@@ -7,6 +7,8 @@ public class World {
 	
 	private ArrayList<Entity> objects = new ArrayList<Entity>();
 	
+	// TODO Draw sky
+	
 	public static final double GRAVITY = 100; // pixels/second (150 is a nice number)
 	private double groundHeight = 100;
 	private double groundY = -1;
@@ -14,6 +16,9 @@ public class World {
 	
 	private double windowWidth;
 	private double windowHeight;
+	
+	private boolean centerOnRocketHorizontally = false;
+	private boolean centerOnRocketVertically = false;
 	
 	World() {}
 	
@@ -72,15 +77,25 @@ public class World {
 		this.time = time;
 	}
 
+	public boolean centerOnRocketHorizontally() {
+		return centerOnRocketHorizontally;
+	}
+
+	public void setCenterOnRocketHorizontally(boolean centerOnRocketHorizontally) {
+		this.centerOnRocketHorizontally = centerOnRocketHorizontally;
+	}
+
+	public boolean centerOnRocketVertically() {
+		return centerOnRocketVertically;
+	}
+
+	public void setCenterOnRocketVertically(boolean centerOnRocketVertically) {
+		this.centerOnRocketVertically = centerOnRocketVertically;
+	}
+
 	public boolean rocketTouchingGround(Rocket rocket) {
 		
 		return rocket.getY() + rocket.getHeight() >= getGroundY();
-		
-	}
-	
-	public void handleRocketTouchingGround(Rocket rocket) {
-		
-		rocket.stop();
 		
 	}
 	
@@ -95,21 +110,34 @@ public class World {
 			
 			if (entity.getClass() == Rocket.class) {
 				
-				if (rocketTouchingGround((Rocket) entity)) {
+				Rocket rocket = (Rocket) entity;
+				
+				if (rocketTouchingGround(rocket)) {
 					
-					handleRocketTouchingGround((Rocket) entity);
+					rocket.stop();
 					
-				} else {
-					
-					entity.tick(timeElapsed);
-					
-				}
+				} 
 				
 			}
 			
+			entity.tick(timeElapsed);
 			
 		}
 		
+	}
+	
+	
+	public void drawSky(GraphicsContext gc) {
+		
+		gc.setFill(Color.DEEPSKYBLUE);
+		
+		double leftX = -gc.getTransform().getTx();
+		double topY = -gc.getTransform().getTy();
+		// topY is essentially the top Y coordinate of the moving Canvas window
+		// that the player sees
+		gc.fillRect(leftX, 
+				topY, 
+				getWindowWidth(), getWindowHeight());
 		
 		
 	}
@@ -121,8 +149,103 @@ public class World {
 	public void drawGround(GraphicsContext gc) {
 		
 		gc.setFill(Color.GREEN);
-		gc.fillRect(0, getWindowHeight() - getGroundHeight(), 
-				getWindowWidth(), getGroundHeight());
+		double leftX = -gc.getTransform().getTx();
+		double topY = getWindowHeight() - getGroundHeight();
+		// Stretch the ground rectangle to the bottom of the screen
+		double height = topY + getGroundHeight() - gc.getTransform().getTy();
+		gc.fillRect(leftX, 
+				topY, 
+				getWindowWidth(), height);
+		
+		
+	}
+	
+	public void drawMountains(GraphicsContext gc) {
+		
+		gc.setFill(new Color(1, 0, 0, 0.5));
+		gc.fillRect(50, getGroundY() - 100, getWindowWidth(), 100);
+		
+	}
+	
+	
+	public void centerOnRocketHorizontally(GraphicsContext gc, Rocket center) {
+
+		// TODO After adding random terrain features, add code to
+		// make the camera just follow the Rocket horizontally
+		double xTranslate = centerOnRocketHorizontally() ? 
+				-center.getX() - gc.getTransform().getTx() 
+				+ getWindowWidth() / 2 : 0;
+		
+				/*
+		double yTranslate = centerOnRocketVertically()? 
+				-center.getY() + center.getHeight() / 2 - 
+				gc.getTransform().getTy() + getWindowHeight() / 2 : 0;
+		*/
+		gc.translate(xTranslate, 0);
+
+	}
+	
+	public void centerOnRocketVertically(GraphicsContext gc, Rocket center) {
+
+		// TODO After adding random terrain features, add code to
+		// make the camera just follow the Rocket horizontally
+		/*
+		double xTranslate = centerOnRocketHorizontally() ? 
+				-center.getX() - gc.getTransform().getTx() 
+				+ getWindowWidth() / 2 : 0;*/
+		
+		double yTranslate = centerOnRocketVertically()? 
+				-center.getY() + center.getHeight() / 2 - 
+				gc.getTransform().getTy() + getWindowHeight() / 2 : 0;
+		gc.translate(0, yTranslate);
+
+	}
+	
+	public void centerOnRocket(GraphicsContext gc, Rocket center) {
+
+		// TODO After adding random terrain features, add code to
+		// make the camera just follow the Rocket horizontally
+		
+		
+		double xTranslate = centerOnRocketHorizontally() ? 
+				-center.getX() - gc.getTransform().getTx() 
+				+ getWindowWidth() / 2 : 0;
+		
+		double yTranslate = centerOnRocketVertically()? 
+				-center.getY() + center.getHeight() / 2 - 
+				gc.getTransform().getTy() + getWindowHeight() / 2 : 0;
+		
+		gc.translate(xTranslate, yTranslate);
+
+	}
+	
+	public void alignGraphicsContext(GraphicsContext gc) {
+
+		if (centerOnRocketHorizontally() || centerOnRocketVertically()) {
+
+			for (Entity entity : getObjects()) {
+
+				if (entity.getClass() == Rocket.class) {
+
+					Rocket rocket = (Rocket) entity;
+
+					if (centerOnRocketHorizontally()) {
+
+						centerOnRocketHorizontally(gc, rocket);
+
+					}
+
+					if (centerOnRocketVertically()) {
+
+						centerOnRocketVertically(gc, rocket);
+
+					}
+
+				}
+
+			}
+
+		}
 		
 	}
 	
@@ -132,18 +255,22 @@ public class World {
 	 */
 	public void draw(GraphicsContext gc) {
 		
-		gc.save();
+		//drawSky(gc);
+		drawMountains(gc);
 		
-		drawGround(gc);
+		alignGraphicsContext(gc);
 		
-		for (Entity entity : objects) {
+		drawSky(gc);
+		
+		for (Entity entity : getObjects()) {
 			
 			entity.draw(gc);
 			
 		}
 		
-		gc.restore();
-			
+		drawGround(gc);
+		
+		
 	}
 	
 	

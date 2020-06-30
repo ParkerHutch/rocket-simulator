@@ -1,3 +1,6 @@
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
+
 /**
  * @author Parker Hutchinson
  *	A class for storing a momentum vector. The Vector2D holds variables for the
@@ -80,7 +83,7 @@ public class Vector2D {
 	
 	/**
 	 * Gets the angle between the vector and the x-axis on the coordinate plane
-	 * @return the angle of the vector (in degrees)
+	 * @return the angle of the vector (in degrees) between 0 and 360
 	 */
 	public double getDirection() {
 		
@@ -93,6 +96,30 @@ public class Vector2D {
 		}
 		
 		return angle;
+		
+	}
+	
+	/**
+	 * Assigns the Vector2D's x and y components from a vector in a given
+	 * direction and with a given magnitude
+	 * @param magnitude the magnitude of the given vector
+	 * @param angle the angle of the given vector(counterclockwise from
+	 * positive x-axis)
+	 */
+	public void createVector(double magnitude, double angle) {
+		
+		setX(magnitude * Math.cos(Math.toRadians(angle)));
+		setY(magnitude * Math.sin(Math.toRadians(angle)));
+		
+	}
+	
+	public void draw(double tailX, double tailY, Color color, 
+			double lineWidth, GraphicsContext gc) {
+		
+		// TODO Implement arrow head for vector
+		gc.setStroke(color);
+		gc.setLineWidth(lineWidth);
+		gc.strokeLine(tailX, tailY, tailX + getX(), tailY + getY());
 		
 	}
 	

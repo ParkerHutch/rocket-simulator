@@ -1,7 +1,6 @@
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.Shape;
+import javafx.scene.shape.ArcType;
 import javafx.scene.transform.Affine;
 import javafx.scene.transform.Rotate;
 
@@ -12,26 +11,26 @@ import javafx.scene.transform.Rotate;
 
 public class Rocket extends Entity {
 	
-	Shape collisionShape; // should be a polygon which can also be drawn
-	
 	// Physics variables
-	private double direction = 90; // the angle between the ground and the top of the rocket
-	private Vector2D velocity = new Vector2D();
-	private double groundY;
-	private double initialHeight;
-	private double turnRate = 10; // degrees per second
+	private double width = 40;
+	private double centerTankWidth = width / 2.5;
+	private double height = 100;
+	private double noseConeHeight = 30;
+	private double centerTankHeight = height - noseConeHeight - 10;
+	private double finHeight = 20;
+	private double engineConeWidth = centerTankWidth;
+	private double engineConeHeight = 10;
+	private double turnRate = 60; // degrees per second (note: 360 works well with 1 engine)
+	// TODO Account for turnRate time in maneuverCalculator
 	
 	// Flight attributes
 	private boolean airborne = true;
 	private double fuel; // TODO Remove this if I'm not using this concept
-	private double fuelBurnRate = 1; // units per second
-	private double thrustPower = 200; // pixels per second
-	private boolean engineOn = false;
-	private double burnTime = Double.MAX_VALUE; // TODO Change default value?
+	private RocketEngine [] engines;
+	private ParticleEmitter [] rcsThrusters;
 	
-	// Time variables
-	long motionStartTime = -1;
-	double secondsSinceMotionStart = 0;
+	private RocketComputer computer;
+	//private ManeuverCalculator maneuverCalculator;
 	
 	Rocket() {}
 	
@@ -44,145 +43,189 @@ public class Rocket extends Entity {
 	 * @param groundY the y-coordinate of the top of the ground
 	 */
 	Rocket(double x, double y, double fuel, double groundY) {
+		
 		super(x, y);
-		this.collisionShape = new Rectangle(
-				getX() - getWidth() / 2, getY(), getWidth(), getHeight());
 		this.fuel = fuel;
-		this.groundY = groundY;
-		this.initialHeight = calculateDistanceToGround();
-		setBurnTime(calculateBurnHeight());// TODO Reenable this if you want
-		this.motionStartTime = System.nanoTime(); 
-		// motionStartTime should be updated to a more accurate time (i.e. 
-		// closer to actual animation start time) in the class running the 
-		// simulation
+		this.computer = new RocketComputer(this, groundY);
+		//maneuverCalculator = new ManeuverCalculator(this, groundY);
+		this.engines = new RocketEngine [] {
+				new RocketEngine(groundY, getEngineConeWidth(), getEngineConeHeight(), 
+						0, getHeight() - getEngineConeHeight())
+		};
+		
+		double rcsYoffset = getNoseConeHeight() + getCenterTankHeight() / 2 
+				- getFinHeight();
+		double rcsXOffset = getCenterTankWidth() / 2 + 4 / 2;
+		this.rcsThrusters = new ParticleEmitter [] {
+				
+				new ParticleEmitter(4, 8, groundY, 
+						new Color[] {Color.WHITE}, -rcsXOffset, rcsYoffset, 
+						-90, Color.RED),
+				new ParticleEmitter(4, 8, groundY, 
+						new Color[] {Color.WHITE}, rcsXOffset, rcsYoffset, 
+						90, Color.RED)
+		};
 	}
 
-	public Vector2D getVelocity() {
-		return velocity;
+	/** 
+	 * Gets the width of the rocket
+	 * @return the width
+	 */
+	public double getWidth() {
+		return width;
 	}
-
-	public void setVelocity(Vector2D velocity) {
-		this.velocity = velocity;
-	}
-
 
 	/**
-	 * Gets the angle between the top of the rocket and the positive x-axis
-	 * in degrees.
-	 * @return the rocket's direction in degrees
+	 * Sets the width of the Rocket
+	 * @param width the new width of the Rocket
 	 */
-	public double getDirection() {
-		return direction;
+	public void setWidth(double width) {
+		this.width = width;
 	}
 
-	public void setDirection(double direction) {
-		this.direction = direction;
+	public double getCenterTankWidth() {
+		return centerTankWidth;
 	}
-	
+
+	public void setCenterTankWidth(double centerTankWidth) {
+		this.centerTankWidth = centerTankWidth;
+	}
+
+	/**
+	 * Gets the height of the Rocket
+	 * @return the height
+	 */
+	public double getHeight() {
+		return height;
+	}
+
+	/**
+	 * Sets the height of the Rocket
+	 * @param height the new height of the Rocket
+	 */
+	public void setHeight(double height) {
+		this.height = height;
+	}
+
+	public double getCenterTankHeight() {
+		return centerTankHeight;
+	}
+
+	public void setCenterTankHeight(double centerTankHeight) {
+		this.centerTankHeight = centerTankHeight;
+	}
+
+	public double getFinHeight() {
+		return finHeight;
+	}
+
+	public void setFinHeight(double finHeight) {
+		this.finHeight = finHeight;
+	}
+
+	public double getNoseConeHeight() {
+		return noseConeHeight;
+	}
+
+	public void setNoseConeHeight(double noseConeHeight) {
+		this.noseConeHeight = noseConeHeight;
+	}
+
+	public double getEngineConeWidth() {
+		return engineConeWidth;
+	}
+
+	public void setEngineConeWidth(double engineConeWidth) {
+		this.engineConeWidth = engineConeWidth;
+	}
+
+	public double getEngineConeHeight() {
+		return engineConeHeight;
+	}
+
+	public void setEngineConeHeight(double engineConeHeight) {
+		this.engineConeHeight = engineConeHeight;
+	}
+
+	/**
+	 * Gets the Rocket's rotation speed, in degrees per second
+	 * @return the turn rate in degrees per second
+	 */
 	public double getTurnRate() {
 		return turnRate;
 	}
 
+	/**
+	 * Sets the rotation speed of the Rocket
+	 * @param turnRate a rotation speed, in degrees per second
+	 */
 	public void setTurnRate(double turnRate) {
 		this.turnRate = turnRate;
 	}
 
-	public double getInitialHeight() {
-		return initialHeight;
-	}
 
-	public void setInitialHeight(double initialHeight) {
-		this.initialHeight = initialHeight;
-	}
-
+	/**
+	 * Gets the amount of fuel left in the Rocket
+	 * @return the fuel left
+	 */
 	public double getFuel() {
 		return fuel;
 	}
 
+	/**
+	 * Sets the amount of fuel left in the Rocket
+	 * @param fuel the new fuel amount
+	 */
 	public void setFuel(double fuel) {
 		this.fuel = fuel;
 	}
+
+	/**
+	 * Gets the RocketEngines associated with this Rocket
+	 * @return the Rocket's engines
+	 */
+	public RocketEngine[] getEngines() {
+		return engines;
+	}
+
+	/**
+	 * Sets the RocketEngines associated with this Rocket
+	 * @param engines the new engines for the Rocket
+	 */
+	public void setEngines(RocketEngine[] engines) {
+		this.engines = engines;
+	}
+
+	public RocketComputer getComputer() {
+		return computer;
+	}
+
+	public void setComputer(RocketComputer computer) {
+		this.computer = computer;
+	}
+
+	public ParticleEmitter[] getRCSThrusters() {
+		return rcsThrusters;
+	}
 	
-	public double getFuelBurnRate() {
-		return fuelBurnRate;
+	public void setRCSThrusters(ParticleEmitter[] rcsThrusters) {
+		this.rcsThrusters = rcsThrusters;
 	}
 
-	public void setFuelBurnRate(double fuelBurnRate) {
-		this.fuelBurnRate = fuelBurnRate;
-	}
-
-	public boolean isEngineOn() {
-		return engineOn;
-	}
-
-	public void setEngineOn(boolean engineOn) {
-		this.engineOn = engineOn;
-	}
-
-	public double getThrustPower() {
-		return thrustPower;
-	}
-
-	public void setThrustPower(double thrustPower) {
-		this.thrustPower = thrustPower;
-	}
-
-	public double getBurnTime() {
-		return burnTime;
-	}
-
-	public void setBurnTime(double burnTime) {
-		this.burnTime = burnTime;
-	}
-
-	public double getGroundY() {
-		return groundY;
-	}
-
-	public void setGroundY(double groundY) {
-		this.groundY = groundY;
-	}
-
+	/**
+	 * Returns true if the Rocket is airborne, false otherwise
+	 * @return the airborne status of the Rocket
+	 */
 	public boolean isAirborne() {
 		return airborne;
 	}
 
-	public void setAirborne(boolean crashed) {
-		this.airborne = crashed;
-	}
-	
-	public long getMotionStartTime() {
-		return motionStartTime;
-	}
-
-	public void setMotionStartTime(long motionStartTime) {
-		this.motionStartTime = motionStartTime;
-	}
-
-	public double getSecondsSinceMotionStart() {
-		return secondsSinceMotionStart;
-	}
-
-	public void setSecondsSinceMotionStart(double secondsSinceMotionStart) {
-		this.secondsSinceMotionStart = secondsSinceMotionStart;
-	}
-
-	public double calculateSecondsSinceMotionStart() {
-		
-		long currentTime = System.nanoTime();
-		long timeElapsedNano = currentTime - motionStartTime;
-		return timeElapsedNano / 1_000_000_000.0;
-		
-	}
-
 	/**
-	 * Calculates the remaining change in velocity that the Rocket is able to 
-	 * produce with the fuel remaining.
+	 * Sets the airborne status of the Rocket
+	 * @param airborne the new status
 	 */
-	public double calculateDeltaV() {
-		
-		return (getFuel() / getFuelBurnRate()) * getThrustPower();
-		
+	public void setAirborne(boolean airborne) {
+		this.airborne = airborne;
 	}
 	
 	/**
@@ -196,160 +239,41 @@ public class Rocket extends Entity {
 	}
 	
 	/**
-	 * Applies the force of engine thrust to the Rocket's velocity vector.
-	 * If the engine is off, no force is added. 
+	 * Applies the force of each engine's thrust to the Rocket's velocity 
+	 * vector. If an engine is off or there is no fuel left, no force is added. 
 	 * @param timeElapsed the time, in seconds, since the last tick
 	 */
-	public void applyEngineThrust(double timeElapsed) {
-		
-		// Propel the rocket in the direction it is facing at max thrust
-		// Decrease fuel
+	public void applyThrust(double timeElapsed) {
 		
 		if (getFuel() > 0) {
 			
-			if (isEngineOn()) {
+			for (RocketEngine engine : getEngines()) {
 				
-				
-				getVelocity().setX(getVelocity().getX() + 
-					Math.cos(Math.toRadians(getDirection())) * getThrustPower() * timeElapsed);
+				if (engine.isOn()) {
 					
-				getVelocity().setY(getVelocity().getY() +
-						Math.sin(Math.toRadians(getDirection())) * 
-						-1 *
-						getThrustPower() 
-						* timeElapsed);
-		
-				setFuel(getFuel() - getFuelBurnRate() * timeElapsed);
+					getVelocity().setX(getVelocity().getX() + 
+							Math.cos(Math.toRadians(getDirection())) * 
+							engine.getThrustPower() * timeElapsed
+							);
+							
+						getVelocity().setY(getVelocity().getY() +
+								Math.sin(Math.toRadians(getDirection())) * -1 *
+								engine.getThrustPower() * timeElapsed
+								);
+				
+						setFuel(getFuel() - 
+								engine.getFuelBurnRate() * timeElapsed
+								);
+					
+				}
 				
 			}
 			
-		}
-		
-		
-	}
-	
-	/**
-	 * Adds the x and y components of the Rocket's velocity vector to its x and
-	 * y position.
-	 * @param timeElapsed the time, in seconds, since the last tick
-	 */
-	public void applyVelocity(double timeElapsed) {
-		
-		setX(getX() + getVelocity().getX() * timeElapsed);
-		setY(getY() + getVelocity().getY() * timeElapsed);
-		
-	}
-	
-	/**
-	 * @param a the coefficient of the x^2 component
-	 * @param b the coefficient of the x component
-	 * @param c the coefficient of the constant component
-	 * @return a sorted array of the solutions, with the greater solution first
-	 */
-	public double[] doQuadraticFormula(double a, double b, double c) {
-		// x = (-b +- sqrt(b^2 - 4ac)) / 2a
-		double solution1 = (-b + Math.sqrt((b * b) - 4 * a * c)) / (2 * a);
-		double solution2 = (-b - Math.sqrt((b * b) - 4 * a * c)) / (2 * a);
-		double [] solutions = {solution1, solution2};
-		
-		if (solution1 > solution2) {
-			
-			solutions[0] = solution1;
-			solutions[1] = solution2;
-			
 		} else {
 			
-			solutions[0] = solution2;
-			solutions[1] = solution1;
+			setEnginesOn(false);
 			
 		}
-		
-		return solutions;
-		
-	}
-	
-	public double calculateDistanceToGround() {
-		
-		return getGroundY() - (getY() + getHeight());
-		
-	}
-	
-	/**
-	 * Uses kinematic equations to determine the time(in seconds since program
-	 * start) when the rocket will make contact with the ground.
-	 * dY = yVelocity * time + (1/2) * accelerationY * time^2
-	 * @param currentTime the current time, in seconds since program start
-	 * @return the time when the rocket will hit the ground, in seconds since 
-	 * program start
-	 */
-	public double calculateExpectedImpactTime() {
-		
-		// The values below should be initial values of the rocket
-		// TODO This needs to be fixed, use an online calculator
-		// TODO I think I fixed this, explain what I changed(the signs)
-		double [] impactTimes;
-		
-		if (isEngineOn()) {
-
-			double acceleration = getThrustPower() - World.GRAVITY;
-			impactTimes =
-					doQuadraticFormula((-0.5) * acceleration, 
-							-getVelocity().getY(), 
-							calculateDistanceToGround());
-			
-		} else {
-			
-			impactTimes =
-					doQuadraticFormula((-0.5) * World.GRAVITY, 
-							-getVelocity().getY(), 
-							calculateDistanceToGround());
-			
-		}
-		
-		return impactTimes[0];
-		
-	}
-	
-	/**
-	 * Calculates the time, in seconds after start of motion, that the Rocket
-	 * should begin burning its engine at full throttle power in order to 
-	 * have a y velocity of 0 when it reaches the ground. 
-	 * @return the time to start firing the engine
-	 */
-	public double calculateBurnHeight() {
-
-		// TODO: Do a check so that rocket doesn't think it will have to burn
-		// at 170 degrees to land correctly. Maybe check that Yvelocity > xvel
-		// or something like that
-		double thrustYAccel = (getThrustPower() * 
-				Math.sin(Math.toRadians(getDirection()))) - World.GRAVITY;
-		if (thrustYAccel< 0) {
-			
-			/*
-			System.out.println("Thrust y component is negative. " + 
-					"Calculation is probably being performed very early in the " +
-					"launch.");
-			System.out.println("Direction: " + getDirection());
-			*/
-			return 0;
-		} else {
-			
-			double timeToCounterY = Math.abs(
-					getVelocity().getY() / thrustYAccel
-					); // this is time DURATION
-
-			// calculate distance that would be travelled while Rocketis countering y
-
-			// I don't know why, but putting a negative in the thing below seemed to fix
-			// the stuff TODO Explain or delete this comment
-			double burnYTravel = ((-0.5) * thrustYAccel * (Math.pow(timeToCounterY, 2)))
-					+ getVelocity().getY() * timeToCounterY;
-
-			return burnYTravel;
-			
-		}
-		
-		
 		
 	}
 	
@@ -358,25 +282,37 @@ public class Rocket extends Entity {
 	 * the angle defined by targetAngle
 	 * @param targetAngle the angle to rotate towards, in degrees
 	 */
-	public void pointInDirection(double targetAngle, double timeElapsed) {
+	private void pointInDirection(double targetAngle, double timeElapsed) {
 		
 		double distanceToTargetAngle = targetAngle - getDirection();
 		
-		if (Math.abs(distanceToTargetAngle) < getTurnRate() * timeElapsed) {
+		if (distanceToTargetAngle < 0) {
+			
+			getRCSThrusters()[0].setOn(true);
+			getRCSThrusters()[1].setOn(false);
+			
+		} else if (distanceToTargetAngle != 0){
+			
+			getRCSThrusters()[0].setOn(false);
+			getRCSThrusters()[1].setOn(true);
+			
+		}
+		//if (Math.abs(distanceToTargetAngle) < getTurnRate() * timeElapsed) {
+		
+		if (Math.abs(distanceToTargetAngle) <= getTurnRate() * timeElapsed) {
 			
 			setDirection(targetAngle);
 			
 		} else {
 			
-			// TODO: Show an RCS animation for these cases below
 			if (distanceToTargetAngle < 0) {
-				
+
 				setDirection(getDirection() - getTurnRate() * timeElapsed);
-				
+
 			} else {
-				
+
 				setDirection(getDirection() + getTurnRate() * timeElapsed);
-				
+
 			}
 			
 		}
@@ -384,12 +320,33 @@ public class Rocket extends Entity {
 	}
 	
 	/**
-	 * Sets the velocity of the Rocket to 0, crashed to true.
+	 * Sets the 'on' state of all the Rocket's engines to the given state
+	 * @param state the new 'on' state for all the Rocket's RocketEngines
+	 */
+	public void setEnginesOn(boolean state) {
+		
+		for (RocketEngine engine : getEngines()) {
+			
+			engine.setOn(state);
+			
+		}
+		
+	}
+	
+	/**
+	 * Stops the rocket by setting conditions and variables associated with its
+	 * flight to appropriate values
 	 */
 	public void stop() {
 		
 		setAirborne(false);
-		setColor(Color.RED);
+		setEnginesOn(false);
+		for (ParticleEmitter rcsThruster : getRCSThrusters()) {
+			
+			rcsThruster.setOn(false);
+			
+		}
+		//setColor(Color.RED);
 		getVelocity().setX(0);
 		getVelocity().setY(0);
 		setDirection(90);
@@ -397,118 +354,147 @@ public class Rocket extends Entity {
 		
 	}
 
+	@Override
 	public void tick(double timeElapsed) {
-		// Apply user input (Or do this in runner file/ use one of the 
-		// keyboardinput classes i made)
+		
 		if (isAirborne()) {
 			
+			double safetyMargin = 5; // TODO Implement this better
+			setEnginesOn(getComputer().getManeuverCalculator().shouldBurn(safetyMargin));
 			
-			if (calculateBurnHeight() >= calculateDistanceToGround() 
-					&& Math.sin(Math.toRadians(getVelocity().getDirection())) < 0) {
-				
-				setEngineOn(true);
-				
-			} else if (Math.sin(Math.toRadians(getVelocity().getDirection())) > 0){
-				
-				setEngineOn(false);
-				
-			}
-			
-			// Rocket points in direction opposite of its velocity vector
-			// to get max efficiency
-			// TODO: If I get errors when implementing turnRate (Rocket may
-			// not be able to turn fast enough), maybe only do this direction
-			// change when engine is off
-			if (Math.abs(getVelocity().getX()) <= 0.03) {
-				
-				getVelocity().setX(0);
-				
-			}
-			
-			if (getVelocity().getDirection() <= 225 || 
-					getVelocity().getDirection() >= 315 ||
-					getVelocity().getY() <= 0) {
-				
-				setDirection(90);
-				
-			} else {
-				
+					/*	
+			if (!(getVelocity().getDirection() <= 225 || 
+					getVelocity().getDirection() >= 315)) {
+				*/
+			// TODO Remove this
+			if (true || !(getVelocity().getDirection() <= 200 || 
+					getVelocity().getDirection() >= 340)) {
 				pointInDirection(getVelocity().getDirection() - 180, timeElapsed);
 				
 			}
 			
-			
-			
 			applyGravity(timeElapsed);
-			applyEngineThrust(timeElapsed);
+			applyThrust(timeElapsed);
 			applyVelocity(timeElapsed); // This should always be last
 			
 		}
 		
-		setSecondsSinceMotionStart(calculateSecondsSinceMotionStart());
+		for (RocketEngine engine : getEngines()) {
+			
+			engine.tick(timeElapsed);
+			
+		}
+		
+		for (ParticleEmitter rcsThruster : getRCSThrusters()) {
+			
+			rcsThruster.tick(timeElapsed);
+			
+		}
 		
 		
 	}
 	
-	public void drawEnginePlume(GraphicsContext gc) {
-		
-		double [] triangleXPoints =  {
-				getX(),
-				getX() - getWidth() / 2,
-				getX() + getWidth() / 2
-				
-		};
-		double [] triangleYPoints = {
-				getY() + getHeight(), 
-				getY() + getHeight() + 10,
-				getY() + getHeight() + 10
-		};
-		
-		gc.setFill(Color.ORANGE);
-		gc.fillPolygon(triangleXPoints, triangleYPoints, 3);
-		
-	}
-	
-	
-	public void draw(GraphicsContext gc) {
-		
-		// TODO: Make the rocket a polygon, use gc.fillPolygon
-		// TODO: Also use this polygon to check for collisions?
-		
-		gc.save();
+	/**
+	 * Pivots the GraphicsContext around the center of the Rocket so that the
+	 * Rocket can be drawn at an angle. This transform should be reversed
+	 * (with a save() and restore()) before objects that should be drawn 
+	 * normally on the Canvas are drawn.
+	 * @param gc the GraphicsContext to rotate
+	 */
+	public void rotateGraphicsContext(GraphicsContext gc) {
 		
 		double pivotX = getX();
 		double pivotY = getY() + (getHeight() / 2.0);
 		Rotate rotate = new Rotate(90 - getDirection(), pivotX, pivotY);
-		gc.setTransform(new Affine(rotate));
+		gc.transform(new Affine(rotate));
 		
-		gc.setFill(getColor());
+	}
+
+	public void drawFins(GraphicsContext gc) {
 		
-		gc.fillRect(getX() - getWidth() / 2, getY(), getWidth(), getHeight());
+		double [] fin1xPoints = new double[] {
+				getX() - getCenterTankWidth() / 2,
+				getX() - getCenterTankWidth() / 2,
+				getX() - getWidth() / 2
+		};
 		
-		if (isEngineOn() && isAirborne()) {
-			
-			drawEnginePlume(gc);
-			
-		}
-		gc.restore();
+		double [] fin2xPoints = new double[] {
+				getX() + getCenterTankWidth() / 2,
+				getX() + getCenterTankWidth() / 2,
+				getX() + getWidth() / 2
+		};
+		
+		double finStartY = getY() + getNoseConeHeight() + getCenterTankHeight() - getFinHeight();
+		double [] finyPoints = new double[] {
+				finStartY,
+				finStartY + getFinHeight(),
+				finStartY + getFinHeight()
+		};
+		
+		gc.setFill(Color.BLUE);
+		gc.fillPolygon(fin1xPoints, finyPoints, finyPoints.length);
+		gc.fillPolygon(fin2xPoints, finyPoints, finyPoints.length);
+
 		
 	}
 	
 	@Override
-	public String toString() {
+	public void draw(GraphicsContext gc) {
 		
-		String summary = "X: " + getX() + " Y: " + getY() + "\n" +
-				"Distance to ground: " + (calculateDistanceToGround()) +
-				"\n" +
-				"xVelocity: " + getVelocity().getX() + " yVelocity: " +
-				 getVelocity().getY() + "\n" + 
-				"Airborne: " + isAirborne() + "\n" + 
-				"Expected impact time: " + calculateExpectedImpactTime() + "\n" + 
-				"Burn time: " + getBurnTime() + "\n" +
-				"Current internal time: " + getSecondsSinceMotionStart();
-		return summary;
+		getComputer().draw(gc);
+		/*
+		gc.setLineWidth(3);
+		// Draw velocity vector TODO Add arrow part, make this an actual method(later put in OnboardComputer)
+		gc.setStroke(Color.YELLOW);
+		gc.strokeLine(getX(), getY() + getHeight() / 2, 
+				getX() + getVelocity().getX(), 
+				getY() + getHeight() / 2 + getVelocity().getY());
+				*/
+		gc.save();
+		
+		rotateGraphicsContext(gc);
+		
+		for (RocketEngine engine : getEngines()) {
+			
+			engine.alignWith(this);
+			engine.draw(gc);
+			
+		}
+
+		for (ParticleEmitter thruster : getRCSThrusters()) {
+
+			thruster.alignWith(this);
+			thruster.draw(gc);
+
+		}
+
+		gc.setFill(getColor());
+		
+		// Bounding rectangle
+		//gc.strokeRect(getX() - getWidth() / 2, getY(), getWidth(), getHeight());
+		
+		// Rocket nose cone
+		gc.fillArc(getX() - getCenterTankWidth() / 2, getY(), 
+				getCenterTankWidth(), getNoseConeHeight() * 2, 
+				0, 180, ArcType.ROUND);
+		
+		// Center tank
+		gc.fillRect(getX() - getCenterTankWidth() / 2, 
+				getY() + getNoseConeHeight(), 
+				getCenterTankWidth(), getCenterTankHeight());
+		
+		drawFins(gc);
+		
+		gc.restore();
+		
+		
+		
+		
+		
 		
 	}
+	
+	
+	
 	
 }

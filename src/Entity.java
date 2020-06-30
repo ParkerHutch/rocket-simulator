@@ -5,12 +5,14 @@ abstract class Entity {
 	
 	private double x; 
 	private double y; 
-	private double width = 20; 
-	private double height = 40;
-	private Color color = Color.BLUE;
+	private double xOffset = 0;
+	private double yOffset = 0;
+	private double direction = 90;
+	private Color color = Color.WHITE;
+	
+	private Vector2D velocity = new Vector2D();
 	
 	Entity() {}
-	
 	
 	/**
 	 * Creates an Entity with arguments for x and y, and the default width, 
@@ -32,12 +34,19 @@ abstract class Entity {
 	 * @param height the height of the Entity
 	 * @param color the color of the Entity
 	 */
-	public Entity(double x, double y, double width, double height, Color color) {
+	public Entity(double x, double y, Color color) {
 		this.x = x;
 		this.y = y;
-		this.width = width;
-		this.height = height;
 		this.color = color;
+	}
+	
+	
+	public Entity(double x, double y, Color color, double xOffset, double yOffset) {
+		this.x = x;
+		this.y = y;
+		this.color = color;
+		this.xOffset = xOffset;
+		this.yOffset = yOffset;
 	}
 
 	/**
@@ -84,37 +93,71 @@ abstract class Entity {
 		this.y = y;
 	}
 
-	/**
-	 * Gets the width of the Entity
-	 * @return the width of the Entity
-	 */
-	public double getWidth() {
-		return width;
+	public double getxOffset() {
+		return xOffset;
+	}
+
+	public void setxOffset(double xOffset) {
+		this.xOffset = xOffset;
+	}
+
+	public double getyOffset() {
+		return yOffset;
+	}
+
+	public void setyOffset(double yOffset) {
+		this.yOffset = yOffset;
 	}
 
 	/**
-	 * Sets the width of the Entity
-	 * @param width the new width
+	 * Gets the angle from the positive x-axis counterclockwise to the top of
+	 * the Entity
+	 * @return the angle between the Entity and the x-axis
 	 */
-	public void setWidth(double width) {
-		this.width = width;
+	public double getDirection() {
+		return direction;
+	}
+
+
+	/**
+	 * Sets the angle from the positive x-axis counterclockwise to the top of
+	 * the Entity
+	 * @param direction the new angle between the Entity and the x-axis
+	 */
+	public void setDirection(double direction) {
+		this.direction = direction;
+	}
+
+
+	/**
+	 * Gets the Vector2D object representing the Entity's 2D velocity
+	 * @return
+	 */
+	public Vector2D getVelocity() {
+		return velocity;
+	}
+
+
+	/**
+	 * Sets a new Vector2D object for the Entity's velocity
+	 * @param velocity the Entity's new velocity vector
+	 */
+	public void setVelocity(Vector2D velocity) {
+		this.velocity = velocity;
 	}
 
 	/**
-	 * Gets the height of the Entity
-	 * @return the height of the Entity
+	 * Adds the x and y components of the Entity's velocity vector to its x and
+	 * y position.
+	 * @param timeElapsed the time, in seconds, since the last tick
 	 */
-	public double getHeight() {
-		return height;
+	public void applyVelocity(double timeElapsed) {
+		
+		setX(getX() + getVelocity().getX() * timeElapsed);
+		setY(getY() + getVelocity().getY() * timeElapsed);
+		
 	}
-
-	/** Sets the height of the Entity
-	 * @param height the new height
-	 */
-	public void setHeight(double height) {
-		this.height = height;
-	}
-
+	
 	/**
 	 * Gets the color of the Entity
 	 * @return the color of the Entity
@@ -129,7 +172,24 @@ abstract class Entity {
 	public void setColor(Color color) {
 		this.color = color;
 	}
-	
-	
+
+	public void alignWith(Entity target) {
+
+		setX(target.getX() + getxOffset());
+		setY(target.getY() + getyOffset());
+		setVelocity(target.getVelocity());
+		setDirection(target.getDirection());
+
+	}
+
+	/*
+	public void alignWith(Entity target, double xShift, double yShift) {
+		
+		setX(target.getX() + xShift);
+		setY(target.getY() + yShift);
+		setVelocity(target.getVelocity());
+		setDirection(target.getDirection());
+
+	}*/
 	
 }
