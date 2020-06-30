@@ -1,8 +1,10 @@
+package rocket;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.ArcType;
 import javafx.scene.transform.Affine;
 import javafx.scene.transform.Rotate;
+import world.World;
 
 /**
  * @author Parker Hutchinson

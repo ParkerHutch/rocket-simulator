@@ -1,4 +1,4 @@
-
+package rocket;
 public class UserControlledRocket extends Rocket {
 
 	double targetAngle = 90;

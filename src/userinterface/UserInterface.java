@@ -1,8 +1,11 @@
+package userinterface;
 import java.util.ArrayList;
 
 import javafx.animation.AnimationTimer;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import rocket.Entity;
+import rocket.Rocket;
 
 public class UserInterface extends Entity {
 
@@ -14,6 +17,8 @@ public class UserInterface extends Entity {
 	
 	ArrayList<CustomButton> buttons = new ArrayList<CustomButton>();
 	ArrayList<Entity> interfaceElements = new ArrayList<Entity>();
+	
+	LandCrashMessage message;
 	private double transitionSpeed = 2;
 	
 	public UserInterface(double x, double y, double width, double height, 
@@ -33,6 +38,9 @@ public class UserInterface extends Entity {
 		
 		buttons.add(new TogglePlayButton(maxWidth / 4, 160, 30, 30, animationTimer));
 		buttons.add(new MinimizeMaximizeButton((maxWidth + 20) / 2, height / 2 - 50, 20, 50));
+		
+		message = new LandCrashMessage(200, 100, 200, 200);
+		// TODO add LandCrashMessage, put its buttons in the buttons arraylist
 		
 	}
 	
@@ -90,6 +98,14 @@ public class UserInterface extends Entity {
 
 	public void setInterfaceElements(ArrayList<Entity> interfaceElements) {
 		this.interfaceElements = interfaceElements;
+	}
+
+	public LandCrashMessage getMessage() {
+		return message;
+	}
+
+	public void setMessage(LandCrashMessage message) {
+		this.message = message;
 	}
 
 	public boolean isMaximized() {
@@ -156,6 +172,8 @@ public class UserInterface extends Entity {
 			element.setVisible(isMaximized());
 			
 		}
+		
+		getMessage().tick(timeElapsed);
 
 	}
 	
@@ -194,6 +212,8 @@ public class UserInterface extends Entity {
 			}
 			
 		}
+		
+		getMessage().draw(gc);
 		
 	}
 	

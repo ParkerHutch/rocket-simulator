@@ -5,13 +5,20 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.stage.Stage;
+import rocket.UserControlledRocket;
+import rocket.Vector2D;
+import userinterface.CustomButton;
+import userinterface.TogglePlayButton;
+import userinterface.UserInterface;
+import userinterface.menu.MenuManager;
+import world.World;
 
 public class HoverslamSimulator extends Application {
 
 	// TODO: I bet it'd be cool if I graphed altitude vs. time for the rocket
 	
-	private final int WIDTH = 800;
-	private final int HEIGHT = 800;
+	private final int WIDTH = 600;
+	private final int HEIGHT = 600;
 
 	private Group root;
 	private Scene primaryScene;
@@ -22,6 +29,8 @@ public class HoverslamSimulator extends Application {
 	private UserInterface userInterface;
 	
 	private KeyboardHandler keyboardHandler;
+	
+	private MenuManager menuManager = new MenuManager(WIDTH, HEIGHT);
 	
 	double maxSpeed = 250;
 
@@ -95,15 +104,25 @@ public class HoverslamSimulator extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 
-		primaryStage.setTitle("Hoverslam Simulation");
+		primaryStage.setTitle("Rocketry Simulation");
 
 		primaryScene = new Scene(root, WIDTH, HEIGHT);
 
 		primaryStage.setWidth(WIDTH); 
 		primaryStage.setHeight(HEIGHT);
 		
+		primaryStage.setScene(primaryScene);
+		primaryStage.show();
+		
+		getMenuManager().showTitleScreen(primaryStage);
+		
+		
+		addKeyboardHandling(primaryScene);
+		addMouseHandling(primaryScene);
+		
 		canvas = new Canvas(primaryStage.getWidth(), primaryStage.getHeight());
-
+		gc = canvas.getGraphicsContext2D();
+		
 		root.getChildren().add(canvas);
 
 		// NOTE: It's important for these buttons to be added to the root
@@ -111,19 +130,18 @@ public class HoverslamSimulator extends Application {
 		for (CustomButton button : getUserInterface().getButtons()) {
 
 			root.getChildren().add(button);
+			// TODO add LandCrashMessage buttons here
 
 		}
 		
-		gc = canvas.getGraphicsContext2D();
+		
 		
 		getAnimator().start();
 		
-		addKeyboardHandling(primaryScene);
-		addMouseHandling(primaryScene);
 		
 		
-		primaryStage.setScene(primaryScene);
-		primaryStage.show();
+		
+		
 		
 	}
 	
@@ -189,6 +207,14 @@ public class HoverslamSimulator extends Application {
 		
 		return true;
 		
+	}
+
+	public MenuManager getMenuManager() {
+		return menuManager;
+	}
+
+	public void setMenuManager(MenuManager menuManager) {
+		this.menuManager = menuManager;
 	}
 
 	public static void main(String[] args) {

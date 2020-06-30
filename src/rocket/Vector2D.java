@@ -1,3 +1,4 @@
+package rocket;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
@@ -12,14 +13,14 @@ public class Vector2D {
 	private double x = 0; // The vector's x component
 	private double y = 0; // The vector's y component
 	
-	Vector2D() {}
+	public Vector2D() {}
 	
 	/**
 	 * Creates a Vector2D with given x and y components
 	 * @param x the x component of the vector
 	 * @param y the y component of the vector
 	 */
-	Vector2D(double x, double y) {
+	public Vector2D(double x, double y) {
 		
 		setX(x);
 		setY(y);
@@ -32,7 +33,7 @@ public class Vector2D {
 	 * @param direction the direction of the vector (in degrees)
 	 * @param magnitude the magnitude of the vector (should be positive)
 	 */
-	Vector2D(int direction, double magnitude) {
+	public Vector2D(int direction, double magnitude) {
 		
 		setX(magnitude * Math.cos(direction));
 		setY(magnitude * Math.sin(direction));

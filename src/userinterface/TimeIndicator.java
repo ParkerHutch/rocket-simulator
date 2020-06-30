@@ -1,9 +1,11 @@
+package userinterface;
 import javafx.geometry.VPos;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.ArcType;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
+import rocket.Entity;
 
 public class TimeIndicator extends Entity {
 	
@@ -210,7 +212,15 @@ public class TimeIndicator extends Entity {
 
 		if (!isPaused()) {
 			setClockHandAngle(getClockHandAngle() + (timeElapsed * 360));
+			
+			if (getInternalTime() > 999) {
+				
+				setInternalTime(0);
+				
+			}
+			
 			setInternalTime(getInternalTime() + timeElapsed);
+			
 		}
 
 	}

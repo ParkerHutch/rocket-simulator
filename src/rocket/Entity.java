@@ -1,7 +1,8 @@
+package rocket;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
-abstract class Entity {
+public abstract class Entity {
 	
 	private double x; 
 	private double y; 
@@ -15,7 +16,7 @@ abstract class Entity {
 	
 	private boolean visible = true;
 	
-	Entity() {}
+	public Entity() {}
 	
 	/**
 	 * Creates an Entity with arguments for x and y, and the default width, 

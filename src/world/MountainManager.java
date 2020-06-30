@@ -1,3 +1,4 @@
+package world;
 import java.util.ArrayList;
 
 import javafx.scene.canvas.GraphicsContext;

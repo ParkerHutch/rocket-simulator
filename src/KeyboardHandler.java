@@ -1,5 +1,6 @@
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyEvent;
+import rocket.UserControlledRocket;
 
 /**
  * A class for handling keyboard input

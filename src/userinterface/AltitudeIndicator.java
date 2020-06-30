@@ -1,6 +1,9 @@
+package userinterface;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import rocket.Entity;
+import rocket.Rocket;
 
 public class AltitudeIndicator extends Entity {
 	
@@ -110,20 +113,13 @@ public class AltitudeIndicator extends Entity {
 	@Override
 	public void draw(GraphicsContext gc) {
 		
-		// Base rectangle
-		/*
-		gc.setFill(Color.WHITE);
-		gc.fillRect(getX() - getWidth() / 2, getY(), getWidth(), getHeight());
-		*/
-		
 		if (isVisible()) {
+			
 			gc.setFill(Color.LIGHTGRAY);
 			gc.fillRoundRect(getX() - getWidth() / 2, getY(), getWidth(), getHeight(), 10, 10);
 
-			// Altitude meter
 			drawTickMarks(gc);
-			// double altitudeBarWidth = getWidth() * (2.0 / 3.0);
-
+			
 			drawRocketAltitudePoint(gc);
 		}
 		
