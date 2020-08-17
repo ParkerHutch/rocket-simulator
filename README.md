@@ -1,3 +1,3 @@
 # Hoverslam
 A simulation program for the hoverslam rocketry maneuver
-![Hoverslam gif](hhttps://thumbs.gfycat.com/TanJitteryBuffalo-size_restricted.gif)
+![Hoverslam gif](https://thumbs.gfycat.com/TanJitteryBuffalo-size_restricted.gif)
