@@ -116,7 +116,6 @@ public class HoverslamSimulator extends Application {
 		
 		//getMenuManager().showTitleScreen(primaryStage);
 		
-		
 		addKeyboardHandling(primaryScene);
 		addMouseHandling(primaryScene);
 		
@@ -134,14 +133,7 @@ public class HoverslamSimulator extends Application {
 
 		}
 		
-		
-		
 		getAnimator().start();
-		
-		
-		
-		
-		
 		
 	}
 	

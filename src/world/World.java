@@ -136,7 +136,6 @@ public class World {
 				
 			} 
 			
-			
 			entity.tick(timeElapsed);
 			
 		}
@@ -276,12 +275,6 @@ public class World {
 		
 		drawGround(gc);
 		
-		
-		
-		
-		
 	}
-	
-	
 	
 }

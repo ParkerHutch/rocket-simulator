@@ -21,7 +21,7 @@ public class MenuManager {
 	int projectButtonColumns = 2;
 	
 	/**
-	 * Creates a MenuManager for a given PortalGame instance
+	 * Creates a MenuManager object
 	 * @param gameObject
 	 */
 	public MenuManager(int width, int height) {
