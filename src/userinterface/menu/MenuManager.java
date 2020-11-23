@@ -103,19 +103,5 @@ public class MenuManager {
 		stackPane.getChildren().add(backButton);
 		
 	}
-	
-	/**
-	 * @return the projectButtonColumns
-	 */
-	public int getProjectButtonColumns() {
-		return projectButtonColumns;
-	}
-
-	/**
-	 * @param projectButtonColumns the projectButtonColumns to set
-	 */
-	public void setProjectButtonColumns(int projectButtonColumns) {
-		this.projectButtonColumns = projectButtonColumns;
-	}
 
 }
