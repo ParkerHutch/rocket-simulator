@@ -28,13 +28,6 @@ public class KeyboardHandler implements EventHandler<KeyEvent> {
 				
 				currentKeysPressed += code;
 				
-				/*
-				if ("AD".contains(code)) {
-					
-					userRocket.setShouldFireRCS(true);
-					
-				}*/
-				
 			}
 			
 			if (code.equals("I")) {
@@ -42,46 +35,13 @@ public class KeyboardHandler implements EventHandler<KeyEvent> {
 				System.out.println("target: " + userRocket.getTargetAngle());
 				System.out.println("direction: " + userRocket.getDirection());
 				
-				
 			}
-
-			/*
-			//String code = arg0.getCode().toString().toUpperCase();
-			System.out.println(code);
-			
-			if (code.equals("A")) {
-				
-				userRocket.setTargetAngle(userRocket.getTargetAngle() + 10);
-				
-			}
-			
-			if (code.equals("D")) {
-
-				userRocket.setTargetAngle(userRocket.getTargetAngle() - 10);
-
-			}
-			
-			if (code.equals("W")) {
-				
-				userRocket.setShouldFireEngines(true);
-				
-			} else {
-				
-				userRocket.setShouldFireEngines(false);
-				
-			}*/
 
 		}
 		
 		if (arg0.getEventType() == KeyEvent.KEY_RELEASED) {
 			
 			currentKeysPressed = currentKeysPressed.replace(code, "");
-			
-			if (code.equals("W")) {
-				
-				//userRocket.setShouldFireEngines(false);
-				
-			}
 			
 			if ("AD".contains(code)) {
 				
@@ -130,10 +90,6 @@ public class KeyboardHandler implements EventHandler<KeyEvent> {
 			
 		}
 		
-		
-		
-		
-
 	}
 
 	public UserControlledRocket getUserRocket() {

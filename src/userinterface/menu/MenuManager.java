@@ -15,16 +15,10 @@ import javafx.stage.Stage;
 
 public class MenuManager {
 	
-	/*
-	 * 
-	 * TODO: Do i still need condensed program versions?
-	 * 
-	 */
 	private int width;
 	private int height;
 	
 	int projectButtonColumns = 2;
-	
 	
 	/**
 	 * Creates a MenuManager for a given PortalGame instance
