@@ -54,54 +54,38 @@ public class MenuManager {
 		Scene mainMenuScene = new Scene(stackPane, getWidth(), getHeight());
 		stage.setScene(mainMenuScene); // TODO Change
 		
-		Text author = new Text("Rocketry");
-		author.setFont(Font.font("Tahoma", FontWeight.BOLD, FontPosture.REGULAR, 50));
-		author.setTranslateX(getWidth() / 5);
-		
-		Text title = new Text("Java Portfolio");
+		Text title = new Text("Hoverslam Simulator");
 		title.setFont(Font.font("Tahoma", FontWeight.BOLD, FontPosture.REGULAR, 50));
-		
-		author.setTranslateY(-getHeight() / 4);
+		title.setTranslateY(-getHeight() / 4);
+
+		Text author = new Text("Parker Hutchinson");
+		author.setFont(Font.font("Tahoma", FontWeight.BOLD, FontPosture.REGULAR, 50));
+		author.setTranslateY(-getHeight() / 8);
+
 		stackPane.getChildren().addAll(title, author);
 		
-		Button startButton = new Button("Projects");
-		startButton.setPrefSize(200, 50);
-		startButton.setAlignment(Pos.CENTER);
-		startButton.setTranslateY(getHeight() / 8);
+		//stackPane.getChildren().addAll(title, author);
+		
+		Button startComputerButton = new Button("Start Computer Simulation");
+		startComputerButton.setPrefSize(200, 50);
+		startComputerButton.setAlignment(Pos.CENTER);
+		startComputerButton.setTranslateY(getHeight() / 8);
+		startComputerButton.setOnAction(event -> startComputerSimulation(stage));
+
+		Button startUserButton = new Button("Start User Simulation");
+		startUserButton.setPrefSize(200, 50);
+		startUserButton.setAlignment(Pos.CENTER);
+		startUserButton.setTranslateY(2 * (getHeight() / 8));
+		startUserButton.setOnAction(event -> startUserControlledSimulation(stage));
+
 		//startButton.setOnAction(event -> showProjectsScreen(stage));
 		
-		stackPane.getChildren().add(startButton);
+		stackPane.getChildren().addAll(startComputerButton, startUserButton);
 
 	}
 
-	public void showErrorScreen(Stage stage, String error) {
-		
-		StackPane stackPane = new StackPane();
-		
-		Scene scene = new Scene(stackPane, getWidth(), getHeight());
-		stage.setScene(scene);
-		
-		Text errorLabel = new Text("An error occurred while trying to run the project.");
-		errorLabel.setFont(Font.font("Tahoma", FontWeight.BOLD, FontPosture.REGULAR, 40));
-		errorLabel.setTextAlignment(TextAlignment.CENTER);
-		errorLabel.setTranslateY(-getHeight() / 8);
-		errorLabel.setWrappingWidth(getWidth()  - getWidth() / 10);
-		
-		Text rawErrorOutput = new Text("Error output: " + error);
-		rawErrorOutput.setFont(Font.font("Times New Roman", 24));
-		rawErrorOutput.setTextAlignment(TextAlignment.CENTER);
-		rawErrorOutput.setWrappingWidth(errorLabel.getWrappingWidth());
-		
-		stackPane.getChildren().addAll(errorLabel, rawErrorOutput);
-		
-		Button backButton = new Button("Back to Projects Screen");
-		backButton.setPrefSize(200, 50);
-		backButton.setAlignment(Pos.CENTER);
-		backButton.setTranslateY(getHeight() / 4);
-		//backButton.setOnAction(event -> showProjectsScreen(stage)); TODO fix
-		
-		stackPane.getChildren().add(backButton);
-		
-	}
+	public void startComputerSimulation(Stage stage) {}
+
+	public void startUserControlledSimulation(Stage stage) {}
 
 }
