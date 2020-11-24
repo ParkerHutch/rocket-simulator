@@ -110,19 +110,21 @@ public class HoverslamSimulator extends Application {
 
 		primaryStage.setWidth(WIDTH); 
 		primaryStage.setHeight(HEIGHT);
-		
-		primaryStage.setScene(primaryScene);
-		primaryStage.show();
-		
-		getMenuManager().showTitleScreen(primaryStage);
-		
-		addKeyboardHandling(primaryScene);
-		addMouseHandling(primaryScene);
-		
+
 		canvas = new Canvas(primaryStage.getWidth(), primaryStage.getHeight());
 		gc = canvas.getGraphicsContext2D();
 		
 		root.getChildren().add(canvas);
+		
+		primaryStage.setScene(primaryScene);
+
+		getMenuManager().showTitleScreen(primaryStage);
+
+		primaryStage.show();
+		
+		addKeyboardHandling(primaryScene);
+		addMouseHandling(primaryScene);
+		
 
 		// NOTE: It's important for these buttons to be added to the root
 		// after the Canvas: they won't receive MouseEvents otherwise.

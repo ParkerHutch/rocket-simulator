@@ -12,6 +12,7 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
+import javafx.scene.paint.Color;
 
 public class MenuManager {
 	
@@ -51,9 +52,11 @@ public class MenuManager {
 		
 		StackPane stackPane = new StackPane();
 		
-		Scene mainMenuScene = new Scene(stackPane, getWidth(), getHeight());
-		stage.setScene(mainMenuScene); // TODO Change
+		Scene mainMenuScene = new Scene(stackPane, getWidth(), getHeight(), Color.BLUE);
+		stage.setScene(mainMenuScene);
 		
+		
+
 		Text title = new Text("Hoverslam Simulator");
 		title.setFont(Font.font("Tahoma", FontWeight.BOLD, FontPosture.REGULAR, 50));
 		title.setTranslateY(-getHeight() / 4);
@@ -63,8 +66,6 @@ public class MenuManager {
 		author.setTranslateY(-getHeight() / 8);
 
 		stackPane.getChildren().addAll(title, author);
-		
-		//stackPane.getChildren().addAll(title, author);
 		
 		Button startComputerButton = new Button("Start Computer Simulation");
 		startComputerButton.setPrefSize(200, 50);
@@ -78,14 +79,17 @@ public class MenuManager {
 		startUserButton.setTranslateY(2 * (getHeight() / 8));
 		startUserButton.setOnAction(event -> startUserControlledSimulation(stage));
 
-		//startButton.setOnAction(event -> showProjectsScreen(stage));
-		
 		stackPane.getChildren().addAll(startComputerButton, startUserButton);
-
 	}
 
-	public void startComputerSimulation(Stage stage) {}
+	public void startComputerSimulation(Stage stage) {
+		System.out.println("Start computer simulation here");
+	}
 
-	public void startUserControlledSimulation(Stage stage) {}
+	public void startUserControlledSimulation(Stage stage) {
+
+		System.out.println("Start user controlled simulation here");
+
+	}
 
 }
