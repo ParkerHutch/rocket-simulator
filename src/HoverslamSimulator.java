@@ -24,7 +24,6 @@ import rocket.Vector2D;
 import userinterface.CustomButton;
 import userinterface.TogglePlayButton;
 import userinterface.UserInterface;
-import userinterface.menu.MenuManager;
 import world.World;
 import rocket.Rocket;
 
@@ -32,8 +31,8 @@ public class HoverslamSimulator extends Application {
 
 	// TODO: I bet it'd be cool if I graphed altitude vs. time for the rocket
 	
-	private final int WIDTH = 600;
-	private final int HEIGHT = 600;
+	private final int WIDTH = 900;
+	private final int HEIGHT = 800;
 
 	private Group root;
 	private Scene primaryScene;
@@ -306,7 +305,7 @@ public class HoverslamSimulator extends Application {
 	
 			stackPane.getChildren().addAll(title, author);
 			
-			Button startComputerButton = new Button("Computer Landing");
+			Button startComputerButton = new Button("Automatic Landing");
 			startComputerButton.setPrefSize(200, 50);
 			startComputerButton.setAlignment(Pos.CENTER);
 			startComputerButton.setTranslateY(getHeight() / 8);
