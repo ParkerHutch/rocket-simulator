@@ -76,7 +76,7 @@ public class HoverslamSimulator extends Application {
 		autoRocket.setAcceleration(acceleration);
 
 		world.getObjects().add(userRocket);*/
-		world.getObjects().add(userRocket);
+		//world.getObjects().add(userRocket);
 		menuManager = new MenuManager(world, userRocket, WIDTH, HEIGHT);
 
 		animator = new AnimationTimer() {
@@ -348,9 +348,10 @@ public class HoverslamSimulator extends Application {
 			userRocket.getVelocity().setX(xVelocity);
 			userRocket.setAcceleration(acceleration);
 	
+			world.getObjects().add(userRocket);
+
 			stage.setScene(primaryScene);
 			animator.start();
-			System.out.println("Start user controlled simulation here");
 	
 		}
 	
