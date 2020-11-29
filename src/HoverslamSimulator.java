@@ -31,7 +31,7 @@ public class HoverslamSimulator extends Application {
 
 	// TODO: I bet it'd be cool if I graphed altitude vs. time for the rocket
 	
-	private final int WIDTH = 900;
+	private final int WIDTH = 800;
 	private final int HEIGHT = 800;
 
 	private Group root;
