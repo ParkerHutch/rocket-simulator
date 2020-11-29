@@ -13,9 +13,15 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import javafx.scene.paint.Color;
+import world.World;
+import rocket.UserControlledRocket;
+import rocket.Vector2D;
+
 
 public class MenuManager {
 	
+	private World world;
+	private UserControlledRocket userRocket;
 	private int width;
 	private int height;
 
@@ -24,10 +30,11 @@ public class MenuManager {
 	
 	/**
 	 * Creates a MenuManager object
-	 * @param gameObject
 	 */
-	public MenuManager(int width, int height) {
+	public MenuManager(World world, UserControlledRocket userRocket, int width, int height) {
 		
+		this.world = world;
+		this.userRocket = userRocket;
 		this.width = width;
 		this.height = height;
 		
@@ -92,7 +99,13 @@ public class MenuManager {
 	}
 
 	public void startComputerSimulation(Stage stage) {
+
+		// Add an auto controlled rocket to the world
+		// Create the rocket
+		
+
 		System.out.println("Start computer simulation here");
+
 	}
 
 	public void startUserControlledSimulation(Stage stage) {

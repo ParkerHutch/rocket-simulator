@@ -5,6 +5,20 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.stage.Stage;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.RowConstraints;
+import javafx.scene.layout.StackPane;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
+import javafx.stage.Stage;
+import javafx.scene.paint.Color;
 import rocket.UserControlledRocket;
 import rocket.Vector2D;
 import userinterface.CustomButton;
@@ -12,6 +26,7 @@ import userinterface.TogglePlayButton;
 import userinterface.UserInterface;
 import userinterface.menu.MenuManager;
 import world.World;
+import rocket.Rocket;
 
 public class HoverslamSimulator extends Application {
 
@@ -30,9 +45,12 @@ public class HoverslamSimulator extends Application {
 	
 	private KeyboardHandler keyboardHandler;
 	
-	private MenuManager menuManager = new MenuManager(WIDTH, HEIGHT);
+	private MenuManager menuManager;
 	
 	double maxSpeed = 250;
+
+	private UserControlledRocket userRocket;
+	private Rocket autoRocket;
 
 	@Override
 	public void init() {
@@ -41,7 +59,26 @@ public class HoverslamSimulator extends Application {
 		World world = new World(WIDTH, HEIGHT);
 		world.setCenterOnRocketHorizontally(true);
 		world.setCenterOnRocketVertically(true);
-		
+
+		// Create the rocket
+		double rocketX = WIDTH  / 2;
+		double rocketY = world.getGroundY() - 500;
+		//double xVelocity = Math.random() * maxSpeed * 2 - maxSpeed;
+		//Vector2D acceleration = new Vector2D(0.0, World.GRAVITY);
+		userRocket = new UserControlledRocket(rocketX, rocketY, 10, world.getGroundY());
+		//autoRocket = new Rocket(rocketX, rocketY, 10, world.getGroundY());
+
+		keyboardHandler = new KeyboardHandler(userRocket);
+		/*
+		userRocket.getVelocity().setX(xVelocity);
+		userRocket.setAcceleration(acceleration);
+		autoRocket.getVelocity().setX(xVelocity);
+		autoRocket.setAcceleration(acceleration);
+
+		world.getObjects().add(userRocket);*/
+		world.getObjects().add(userRocket);
+		menuManager = new MenuManager(world, userRocket, WIDTH, HEIGHT);
+
 		animator = new AnimationTimer() {
 			
 			long startTime;
@@ -85,18 +122,8 @@ public class HoverslamSimulator extends Application {
 			}
 		};
 		
-		// Create the rocket
-		double rocketX = WIDTH  / 2;
-		double rocketY = world.getGroundY() - 500;
-		UserControlledRocket rocket = new UserControlledRocket(rocketX, rocketY, 10, world.getGroundY());
-		keyboardHandler = new KeyboardHandler(rocket);
-		
-		rocket.getVelocity().setX(Math.random() * maxSpeed * 2 - maxSpeed);
-		rocket.setAcceleration(new Vector2D(0.0, World.GRAVITY));
-		world.getObjects().add(rocket);
-		
 		userInterface = new UserInterface(0, 0, 100, 800, 
-				rocket, 
+				userRocket, 
 				world.getGroundY(), getAnimator());
 		
 	}
@@ -104,7 +131,7 @@ public class HoverslamSimulator extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 
-		primaryStage.setTitle("Rocketry Simulation");
+		primaryStage.setTitle("Hoverslam Simulation");
 
 		primaryScene = new Scene(root, WIDTH, HEIGHT);
 
@@ -217,4 +244,118 @@ public class HoverslamSimulator extends Application {
 
 	}
 
+	private class MenuManager {
+	
+		private World world;
+		private UserControlledRocket userRocket;
+		private int width;
+		private int height;
+	
+		// Hex code for the menu's background color
+		private String backgroundColorHex = "#4BCDFF";
+		
+		/**
+		 * Creates a MenuManager object
+		 */
+		public MenuManager(World world, UserControlledRocket userRocket, int width, int height) {
+			
+			this.world = world;
+			this.userRocket = userRocket;
+			this.width = width;
+			this.height = height;
+			
+		}
+		
+		public int getWidth() {
+			return width;
+		}
+	
+		public void setWidth(int width) {
+			this.width = width;
+		}
+	
+		public int getHeight() {
+			return height;
+		}
+	
+		public void setHeight(int height) {
+			this.height = height;
+		}
+	
+		public void setbackgroundColorHex(String colorCode) {
+			this.backgroundColorHex = colorCode;
+		}
+	
+		public String getbackgroundColorHex() {
+			return backgroundColorHex;
+		}
+	
+		public void showTitleScreen(Stage stage) {
+			
+			StackPane stackPane = new StackPane();
+			stackPane.setStyle("-fx-background-color: " + getbackgroundColorHex());
+	
+			Scene mainMenuScene = new Scene(stackPane, getWidth(), getHeight());
+			stage.setScene(mainMenuScene);
+			
+			Text title = new Text("Hoverslam Simulator");
+			title.setFont(Font.font("Tahoma", FontWeight.BOLD, FontPosture.REGULAR, 50));
+			title.setTranslateY(-getHeight() / 4);
+	
+			Text author = new Text("Parker Hutchinson");
+			author.setFont(Font.font("Tahoma", FontWeight.BOLD, FontPosture.REGULAR, 50));
+			author.setTranslateY(-getHeight() / 8);
+	
+			stackPane.getChildren().addAll(title, author);
+			
+			Button startComputerButton = new Button("Computer Simulation");
+			startComputerButton.setPrefSize(200, 50);
+			startComputerButton.setAlignment(Pos.CENTER);
+			startComputerButton.setTranslateY(getHeight() / 8);
+			startComputerButton.setStyle("-fx-font-size:18");
+			startComputerButton.setOnAction(event -> startComputerSimulation(stage));
+	
+			Button startUserButton = new Button("User Simulation");
+			startUserButton.setPrefSize(200, 50);
+			startUserButton.setAlignment(Pos.CENTER);
+			startUserButton.setTranslateY(2 * (getHeight() / 8));
+			startUserButton.setOnAction(event -> startUserControlledSimulation(stage));
+			startUserButton.setStyle("-fx-font-size:18");
+			stackPane.getChildren().addAll(startComputerButton, startUserButton);
+		}
+	
+		public void startComputerSimulation(Stage stage) {
+	
+			// Add an auto controlled rocket to the world
+			// Create the rocket
+			double rocketX = WIDTH  / 2;
+			double rocketY = world.getGroundY() - 500;
+			double xVelocity = Math.random() * maxSpeed * 2 - maxSpeed;
+			Vector2D acceleration = new Vector2D(0.0, World.GRAVITY);
+			autoRocket = new Rocket(rocketX, rocketY, 10, world.getGroundY());
+			autoRocket.getVelocity().setX(xVelocity);
+			autoRocket.setAcceleration(acceleration);
+	
+			System.out.println("Start computer simulation here");
+	
+		}
+	
+		public void startUserControlledSimulation(Stage stage) {
+	
+			// Create the rocket
+			double xVelocity = Math.random() * maxSpeed * 2 - maxSpeed;
+			Vector2D acceleration = new Vector2D(0.0, World.GRAVITY);
+			userRocket.getVelocity().setX(xVelocity);
+			userRocket.setAcceleration(acceleration);
+	
+			stage.setScene(primaryScene);
+			animator.start();
+			System.out.println("Start user controlled simulation here");
+	
+		}
+	
+	}
+
 }
+
+

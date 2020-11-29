@@ -47,7 +47,7 @@ public class Rocket extends Entity {
 	 * @param groundY the y-coordinate of the top of the ground
 	 * @param userControlled true if the Rocket is to be controlled by a user
 	 */
-	Rocket(double x, double y, double fuel, double groundY) {
+	public Rocket(double x, double y, double fuel, double groundY) {
 		
 		super(x, y);
 		this.fuel = fuel;
