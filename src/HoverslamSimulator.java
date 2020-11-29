@@ -326,7 +326,6 @@ public class HoverslamSimulator extends Application {
 	
 		public void startComputerSimulation(Stage stage) {
 	
-			// Add an auto controlled rocket to the world
 			// Create the rocket
 			double rocketX = WIDTH  / 2;
 			double rocketY = world.getGroundY() - 500;
@@ -335,8 +334,11 @@ public class HoverslamSimulator extends Application {
 			autoRocket = new Rocket(rocketX, rocketY, 10, world.getGroundY());
 			autoRocket.getVelocity().setX(xVelocity);
 			autoRocket.setAcceleration(acceleration);
+
+			world.getObjects().add(autoRocket);
 	
-			System.out.println("Start computer simulation here");
+			stage.setScene(primaryScene);
+			animator.start();
 	
 		}
 	
