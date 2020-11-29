@@ -181,7 +181,7 @@ public class TimeIndicator extends Entity {
 		
 		gc.setTextBaseline(VPos.CENTER);
 		
-		gc.fillText("T: " + (int) (Math.round(getInternalTime())), getX(), 
+		gc.fillText("T=" + (int) (Math.round(getInternalTime())), getX(), 
 				getY() + getHeight() - getTimeLabelHeight() / 2 - 1);
 
 	}
