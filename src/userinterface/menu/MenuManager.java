@@ -18,8 +18,9 @@ public class MenuManager {
 	
 	private int width;
 	private int height;
-	
-	int projectButtonColumns = 2;
+
+	// Hex code for the menu's background color
+	private String backgroundColorHex = "#4BCDFF";
 	
 	/**
 	 * Creates a MenuManager object
@@ -48,15 +49,22 @@ public class MenuManager {
 		this.height = height;
 	}
 
+	public void setbackgroundColorHex(String colorCode) {
+		this.backgroundColorHex = colorCode;
+	}
+
+	public String getbackgroundColorHex() {
+		return backgroundColorHex;
+	}
+
 	public void showTitleScreen(Stage stage) {
 		
 		StackPane stackPane = new StackPane();
-		
-		Scene mainMenuScene = new Scene(stackPane, getWidth(), getHeight(), Color.BLUE);
+		stackPane.setStyle("-fx-background-color: " + getbackgroundColorHex());
+
+		Scene mainMenuScene = new Scene(stackPane, getWidth(), getHeight());
 		stage.setScene(mainMenuScene);
 		
-		
-
 		Text title = new Text("Hoverslam Simulator");
 		title.setFont(Font.font("Tahoma", FontWeight.BOLD, FontPosture.REGULAR, 50));
 		title.setTranslateY(-getHeight() / 4);
@@ -67,18 +75,19 @@ public class MenuManager {
 
 		stackPane.getChildren().addAll(title, author);
 		
-		Button startComputerButton = new Button("Start Computer Simulation");
+		Button startComputerButton = new Button("Computer Simulation");
 		startComputerButton.setPrefSize(200, 50);
 		startComputerButton.setAlignment(Pos.CENTER);
 		startComputerButton.setTranslateY(getHeight() / 8);
+		startComputerButton.setStyle("-fx-font-size:18");
 		startComputerButton.setOnAction(event -> startComputerSimulation(stage));
 
-		Button startUserButton = new Button("Start User Simulation");
+		Button startUserButton = new Button("User Simulation");
 		startUserButton.setPrefSize(200, 50);
 		startUserButton.setAlignment(Pos.CENTER);
 		startUserButton.setTranslateY(2 * (getHeight() / 8));
 		startUserButton.setOnAction(event -> startUserControlledSimulation(stage));
-
+		startUserButton.setStyle("-fx-font-size:18");
 		stackPane.getChildren().addAll(startComputerButton, startUserButton);
 	}
 
