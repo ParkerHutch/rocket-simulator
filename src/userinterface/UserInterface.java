@@ -1,6 +1,7 @@
 package userinterface;
 import java.util.ArrayList;
 
+import javafx.animation.Animation;
 import javafx.animation.AnimationTimer;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
@@ -38,7 +39,7 @@ public class UserInterface extends Entity {
 		
 		buttons.add(new TogglePlayButton(maxWidth / 4, 160, 30, 30, animationTimer));
 		buttons.add(new MinimizeMaximizeButton((maxWidth + 20) / 2, height / 2 - 50, 20, 50));
-		
+
 		// TODO add LandCrashMessage, put its buttons in the buttons arraylist
 		
 	}
@@ -164,8 +165,6 @@ public class UserInterface extends Entity {
 			
 		}
 		
-		//getMessage().tick(timeElapsed);
-
 	}
 	
 	@Override
@@ -203,8 +202,6 @@ public class UserInterface extends Entity {
 			}
 			
 		}
-		
-		//getMessage().draw(gc);
 		
 	}
 	

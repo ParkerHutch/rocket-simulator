@@ -23,11 +23,10 @@ public class Rocket extends Entity {
 	private double engineConeWidth = centerTankWidth;
 	private double engineConeHeight = 10;
 	private double turnRate = 60; // degrees per second (note: 360 works well with 1 engine)
-	// TODO Account for turnRate time in maneuverCalculator
 	
 	// Flight attributes
 	private boolean airborne = true;
-	private double fuel; // TODO Remove this if I'm not using this concept
+	private double fuel; 
 	private RocketEngine [] engines;
 	private ParticleEmitter [] rcsThrusters;
 	

@@ -29,8 +29,6 @@ import rocket.Rocket;
 
 public class HoverslamSimulator extends Application {
 
-	// TODO: I bet it'd be cool if I graphed altitude vs. time for the rocket
-	
 	private final int WIDTH = 800;
 	private final int HEIGHT = 800;
 
@@ -59,7 +57,6 @@ public class HoverslamSimulator extends Application {
 		world = new World(WIDTH, HEIGHT);
 		world.setCenterOnRocketHorizontally(true);
 		world.setCenterOnRocketVertically(true);
-
 		
 		// Initialize a rocket so that keyboard handling and the UI can be configured
 		double rocketX = WIDTH  / 2;
@@ -146,7 +143,6 @@ public class HoverslamSimulator extends Application {
 		for (CustomButton button : getUserInterface().getButtons()) {
 
 			root.getChildren().add(button);
-			// TODO add LandCrashMessage buttons here
 
 		}
 		
@@ -176,31 +172,19 @@ public class HoverslamSimulator extends Application {
 		scene.setOnMouseReleased(mouseHandler);
 	}
 	
-	public GraphicsContext getGraphicsContext() {
+	private GraphicsContext getGraphicsContext() {
 		return gc;
 	}
 
-	public void setGraphicsContext(GraphicsContext gc) {
-		this.gc = gc;
-	}
-
-	public AnimationTimer getAnimator() {
+	private AnimationTimer getAnimator() {
 		return animator;
 	}
 
-	public void setAnimator(AnimationTimer animator) {
-		this.animator = animator;
-	}
-	
-	public UserInterface getUserInterface() {
+	private UserInterface getUserInterface() {
 		return userInterface;
 	}
 
-	public void setUserInterface(UserInterface userInterface) {
-		this.userInterface = userInterface;
-	}
-
-	public boolean shouldUpdateGame() {
+	private boolean shouldUpdateGame() {
 		
 		for (CustomButton button : getUserInterface().getButtons()) {
 			
@@ -216,12 +200,8 @@ public class HoverslamSimulator extends Application {
 		
 	}
 
-	public MenuManager getMenuManager() {
+	private MenuManager getMenuManager() {
 		return menuManager;
-	}
-
-	public void setMenuManager(MenuManager menuManager) {
-		this.menuManager = menuManager;
 	}
 
 	public static void main(String[] args) {
@@ -339,7 +319,7 @@ public class HoverslamSimulator extends Application {
 			autoRocket.setAcceleration(acceleration);
 
 			world.getObjects().add(autoRocket);
-	
+
 			stage.setScene(primaryScene); 
 			animator.start();
 	

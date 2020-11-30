@@ -13,8 +13,8 @@ public class MinimizeMaximizeButton extends CustomButton {
 	
 	public MinimizeMaximizeButton(double xOffset, double yOffset, 
 			double width, double height) {
-		
 		super(xOffset, yOffset, width, height);
+
 		this.symbolWidth = width / 2;
 		this.symbolHeight = 4 * height / 5;
 	
