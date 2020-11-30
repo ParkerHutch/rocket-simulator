@@ -25,7 +25,7 @@ public class AltitudeIndicator extends Entity {
 		
 	}
 
-	public Rocket getRocket() {
+	private Rocket getRocket() {
 		return rocket;
 	}
 
