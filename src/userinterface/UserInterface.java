@@ -16,10 +16,13 @@ public class UserInterface extends Entity {
 	private double height;
 	private boolean maximized = true;
 	
+	private AltitudeIndicator altitudeIndicator;
+
+	private FuelIndicator fuelIndicator;
+
 	ArrayList<CustomButton> buttons = new ArrayList<CustomButton>();
 	ArrayList<Entity> interfaceElements = new ArrayList<Entity>();
 	
-	//LandCrashMessage message;
 	private double transitionSpeed = 2;
 	
 	public UserInterface(double x, double y, double width, double height, 
@@ -30,18 +33,26 @@ public class UserInterface extends Entity {
 		this.width = width * 2;
 		this.height = height;
 		
-		interfaceElements.add(new AltitudeIndicator(maxWidth / 4, 20, 30, 100, rocket, 
-				rocket.getManeuverCalculator().calculateAltitude()));
+		setAltitudeIndicator(new AltitudeIndicator(maxWidth / 4, 20, 30, 100, rocket, 
+			rocket.getManeuverCalculator().calculateAltitude()));
+		
+		setFuelIndicator(new FuelIndicator(maxWidth / 4, 300, 30, 100, rocket));
+
+		interfaceElements.add(getAltitudeIndicator());
+		interfaceElements.add(getFuelIndicator());
 		
 		interfaceElements.add(new TimeIndicator(maxWidth / 4, 200, 70, 70));
-		
-		interfaceElements.add(new FuelIndicator(maxWidth / 4, 300, 30, 100, rocket));
 		
 		buttons.add(new TogglePlayButton(maxWidth / 4, 160, 30, 30, animationTimer));
 		buttons.add(new MinimizeMaximizeButton((maxWidth + 20) / 2, height / 2 - 50, 20, 50));
 
 		// TODO add LandCrashMessage, put its buttons in the buttons arraylist
 		
+	}
+
+	public void focusElements(Rocket rocket) {
+		getAltitudeIndicator().setRocket(rocket);
+		getFuelIndicator().setRocket(rocket);
 	}
 	
 	public double getWidth() {
@@ -82,6 +93,22 @@ public class UserInterface extends Entity {
 
 	public void setTransitionSpeed(double transitionSpeed) {
 		this.transitionSpeed = transitionSpeed;
+	}
+
+	public AltitudeIndicator getAltitudeIndicator() {
+		return this.altitudeIndicator;
+	}
+
+	public void setAltitudeIndicator(AltitudeIndicator altitudeIndicator) {
+		this.altitudeIndicator = altitudeIndicator;
+	}
+
+	public FuelIndicator getFuelIndicator() {
+		return this.fuelIndicator;
+	}
+
+	public void setFuelIndicator(FuelIndicator fuelIndicator) {
+		this.fuelIndicator = fuelIndicator;
 	}
 
 	public ArrayList<CustomButton> getButtons() {

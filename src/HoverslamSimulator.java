@@ -319,6 +319,7 @@ public class HoverslamSimulator extends Application {
 			autoRocket.setAcceleration(acceleration);
 
 			world.getObjects().add(autoRocket);
+			userInterface.focusElements(autoRocket);
 
 			stage.setScene(primaryScene); 
 			animator.start();
@@ -341,6 +342,7 @@ public class HoverslamSimulator extends Application {
 			userRocket.setAcceleration(acceleration);
 	
 			world.getObjects().add(userRocket);
+			userInterface.focusElements(userRocket);
 
 			stage.setScene(primaryScene);
 			animator.start();
