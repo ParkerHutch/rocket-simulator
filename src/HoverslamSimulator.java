@@ -62,6 +62,7 @@ public class HoverslamSimulator extends Application {
 		double rocketX = WIDTH  / 2;
 		double rocketY = world.getGroundY() - 500;
 		userRocket = new UserControlledRocket(rocketX, rocketY, 10, world.getGroundY());
+		world.setPrimaryRocket(userRocket);
 
 		keyboardHandler = new KeyboardHandler(userRocket);
 		
@@ -319,6 +320,7 @@ public class HoverslamSimulator extends Application {
 			autoRocket.setAcceleration(acceleration);
 
 			world.getObjects().add(autoRocket);
+			world.setPrimaryRocket(autoRocket);
 			userInterface.focusElements(autoRocket);
 
 			stage.setScene(primaryScene); 
@@ -342,6 +344,7 @@ public class HoverslamSimulator extends Application {
 			userRocket.setAcceleration(acceleration);
 	
 			world.getObjects().add(userRocket);
+			world.setPrimaryRocket(userRocket);
 			userInterface.focusElements(userRocket);
 
 			stage.setScene(primaryScene);

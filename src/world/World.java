@@ -23,7 +23,9 @@ public class World {
 	private boolean centerOnRocketVertically = false;
 	
 	private MountainManager mountainManager;
-			
+
+	private Rocket primaryRocket;
+
 	World() {}
 	
 	public World(double windowWidth, double windowHeight) {
@@ -113,6 +115,14 @@ public class World {
 		return rocket.getY() + rocket.getHeight() >= getGroundY();
 		
 	}
+
+	public Rocket getPrimaryRocket() {
+		return this.primaryRocket;
+	}
+
+	public void setPrimaryRocket(Rocket primaryRocket) {
+		this.primaryRocket = primaryRocket;
+	}
 	
 	/**
 	 * Updates all the objects of the World, and increments
@@ -121,6 +131,14 @@ public class World {
 	 */
 	public void tick(double timeElapsed) {
 		
+		if (rocketTouchingGround(getPrimaryRocket())) {
+			getPrimaryRocket().stop();
+		}
+		
+		for (Entity entity: getObjects()) {
+			entity.tick(timeElapsed);
+		}
+		/*
 		for (Entity entity: objects) {
 			
 			if (entity.getClass() == Rocket.class || 
@@ -138,7 +156,7 @@ public class World {
 			
 			entity.tick(timeElapsed);
 			
-		}
+		}*/
 		
 	}
 	
