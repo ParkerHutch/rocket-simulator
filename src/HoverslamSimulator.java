@@ -49,6 +49,7 @@ public class HoverslamSimulator extends Application {
 	private UserControlledRocket userRocket;
 	private Rocket autoRocket;
 	private World world;
+	boolean landingHandled = false;
 
 	@Override
 	public void init() {
@@ -102,6 +103,12 @@ public class HoverslamSimulator extends Application {
 					world.tick(timeSinceLastUpdateSeconds);
 				}
 				
+				if (!world.getPrimaryRocket().isAirborne() && !landingHandled) {
+
+					System.out.println("Handle landing here");
+					landingHandled = true;
+					
+				}
 				userInterface.tick(timeSinceLastUpdateSeconds);
 				
 				lastUpdate = now;
@@ -196,7 +203,7 @@ public class HoverslamSimulator extends Application {
 			}
 			
 		}
-		
+
 		return true;
 		
 	}
