@@ -74,16 +74,13 @@ public class UserControlledRocket extends Rocket {
 
 		if (isAirborne()) {
 
-			// Automatic hoverslam
-			//double safetyMargin = 5; // TODO Implement this better
-			//setEnginesOn(getManeuverCalculator().shouldBurn(safetyMargin));
 			setEnginesOn(shouldFireEngines());
 			pointInDirection(getTargetAngle(), timeElapsed);
 
 			applyThrust(timeElapsed);
 			applyForces(timeElapsed); // should be last
 
-		}
+		} 
 		
 		for (RocketEngine engine : getEngines()) {
 			
@@ -99,7 +96,6 @@ public class UserControlledRocket extends Rocket {
 				rcsThruster.setOn(false);
 				
 			}
-			//rcsThruster.setOn(shouldFireRCS());
 			
 		}
 		
