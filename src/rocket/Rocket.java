@@ -385,6 +385,7 @@ public class Rocket extends Entity {
 				} else {
 					
 					// Crash
+					System.out.println("That was a crash, bad angle");
 					
 				}
 
