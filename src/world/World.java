@@ -138,25 +138,6 @@ public class World {
 		for (Entity entity: getObjects()) {
 			entity.tick(timeElapsed);
 		}
-		/*
-		for (Entity entity: objects) {
-			
-			if (entity.getClass() == Rocket.class || 
-					entity.getClass() == UserControlledRocket.class) {
-				
-				Rocket rocket = (Rocket) entity;
-				
-				if (rocketTouchingGround(rocket)) {
-					
-					rocket.stop();
-					
-				} 
-				
-			} 
-			
-			entity.tick(timeElapsed);
-			
-		}*/
 		
 	}
 	
