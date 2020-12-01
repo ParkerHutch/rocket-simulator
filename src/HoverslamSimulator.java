@@ -33,6 +33,7 @@ public class HoverslamSimulator extends Application {
 	private final int HEIGHT = 800;
 
 	private Group root;
+	private Stage primaryStage;
 	private Scene primaryScene;
 	private Canvas canvas;
 	private GraphicsContext gc;
@@ -51,10 +52,17 @@ public class HoverslamSimulator extends Application {
 	private World world;
 	boolean landingHandled = false;
 
+	Group autoLandingMenu;
+	Group userLandingMessage = new Group();
+
 	@Override
 	public void init() {
 		
 		root = new Group();
+
+		autoLandingMenu = getMenuManager().getAutoLandingMenu();
+		root.getChildren().add(autoLandingMenu);
+
 		world = new World(WIDTH, HEIGHT);
 		world.setCenterOnRocketHorizontally(true);
 		world.setCenterOnRocketVertically(true);
@@ -106,6 +114,10 @@ public class HoverslamSimulator extends Application {
 				if (!world.getPrimaryRocket().isAirborne() && !landingHandled) {
 
 					System.out.println("Handle landing here");
+					//getMenuManager().showAutoLandingMenu(root);
+					autoLandingMenu.toFront();
+					autoLandingMenu.setVisible(true);
+					
 					landingHandled = true;
 					
 				}
@@ -122,9 +134,21 @@ public class HoverslamSimulator extends Application {
 		
 	}
 
-	@Override
-	public void start(Stage primaryStage) throws Exception {
+	public Stage getPrimaryStage() {
+		return primaryStage;
+	}
 
+	public void resetConfiguration() {
+
+		world.getObjects().clear();
+		getUserInterface().reset();
+
+	}
+
+	@Override
+	public void start(Stage stage) throws Exception {
+
+		primaryStage = stage;
 		primaryStage.setTitle("Hoverslam Simulation");
 
 		primaryScene = new Scene(root, WIDTH, HEIGHT);
@@ -139,6 +163,10 @@ public class HoverslamSimulator extends Application {
 		primaryStage.setScene(primaryScene);
 
 		getMenuManager().showTitleScreen(primaryStage);
+
+		// TODO remove the below lines, just for dev
+		autoLandingMenu.toFront();
+		autoLandingMenu.setVisible(true);
 
 		primaryStage.show();
 		
@@ -277,6 +305,7 @@ public class HoverslamSimulator extends Application {
 		 */
 		public void showTitleScreen(Stage stage) {
 			
+			resetConfiguration();
 			StackPane stackPane = new StackPane();
 			stackPane.setStyle("-fx-background-color: " + getbackgroundColorHex());
 	
@@ -309,6 +338,28 @@ public class HoverslamSimulator extends Application {
 			stackPane.getChildren().addAll(startComputerButton, startUserButton);
 		}
 		
+		public Group getAutoLandingMenu() {
+			
+			Group autoLandingMenu = new Group();
+			autoLandingMenu.setVisible(false);
+
+			Text autoLandingMessage = new Text("Automatic Landing Succeeded");
+			autoLandingMessage.setFont(Font.font("Tahoma", FontWeight.BOLD, FontPosture.REGULAR, 16));
+			autoLandingMessage.setTranslateY(HEIGHT / 4);
+			autoLandingMessage.setTranslateX(WIDTH / 2 - 120);
+
+			Button backToMainMenu = new Button("Back to main menu");
+			backToMainMenu.setTranslateY(HEIGHT / 2);
+			backToMainMenu.setTranslateX(WIDTH / 2 - 100); // TODO fix
+			backToMainMenu.setPrefSize(200, 50);
+			backToMainMenu.setAlignment(Pos.CENTER);
+			backToMainMenu.setOnAction(event -> showTitleScreen(getPrimaryStage()));
+
+			autoLandingMenu.getChildren().addAll(autoLandingMessage, backToMainMenu);
+			return autoLandingMenu;
+
+		}
+		
 		/**
 		 * Starts an automatic rocket landing by creating a computer-controlled
 		 * rocket, adding it to the world, reverting the stage's scene to the
@@ -325,6 +376,7 @@ public class HoverslamSimulator extends Application {
 			autoRocket = new Rocket(rocketX, rocketY, 10, world.getGroundY());
 			autoRocket.getVelocity().setX(xVelocity);
 			autoRocket.setAcceleration(acceleration);
+			landingHandled = false;
 
 			world.getObjects().add(autoRocket);
 			world.setPrimaryRocket(autoRocket);
@@ -347,8 +399,16 @@ public class HoverslamSimulator extends Application {
 			// Create the rocket
 			double xVelocity = Math.random() * maxSpeed * 2 - maxSpeed;
 			Vector2D acceleration = new Vector2D(0.0, World.GRAVITY);
+			double rocketX = WIDTH  / 2;
+			double rocketY = world.getGroundY() - 500;
+			
+			userRocket.reset(rocketX, rocketY, 10);
+			
 			userRocket.getVelocity().setX(xVelocity);
+			
 			userRocket.setAcceleration(acceleration);
+
+			landingHandled = false;
 	
 			world.getObjects().add(userRocket);
 			world.setPrimaryRocket(userRocket);
