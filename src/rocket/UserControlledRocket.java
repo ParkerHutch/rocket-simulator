@@ -36,6 +36,20 @@ public class UserControlledRocket extends Rocket {
 		this.shouldFireRCS = shouldFireRCS;
 	}
 
+	public void reset(double x, double y, double fuel) {
+
+		setDirection(90);
+		setTargetAngle(90);
+		getRCSThrusters()[0].setOn(false);
+		getRCSThrusters()[1].setOn(false);
+		setX(x);
+		setY(y);
+		getVelocity().setX(0);
+		getVelocity().setY(0);
+		setFuel(fuel);
+		setAirborne(true);
+
+	}
 	@Override
 	protected void pointInDirection(double targetAngle, double timeElapsed) {
 		
