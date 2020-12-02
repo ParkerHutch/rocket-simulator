@@ -34,7 +34,8 @@ public class Rocket extends Entity {
 	
 	private double landingAngleMargin = 10;
 	private double acceptableLandingVelocity = 100;
-	
+	private double landingVelocity;
+
 	Rocket() {}
 	
 	/**
@@ -249,6 +250,14 @@ public class Rocket extends Entity {
 		this.maneuverCalculator = maneuverCalculator;
 	}
 
+	public double getLandingVelocity() {
+		return this.landingVelocity;
+	}
+
+	public void setLandingVelocity(double landingVelocity) {
+		this.landingVelocity = landingVelocity;
+	}
+
 	/**
 	 * Applies the force of gravity to the Rocket's velocity vector
 	 * @param timeElapsed the time, in seconds, since the last tick
@@ -372,6 +381,8 @@ public class Rocket extends Entity {
 
 			}
 
+			setLandingVelocity(getVelocity().getMagnitude());
+
 			// Determine if landing was safe
 			if (getVelocity().getMagnitude() < getAcceptableLandingVelocity()) {
 
@@ -388,8 +399,6 @@ public class Rocket extends Entity {
 					System.out.println("That was a crash, bad angle");
 					
 				}
-
-				
 
 			} else {
 
