@@ -20,6 +20,7 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import rocket.UserControlledRocket;
 import rocket.Vector2D;
 import userinterface.CustomButton;
@@ -143,6 +144,7 @@ public class HoverslamSimulator extends Application {
 
 		world.getObjects().clear();
 		getUserInterface().reset();
+		autoLandingMenu.setVisible(false);
 
 	}
 
@@ -166,8 +168,8 @@ public class HoverslamSimulator extends Application {
 		getMenuManager().showTitleScreen(primaryStage);
 
 		// TODO remove the below lines, just for dev
-		autoLandingMenu.toFront();
-		autoLandingMenu.setVisible(true);
+		//autoLandingMenu.toFront();
+		//autoLandingMenu.setVisible(true);
 
 		primaryStage.show();
 
@@ -348,19 +350,38 @@ public class HoverslamSimulator extends Application {
 			Group autoLandingMenu = new Group();
 			autoLandingMenu.setVisible(false);
 
-			Text autoLandingMessage = new Text("Automatic Landing Succeeded");
+			double boxY = HEIGHT / 4 - 25; // top y coordinate of the box
+			// approximate width of the text message, must be manually adjusted
+			double messageWidth = 160; 
+			double buttonWidth = 160;
+			double backgroundBoxWidth = 200;
+			double backgroundBoxHeight = 120;
+			
+			Text autoLandingMessage = new Text("Successful Landing");
 			autoLandingMessage.setFont(Font.font("Tahoma", FontWeight.BOLD, FontPosture.REGULAR, 16));
-			autoLandingMessage.setTranslateY(HEIGHT / 4);
-			autoLandingMessage.setTranslateX(WIDTH / 2 - 120);
+			autoLandingMessage.setTranslateY(boxY + 25);
+			autoLandingMessage.setTranslateX(WIDTH / 2 - messageWidth / 2);
 
-			Button backToMainMenu = new Button("Back to main menu");
-			backToMainMenu.setTranslateY(HEIGHT / 2);
-			backToMainMenu.setTranslateX(WIDTH / 2 - 100); // TODO fix
-			backToMainMenu.setPrefSize(200, 50);
+			
+			Button backToMainMenu = new Button("Back to Main Menu");
+			backToMainMenu.setTranslateY(boxY + 50);
+			backToMainMenu.setTranslateX(WIDTH / 2 - buttonWidth / 2);
+			backToMainMenu.setPrefSize(buttonWidth, 50);
 			backToMainMenu.setAlignment(Pos.CENTER);
 			backToMainMenu.setOnAction(event -> showTitleScreen(getPrimaryStage()));
+			
+			
+			Rectangle backgroundBox = new Rectangle(WIDTH / 2 - backgroundBoxWidth / 2, 
+														boxY, 
+														backgroundBoxWidth, 
+														backgroundBoxHeight);
+			backgroundBox.setArcWidth(10); // round edges
+			backgroundBox.setArcHeight(10); // round edges
+			backgroundBox.setStrokeWidth(3);
+			backgroundBox.setStroke(Color.BLACK);
+			backgroundBox.setFill(Color.WHITE);
 
-			autoLandingMenu.getChildren().addAll(autoLandingMessage, backToMainMenu);
+			autoLandingMenu.getChildren().addAll(backgroundBox, autoLandingMessage, backToMainMenu);
 			return autoLandingMenu;
 
 		}
