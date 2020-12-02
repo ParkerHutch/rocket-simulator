@@ -363,24 +363,26 @@ public class HoverslamSimulator extends Application {
 
 			double boxY = HEIGHT / 4 - 25; // top y coordinate of the box
 			double buttonWidth = 160;
+			double buttonHeight = 50;
 			double backgroundBoxWidth = 200;
-			double backgroundBoxHeight = 120;
 			
 			Text autoLandingMessage = new Text("Successful Landing");
 			autoLandingMessage.setFont(Font.font("Tahoma", FontWeight.BOLD, FontPosture.REGULAR, 16));
 			autoLandingMessage.setTranslateY(boxY + 25);
-			double messageWidth = autoLandingMessage.getLayoutBounds().getWidth();
-			autoLandingMessage.setTranslateX(WIDTH / 2 - messageWidth / 2);
+			autoLandingMessage.setTranslateX(WIDTH / 2 - 
+				autoLandingMessage.getLayoutBounds().getWidth() / 2);
 
-			
 			Button backToMainMenu = new Button("Back to Main Menu");
-			backToMainMenu.setTranslateY(boxY + 50);
+			backToMainMenu.setTranslateY(
+				autoLandingMessage.getTranslateY() + autoLandingMessage.getLayoutBounds().getHeight());
 			backToMainMenu.setTranslateX(WIDTH / 2 - buttonWidth / 2);
 			backToMainMenu.setPrefSize(buttonWidth, 50);
 			backToMainMenu.setAlignment(Pos.CENTER);
 			backToMainMenu.setOnAction(event -> showTitleScreen(getPrimaryStage()));
 			
-			
+			double backToMainMenuBottomY = backToMainMenu.getTranslateY() + buttonHeight;
+			double backgroundBoxHeight = backToMainMenuBottomY - boxY + 8;
+
 			Rectangle backgroundBox = new Rectangle(WIDTH / 2 - backgroundBoxWidth / 2, 
 														boxY, 
 														backgroundBoxWidth, 
@@ -411,7 +413,6 @@ public class HoverslamSimulator extends Application {
 			double buttonWidth = 160;
 			double buttonHeight = 50;
 			double backgroundBoxWidth = 200;
-			//double backgroundBoxHeight = 120;
 			double lineWidth = 3;
 			double textMargin = 5;
 			
@@ -460,8 +461,7 @@ public class HoverslamSimulator extends Application {
 			backToMainMenu.setAlignment(Pos.CENTER);
 			backToMainMenu.setOnAction(event -> showTitleScreen(getPrimaryStage()));
 			
-			double backToMainMenuBottomY = 
-				backToMainMenu.getTranslateY() + buttonHeight;
+			double backToMainMenuBottomY = backToMainMenu.getTranslateY() + buttonHeight;
 			
 			double backgroundBoxHeight = backToMainMenuBottomY - boxY + textMargin;
 
