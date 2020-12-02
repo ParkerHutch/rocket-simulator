@@ -1,5 +1,6 @@
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -306,6 +307,9 @@ public class HoverslamSimulator extends Application {
 		public void showTitleScreen(Stage stage) {
 			
 			resetConfiguration();
+			
+			stage.sizeToScene();
+
 			StackPane stackPane = new StackPane();
 			stackPane.setStyle("-fx-background-color: " + getbackgroundColorHex());
 	
@@ -336,10 +340,11 @@ public class HoverslamSimulator extends Application {
 			startUserButton.setOnAction(event -> startUserControlledSimulation(stage));
 			startUserButton.setStyle("-fx-font-size:18");
 			stackPane.getChildren().addAll(startComputerButton, startUserButton);
+
 		}
 		
 		public Group getAutoLandingMenu() {
-			
+
 			Group autoLandingMenu = new Group();
 			autoLandingMenu.setVisible(false);
 
