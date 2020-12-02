@@ -404,67 +404,79 @@ public class HoverslamSimulator extends Application {
 				Math.abs(userRocket.getDirection() - 90) <= userRocket.getLandingAngleMargin();
 			boolean crash = !(acceptableVelocity && acceptableAngle);
 			
-			/*
-			// Determine if landing was safe
-			if (userRocket.getLandingVelocity() < userRocket.getAcceptableLandingVelocity()) {
-				
-				if (Math.abs(userRocket.getDirection() - 90) <= userRocket.getLandingAngleMargin()) {
-
-					// good landing
-
-				} else {
-					
-					// Crash, bad angle
-					crash = true;
-					
-				}
-
-			} else {
-
-				System.out.println("Crash(in sim), velocity: " + userRocket.getLandingVelocity());
-				// crash
-				crash = true;
-
-			}*/
-
 			Group userLandingMenu = new Group();
 
 			double boxY = HEIGHT / 4 - 25; // top y coordinate of the box
 			// approximate width of the text message, must be manually adjusted
-			double messageWidth = 160; 
 			double buttonWidth = 160;
+			double buttonHeight = 50;
 			double backgroundBoxWidth = 200;
-			double backgroundBoxHeight = 120;
+			//double backgroundBoxHeight = 120;
+			double lineWidth = 3;
+			double textMargin = 5;
 			
 			String landingMessage = crash ? "Crash" : "Successful Landing";
 
-			Text landingMessageTextBox = new Text(landingMessage);
-			landingMessageTextBox.setFont(Font.font("Tahoma", FontWeight.BOLD, FontPosture.REGULAR, 16));
-			landingMessageTextBox.setTranslateY(boxY + 25);
-			messageWidth = landingMessageTextBox.getLayoutBounds().getWidth();
-			System.out.println(messageWidth);
-			landingMessageTextBox.setTranslateX(WIDTH / 2 - messageWidth / 2);
+			Text landingTypeTextBox = new Text(landingMessage);
+			landingTypeTextBox.setFont(Font.font("Tahoma", FontWeight.BOLD, FontPosture.REGULAR, 16));
+			landingTypeTextBox.setTranslateY(boxY + lineWidth + textMargin + 10);
+			landingTypeTextBox.setTranslateX(WIDTH / 2 - landingTypeTextBox.getLayoutBounds().getWidth() / 2);
+			if (crash) {
+				landingTypeTextBox.setFill(Color.RED);
+			} else {
+				landingTypeTextBox.setFill(Color.BLACK);
+			}
 
+			Text velocityTextBox = new Text("Velocity: " + (int) userRocket.getLandingVelocity());
+			velocityTextBox.setFont(Font.font("Tahoma", FontWeight.BOLD, FontPosture.REGULAR, 16));
+			velocityTextBox.setTranslateY(
+				landingTypeTextBox.getTranslateY() + 
+				landingTypeTextBox.getLayoutBounds().getHeight() + textMargin);
+			velocityTextBox.setTranslateX(WIDTH / 2 - velocityTextBox.getLayoutBounds().getWidth() / 2);
+			if (!acceptableVelocity) {
+				velocityTextBox.setFill(Color.RED);
+			} else {
+				velocityTextBox.setFill(Color.BLACK);
+			}
 			
+			Text angleTextBox = new Text("Angle: " + (int) userRocket.getDirection() + "\u00B0");
+			angleTextBox.setFont(Font.font("Tahoma", FontWeight.BOLD, FontPosture.REGULAR, 16));
+			angleTextBox.setTranslateY(
+				velocityTextBox.getTranslateY() + 
+				velocityTextBox.getLayoutBounds().getHeight() + textMargin);
+			angleTextBox.setTranslateX(WIDTH / 2 - angleTextBox.getLayoutBounds().getWidth() / 2);
+			if (!acceptableAngle) {
+				angleTextBox.setFill(Color.RED);
+			} else {
+				angleTextBox.setFill(Color.BLACK);
+			}
+
 			Button backToMainMenu = new Button("Back to Main Menu");
-			backToMainMenu.setTranslateY(boxY + 50);
+			backToMainMenu.setTranslateY(
+				angleTextBox.getTranslateY() + 
+				angleTextBox.getLayoutBounds().getHeight() - 5);
 			backToMainMenu.setTranslateX(WIDTH / 2 - buttonWidth / 2);
-			backToMainMenu.setPrefSize(buttonWidth, 50);
+			backToMainMenu.setPrefSize(buttonWidth, buttonHeight);
 			backToMainMenu.setAlignment(Pos.CENTER);
 			backToMainMenu.setOnAction(event -> showTitleScreen(getPrimaryStage()));
 			
+			double backToMainMenuBottomY = 
+				backToMainMenu.getTranslateY() + buttonHeight;
 			
+			double backgroundBoxHeight = backToMainMenuBottomY - boxY + textMargin;
+
 			Rectangle backgroundBox = new Rectangle(WIDTH / 2 - backgroundBoxWidth / 2, 
 														boxY, 
 														backgroundBoxWidth, 
 														backgroundBoxHeight);
 			backgroundBox.setArcWidth(10); // round edges
 			backgroundBox.setArcHeight(10); // round edges
-			backgroundBox.setStrokeWidth(3);
+			backgroundBox.setStrokeWidth(lineWidth);
 			backgroundBox.setStroke(Color.BLACK);
 			backgroundBox.setFill(Color.WHITE);
 
-			userLandingMenu.getChildren().addAll(backgroundBox, landingMessageTextBox, backToMainMenu);
+			userLandingMenu.getChildren().addAll(
+				backgroundBox, landingTypeTextBox, velocityTextBox, angleTextBox, backToMainMenu);
 
 			System.out.println("Velocity: " + userRocket.getVelocity().getMagnitude() + " ACCEPTABLE: " + userRocket.getAcceptableLandingVelocity());
 			System.out.println("Landing Angle(\u00B0): " + userRocket.getDirection() + " ACCEPTABLE: 90 +/-" + userRocket.getLandingAngleMargin());
