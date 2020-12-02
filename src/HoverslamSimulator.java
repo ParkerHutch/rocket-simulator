@@ -55,7 +55,7 @@ public class HoverslamSimulator extends Application {
 	boolean landingHandled = false;
 
 	Group autoLandingMenu;
-	Group userLandingMessage = new Group();
+	Group userLandingMenu = new Group();
 
 	@Override
 	public void init() {
@@ -115,9 +115,17 @@ public class HoverslamSimulator extends Application {
 				
 				if (!world.getPrimaryRocket().isAirborne() && !landingHandled) {
 
-					System.out.println("Handle landing here");
-					autoLandingMenu.toFront();
-					autoLandingMenu.setVisible(true);
+					if (world.getPrimaryRocket().getClass() == UserControlledRocket.class) {
+
+						userLandingMenu = getMenuManager().getUserLandingMenu();
+						root.getChildren().add(userLandingMenu);
+						userLandingMenu.toFront();
+						userLandingMenu.setVisible(true);
+
+					} else {
+						autoLandingMenu.toFront();
+						autoLandingMenu.setVisible(true);
+					}
 					getUserInterface().getTogglePlayButton().setState("PLAY");
 					
 					landingHandled = true;
@@ -145,6 +153,9 @@ public class HoverslamSimulator extends Application {
 		world.getObjects().clear();
 		getUserInterface().reset();
 		autoLandingMenu.setVisible(false);
+		if (root.getChildren().contains(userLandingMenu)) {
+			root.getChildren().remove(userLandingMenu);
+		}
 
 	}
 
@@ -383,6 +394,83 @@ public class HoverslamSimulator extends Application {
 
 			autoLandingMenu.getChildren().addAll(backgroundBox, autoLandingMessage, backToMainMenu);
 			return autoLandingMenu;
+
+		}
+
+		public Group getUserLandingMenu() {
+
+			boolean acceptableVelocity = 
+				userRocket.getLandingVelocity() < userRocket.getAcceptableLandingVelocity();
+			boolean acceptableAngle = 
+				Math.abs(userRocket.getDirection() - 90) <= userRocket.getLandingAngleMargin();
+			boolean crash = !(acceptableVelocity && acceptableAngle);
+			
+			/*
+			// Determine if landing was safe
+			if (userRocket.getLandingVelocity() < userRocket.getAcceptableLandingVelocity()) {
+				
+				if (Math.abs(userRocket.getDirection() - 90) <= userRocket.getLandingAngleMargin()) {
+
+					// good landing
+
+				} else {
+					
+					// Crash, bad angle
+					crash = true;
+					
+				}
+
+			} else {
+
+				System.out.println("Crash(in sim), velocity: " + userRocket.getLandingVelocity());
+				// crash
+				crash = true;
+
+			}*/
+
+			Group userLandingMenu = new Group();
+
+			double boxY = HEIGHT / 4 - 25; // top y coordinate of the box
+			// approximate width of the text message, must be manually adjusted
+			double messageWidth = 160; 
+			double buttonWidth = 160;
+			double backgroundBoxWidth = 200;
+			double backgroundBoxHeight = 120;
+			
+			String landingMessage = crash ? "Crash" : "Successful Landing";
+
+			Text landingMessageTextBox = new Text(landingMessage);
+			landingMessageTextBox.setFont(Font.font("Tahoma", FontWeight.BOLD, FontPosture.REGULAR, 16));
+			landingMessageTextBox.setTranslateY(boxY + 25);
+			messageWidth = landingMessageTextBox.getLayoutBounds().getWidth();
+			System.out.println(messageWidth);
+			landingMessageTextBox.setTranslateX(WIDTH / 2 - messageWidth / 2);
+
+			
+			Button backToMainMenu = new Button("Back to Main Menu");
+			backToMainMenu.setTranslateY(boxY + 50);
+			backToMainMenu.setTranslateX(WIDTH / 2 - buttonWidth / 2);
+			backToMainMenu.setPrefSize(buttonWidth, 50);
+			backToMainMenu.setAlignment(Pos.CENTER);
+			backToMainMenu.setOnAction(event -> showTitleScreen(getPrimaryStage()));
+			
+			
+			Rectangle backgroundBox = new Rectangle(WIDTH / 2 - backgroundBoxWidth / 2, 
+														boxY, 
+														backgroundBoxWidth, 
+														backgroundBoxHeight);
+			backgroundBox.setArcWidth(10); // round edges
+			backgroundBox.setArcHeight(10); // round edges
+			backgroundBox.setStrokeWidth(3);
+			backgroundBox.setStroke(Color.BLACK);
+			backgroundBox.setFill(Color.WHITE);
+
+			userLandingMenu.getChildren().addAll(backgroundBox, landingMessageTextBox, backToMainMenu);
+
+			System.out.println("Velocity: " + userRocket.getVelocity().getMagnitude() + " ACCEPTABLE: " + userRocket.getAcceptableLandingVelocity());
+			System.out.println("Landing Angle(\u00B0): " + userRocket.getDirection() + " ACCEPTABLE: 90 +/-" + userRocket.getLandingAngleMargin());
+
+			return userLandingMenu;
 
 		}
 		
