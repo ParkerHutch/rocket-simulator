@@ -362,8 +362,6 @@ public class HoverslamSimulator extends Application {
 			autoLandingMenu.setVisible(false);
 
 			double boxY = HEIGHT / 4 - 25; // top y coordinate of the box
-			// approximate width of the text message, must be manually adjusted
-			double messageWidth = 160; 
 			double buttonWidth = 160;
 			double backgroundBoxWidth = 200;
 			double backgroundBoxHeight = 120;
@@ -371,6 +369,7 @@ public class HoverslamSimulator extends Application {
 			Text autoLandingMessage = new Text("Successful Landing");
 			autoLandingMessage.setFont(Font.font("Tahoma", FontWeight.BOLD, FontPosture.REGULAR, 16));
 			autoLandingMessage.setTranslateY(boxY + 25);
+			double messageWidth = autoLandingMessage.getLayoutBounds().getWidth();
 			autoLandingMessage.setTranslateX(WIDTH / 2 - messageWidth / 2);
 
 			
