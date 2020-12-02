@@ -115,9 +115,9 @@ public class HoverslamSimulator extends Application {
 				if (!world.getPrimaryRocket().isAirborne() && !landingHandled) {
 
 					System.out.println("Handle landing here");
-					//getMenuManager().showAutoLandingMenu(root);
 					autoLandingMenu.toFront();
 					autoLandingMenu.setVisible(true);
+					getUserInterface().getTogglePlayButton().setState("PLAY");
 					
 					landingHandled = true;
 					
@@ -170,7 +170,7 @@ public class HoverslamSimulator extends Application {
 		autoLandingMenu.setVisible(true);
 
 		primaryStage.show();
-		
+
 		addKeyboardHandling(primaryScene);
 		addMouseHandling(primaryScene);
 		

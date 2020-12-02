@@ -211,6 +211,7 @@ public class TimeIndicator extends Entity {
 	public void tick(double timeElapsed) {
 
 		if (!isPaused()) {
+
 			setClockHandAngle(getClockHandAngle() + (timeElapsed * 360));
 			
 			if (getInternalTime() > 999) {
@@ -220,8 +221,7 @@ public class TimeIndicator extends Entity {
 			}
 			
 			setInternalTime(getInternalTime() + timeElapsed);
-			
-		}
+		} 
 
 	}
 	

@@ -22,6 +22,8 @@ public class UserInterface extends Entity {
 
 	private TimeIndicator timeIndicator;
 
+	private TogglePlayButton togglePlayButton;
+
 	ArrayList<CustomButton> buttons = new ArrayList<CustomButton>();
 	ArrayList<Entity> interfaceElements = new ArrayList<Entity>();
 	
@@ -42,11 +44,13 @@ public class UserInterface extends Entity {
 
 		setTimeIndicator(new TimeIndicator(maxWidth / 4, 200, 70, 70));
 
+		setTogglePlayButton(new TogglePlayButton(maxWidth / 4, 160, 30, 30, animationTimer));
+
 		interfaceElements.add(getAltitudeIndicator());
 		interfaceElements.add(getFuelIndicator());
 		interfaceElements.add(getTimeIndicator());
 		
-		buttons.add(new TogglePlayButton(maxWidth / 4, 160, 30, 30, animationTimer));
+		buttons.add(getTogglePlayButton());
 		buttons.add(new MinimizeMaximizeButton((maxWidth + 20) / 2, height / 2 - 50, 20, 50));
 
 	}
@@ -62,7 +66,9 @@ public class UserInterface extends Entity {
 
 	public void reset() {
 
+		getTogglePlayButton().setState("PAUSE");
 		getTimeIndicator().setInternalTime(0);
+		getTimeIndicator().setPaused(false);
 
 	}
 	
@@ -128,6 +134,14 @@ public class UserInterface extends Entity {
 
 	public void setTimeIndicator(TimeIndicator timeIndicator) {
 		this.timeIndicator = timeIndicator;
+	}
+
+	public TogglePlayButton getTogglePlayButton() {
+		return this.togglePlayButton;
+	}
+
+	public void setTogglePlayButton(TogglePlayButton togglePlayButton) {
+		this.togglePlayButton = togglePlayButton;
 	}
 
 	public ArrayList<CustomButton> getButtons() {
