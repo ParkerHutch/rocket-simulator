@@ -8,5 +8,5 @@ An interactive simulation of the hoverslam rocketry maneuver
 ## Eclipse
 Right-click pom.xml -> Run as -> Maven Build -> Set Goals to `clean javafx:run`
 
-## Other environments
+## Other environments (Maven required)
 Run `mvn clean javafx:run` from the project root folder (the one containing pom.xml)
