@@ -143,7 +143,7 @@ public class World {
 	
 	public void drawSky(GraphicsContext gc) {
 		
-		gc.setFill(Color.DEEPSKYBLUE);
+		gc.setFill(Color.DEEPSKYBLUE); // TODO use color palette variable
 		
 		double leftX = -gc.getTransform().getTx();
 		double topY = -gc.getTransform().getTy();
