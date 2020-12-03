@@ -319,6 +319,10 @@ public class HoverslamSimulator extends Application {
 		 */
 		public void showTitleScreen(Stage stage) {
 			
+			double textMargin = 10; // vertical distance between title and author
+			double textButtonMargin = 20; // vertical distance between author and first button
+			double buttonMargin = 10; // vertical distance between buttons
+
 			resetConfiguration();
 			
 			stage.sizeToScene();
@@ -335,16 +339,16 @@ public class HoverslamSimulator extends Application {
 	
 			Text author = new Text("Parker Hutchinson");
 			author.setFont(Font.font("Tahoma", FontWeight.BOLD, FontPosture.REGULAR, 50));
-			author.setTranslateY(-getHeight() / 8);
+			author.setTranslateY(
+				title.getTranslateY() + title.getLayoutBounds().getHeight() + textMargin);
 	
 			stackPane.getChildren().addAll(title, author);
 			
-			double buttonMargin = 10;
-
 			Button startComputerButton = new Button("Automatic Landing");
 			startComputerButton.setPrefSize(200, 50);
 			startComputerButton.setAlignment(Pos.CENTER);
-			startComputerButton.setTranslateY(getHeight() / 8);
+			startComputerButton.setTranslateY(
+				author.getTranslateY() + author.getLayoutBounds().getHeight() + textButtonMargin);
 			startComputerButton.setStyle("-fx-font-size:18");
 			startComputerButton.setOnAction(event -> startComputerSimulation(stage));
 	
