@@ -66,7 +66,9 @@ public class HoverslamSimulator extends Application {
 
 	ObservableList<ColorPalette> paletteOptions = 
     			FXCollections.observableArrayList(
-					ColorPalette.EARTH
+					ColorPalette.EARTH,
+					ColorPalette.MARS,
+					ColorPalette.NIGHT
 	);
 
 	@Override
