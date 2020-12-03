@@ -3,6 +3,7 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.Event;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -59,6 +60,14 @@ public class HoverslamSimulator extends Application {
 
 	Group autoLandingMenu;
 	Group userLandingMenu = new Group();
+
+
+	private ColorPalette palette;
+
+	ObservableList<ColorPalette> paletteOptions = 
+    			FXCollections.observableArrayList(
+					ColorPalette.EARTH
+	);
 
 	@Override
 	public void init() {
@@ -257,6 +266,14 @@ public class HoverslamSimulator extends Application {
 		return menuManager;
 	}
 
+	public ColorPalette getPalette() {
+		return this.palette;
+	}
+
+	public void setPalette(ColorPalette palette) {
+		this.palette = palette;
+	}
+
 	public static void main(String[] args) {
 
 		launch(args);
@@ -398,17 +415,33 @@ public class HoverslamSimulator extends Application {
 
 			stackPane.getChildren().add(backToMainMenu);
 
-			ObservableList<String> options = 
-    			FXCollections.observableArrayList(
-					"Option 1",
-					"Option 2",
-					"Option 3"
-			);
-			ComboBox paletteSelector = new ComboBox(options);
-			stackPane.getChildren().add(paletteSelector);
+			/*
+			TODO
+			Later, do something like this (from https://thecodinginterface.com/blog/javafx-choicebox-and-combobox/):
+			var inventorsComboBox = new ComboBox<Inventor>(inventors);
 
+			inventorsComboBox.setConverter(new StringConverter<Inventor>() {
+				@Override
+				public String toString(Inventor obj) {
+					if (obj != null) {
+						return obj.getLanguage() + ": " + obj.getFirstName() + " " + obj.getLastName();
+					}
+					return "";
+				}
+
+				@Override
+				public Inventor fromString(String string) {
+					return null;
+				}
+			*/
 			
-
+			// TODO set mininum width for palette selector
+			ComboBox paletteSelector = new ComboBox<ColorPalette>(paletteOptions);
+			paletteSelector.setOnAction((Event event) -> {
+				setPalette((ColorPalette) paletteSelector.getSelectionModel().getSelectedItem());
+				System.out.println(paletteSelector.getSelectionModel().getSelectedItem().toString());
+			});
+			stackPane.getChildren().add(paletteSelector);
 
 		}
 
