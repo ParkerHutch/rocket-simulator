@@ -339,6 +339,8 @@ public class HoverslamSimulator extends Application {
 	
 			stackPane.getChildren().addAll(title, author);
 			
+			double buttonMargin = 10;
+
 			Button startComputerButton = new Button("Automatic Landing");
 			startComputerButton.setPrefSize(200, 50);
 			startComputerButton.setAlignment(Pos.CENTER);
@@ -349,13 +351,30 @@ public class HoverslamSimulator extends Application {
 			Button startUserButton = new Button("Interactive Landing");
 			startUserButton.setPrefSize(200, 50);
 			startUserButton.setAlignment(Pos.CENTER);
-			startUserButton.setTranslateY(2 * (getHeight() / 8));
+			startUserButton.setTranslateY(
+				startComputerButton.getTranslateY() + startComputerButton.getPrefHeight() + buttonMargin);
 			startUserButton.setOnAction(event -> startUserControlledSimulation(stage));
 			startUserButton.setStyle("-fx-font-size:18");
 			stackPane.getChildren().addAll(startComputerButton, startUserButton);
 
+			Button optionsMenuButton = new Button("Options");
+			optionsMenuButton.setPrefSize(200, 50);
+			optionsMenuButton.setAlignment(Pos.CENTER);
+			optionsMenuButton.setTranslateY(
+				startUserButton.getTranslateY() + startUserButton.getPrefHeight() + buttonMargin);
+			optionsMenuButton.setOnAction(event -> showOptionsMenu(stage));
+			optionsMenuButton.setStyle("-fx-font-size:18");
+			stackPane.getChildren().add(optionsMenuButton);
+
 		}
 		
+
+		public void showOptionsMenu(Stage stage) {
+
+			System.out.println("Show the options menu here");
+
+		}
+
 		public Group getAutoLandingMenu() {
 
 			Group autoLandingMenu = new Group();
