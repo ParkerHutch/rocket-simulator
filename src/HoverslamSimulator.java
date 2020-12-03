@@ -1,6 +1,8 @@
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -395,6 +397,17 @@ public class HoverslamSimulator extends Application {
 			backToMainMenu.setOnAction(event -> showTitleScreen(getPrimaryStage()));
 
 			stackPane.getChildren().add(backToMainMenu);
+
+			ObservableList<String> options = 
+    			FXCollections.observableArrayList(
+					"Option 1",
+					"Option 2",
+					"Option 3"
+			);
+			ComboBox paletteSelector = new ComboBox(options);
+			stackPane.getChildren().add(paletteSelector);
+
+			
 
 
 		}
