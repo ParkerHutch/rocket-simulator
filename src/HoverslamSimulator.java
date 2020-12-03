@@ -9,6 +9,7 @@ import javafx.stage.Stage;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
@@ -375,7 +376,26 @@ public class HoverslamSimulator extends Application {
 
 		public void showOptionsMenu(Stage stage) {
 
-			System.out.println("Show the options menu here");
+			StackPane stackPane = new StackPane();
+			stackPane.setStyle("-fx-background-color: " + getbackgroundColorHex());
+	
+			Scene optionsMenuScene = new Scene(stackPane, getWidth(), getHeight());
+			stage.setScene(optionsMenuScene);
+			
+			Text title = new Text("Options");
+			title.setFont(Font.font("Tahoma", FontWeight.BOLD, FontPosture.REGULAR, 50));
+			title.setTranslateY(-getHeight() / 4);
+
+			stackPane.getChildren().add(title);
+
+			Button backToMainMenu = new Button("Back to Main Menu");
+			backToMainMenu.setTranslateY(-getHeight() / 8);
+			backToMainMenu.setPrefSize(200, 50);
+			backToMainMenu.setAlignment(Pos.CENTER);
+			backToMainMenu.setOnAction(event -> showTitleScreen(getPrimaryStage()));
+
+			stackPane.getChildren().add(backToMainMenu);
+
 
 		}
 
@@ -500,9 +520,6 @@ public class HoverslamSimulator extends Application {
 
 			userLandingMenu.getChildren().addAll(
 				backgroundBox, landingTypeTextBox, velocityTextBox, angleTextBox, backToMainMenu);
-
-			System.out.println("Velocity: " + userRocket.getVelocity().getMagnitude() + " ACCEPTABLE: " + userRocket.getAcceptableLandingVelocity());
-			System.out.println("Landing Angle(\u00B0): " + userRocket.getDirection() + " ACCEPTABLE: 90 +/-" + userRocket.getLandingAngleMargin());
 
 			return userLandingMenu;
 
