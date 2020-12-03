@@ -415,31 +415,10 @@ public class HoverslamSimulator extends Application {
 
 			stackPane.getChildren().add(backToMainMenu);
 
-			/*
-			TODO
-			Later, do something like this (from https://thecodinginterface.com/blog/javafx-choicebox-and-combobox/):
-			var inventorsComboBox = new ComboBox<Inventor>(inventors);
-
-			inventorsComboBox.setConverter(new StringConverter<Inventor>() {
-				@Override
-				public String toString(Inventor obj) {
-					if (obj != null) {
-						return obj.getLanguage() + ": " + obj.getFirstName() + " " + obj.getLastName();
-					}
-					return "";
-				}
-
-				@Override
-				public Inventor fromString(String string) {
-					return null;
-				}
-			*/
-			
-			// TODO set mininum width for palette selector
 			ComboBox paletteSelector = new ComboBox<ColorPalette>(paletteOptions);
+			paletteSelector.setMinWidth(200);
 			paletteSelector.setOnAction((Event event) -> {
 				setPalette((ColorPalette) paletteSelector.getSelectionModel().getSelectedItem());
-				System.out.println(paletteSelector.getSelectionModel().getSelectedItem().toString());
 			});
 			stackPane.getChildren().add(paletteSelector);
 
