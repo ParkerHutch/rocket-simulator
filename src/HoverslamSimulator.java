@@ -30,7 +30,7 @@ import rocket.Rocket;
 public class HoverslamSimulator extends Application {
 
 	private final int WIDTH = 800;
-	private final int HEIGHT = 800;
+	private final int HEIGHT = 750;
 
 	private Group root;
 	private Scene primaryScene;
@@ -116,7 +116,7 @@ public class HoverslamSimulator extends Application {
 			}
 		};
 		
-		userInterface = new UserInterface(0, 0, 100, 800, 
+		userInterface = new UserInterface(0, 0, 100, HEIGHT, 
 				userRocket, 
 				world.getGroundY(), getAnimator());
 		
