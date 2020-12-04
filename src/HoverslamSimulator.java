@@ -495,7 +495,7 @@ public class HoverslamSimulator extends Application {
 			}
 
 			double fuelConsumedProportion = 
-				world.getPrimaryRocket().getFuel() / getInitialFuel();
+				(getInitialFuel() - world.getPrimaryRocket().getFuel()) / getInitialFuel();
 			
 			Text fuelUsedText = new Text(
 				"Fuel Consumed: " + (int) (fuelConsumedProportion * 100) + "%"
