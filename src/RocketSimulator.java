@@ -42,7 +42,7 @@ public class RocketSimulator extends Application {
 
 	private Group root;
 	private Stage primaryStage;
-	private Scene primaryScene;
+	private Scene simulationScene;
 	private GraphicsContext gc;
 	private AnimationTimer animator;
 
@@ -162,25 +162,25 @@ public class RocketSimulator extends Application {
 	@Override
 	public void start(Stage stage) throws Exception {
 
-		primaryStage = stage;
-		primaryStage.setTitle("Rocket Simulator");
+		setPrimaryStage(stage);
+		getPrimaryStage().setTitle("Rocket Simulator");
 
-		primaryScene = new Scene(root, WIDTH, HEIGHT);
+		setSimulationScene(new Scene(root, WIDTH, HEIGHT));
 
-		primaryStage.setWidth(WIDTH); 
-		primaryStage.setHeight(HEIGHT);
+		getPrimaryStage().setWidth(WIDTH); 
+		getPrimaryStage().setHeight(HEIGHT);
 
-		Canvas canvas = new Canvas(primaryStage.getWidth(), primaryStage.getHeight());
+		Canvas canvas = new Canvas(getPrimaryStage().getWidth(), getPrimaryStage().getHeight());
 		gc = canvas.getGraphicsContext2D();
 		root.getChildren().add(canvas);
 		
-		primaryStage.setScene(primaryScene);
+		getPrimaryStage().setScene(getSimulationScene());
 
-		getMenuManager().showTitleScreen(primaryStage);
+		getMenuManager().showTitleScreen(getPrimaryStage());
 
-		primaryStage.show();
+		getPrimaryStage().show();
 
-		addKeyboardHandling(primaryScene);
+		addKeyboardHandling(getSimulationScene());
 
 		// These buttons should be added last so they can receive events
 		for (CustomButton button : getUserInterface().getButtons()) {
@@ -211,6 +211,18 @@ public class RocketSimulator extends Application {
 
 	public Stage getPrimaryStage() {
 		return primaryStage;
+	}
+	
+	public void setPrimaryStage(Stage primaryStage) {
+		this.primaryStage = primaryStage;
+	}
+
+	public Scene getSimulationScene() {
+		return this.simulationScene;
+	}
+
+	public void setSimulationScene(Scene simulationScene) {
+		this.simulationScene = simulationScene;
 	}
 
 	private UserInterface getUserInterface() {
@@ -574,7 +586,7 @@ public class RocketSimulator extends Application {
 			world.setPrimaryRocket(autoRocket);
 			userInterface.focusElements(autoRocket);
 
-			stage.setScene(primaryScene); 
+			stage.setScene(getSimulationScene()); 
 			animator.start();
 	
 		}
@@ -606,7 +618,7 @@ public class RocketSimulator extends Application {
 			world.setPrimaryRocket(userRocket);
 			userInterface.focusElements(userRocket);
 
-			stage.setScene(primaryScene);
+			stage.setScene(getSimulationScene());
 			animator.start();
 	
 		}
