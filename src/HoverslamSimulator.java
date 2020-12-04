@@ -1,6 +1,9 @@
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.Event;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -9,6 +12,8 @@ import javafx.stage.Stage;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
@@ -28,6 +33,7 @@ import userinterface.TogglePlayButton;
 import userinterface.UserInterface;
 import world.World;
 import rocket.Rocket;
+import design.ColorPalette;
 
 public class HoverslamSimulator extends Application {
 
@@ -57,6 +63,16 @@ public class HoverslamSimulator extends Application {
 	Group autoLandingMenu;
 	Group userLandingMenu = new Group();
 
+
+	private ColorPalette palette = ColorPalette.EARTH;
+
+	ObservableList<ColorPalette> paletteOptions = 
+    			FXCollections.observableArrayList(
+					ColorPalette.EARTH,
+					ColorPalette.MARS,
+					ColorPalette.NIGHT
+	);
+
 	@Override
 	public void init() {
 		
@@ -65,7 +81,7 @@ public class HoverslamSimulator extends Application {
 		autoLandingMenu = getMenuManager().getAutoLandingMenu();
 		root.getChildren().add(autoLandingMenu);
 
-		world = new World(WIDTH, HEIGHT);
+		world = new World(WIDTH, HEIGHT, getPalette());
 		world.setCenterOnRocketHorizontally(true);
 		world.setCenterOnRocketVertically(true);
 		
@@ -178,10 +194,6 @@ public class HoverslamSimulator extends Application {
 
 		getMenuManager().showTitleScreen(primaryStage);
 
-		// TODO remove the below lines, just for dev
-		//autoLandingMenu.toFront();
-		//autoLandingMenu.setVisible(true);
-
 		primaryStage.show();
 
 		addKeyboardHandling(primaryScene);
@@ -254,6 +266,16 @@ public class HoverslamSimulator extends Application {
 		return menuManager;
 	}
 
+	public ColorPalette getPalette() {
+		return this.palette;
+	}
+
+	public void setPalette(ColorPalette palette) {
+		this.palette = palette;
+		// Set the palette for all relevant objects
+		world.setPalette(palette);
+	}
+
 	public static void main(String[] args) {
 
 		launch(args);
@@ -319,6 +341,10 @@ public class HoverslamSimulator extends Application {
 		 */
 		public void showTitleScreen(Stage stage) {
 			
+			double textMargin = 10; // vertical distance between title and author
+			double textButtonMargin = 20; // vertical distance between author and first button
+			double buttonMargin = 10; // vertical distance between buttons
+
 			resetConfiguration();
 			
 			stage.sizeToScene();
@@ -335,27 +361,90 @@ public class HoverslamSimulator extends Application {
 	
 			Text author = new Text("Parker Hutchinson");
 			author.setFont(Font.font("Tahoma", FontWeight.BOLD, FontPosture.REGULAR, 50));
-			author.setTranslateY(-getHeight() / 8);
+			author.setTranslateY(
+				title.getTranslateY() + title.getLayoutBounds().getHeight() + textMargin);
 	
 			stackPane.getChildren().addAll(title, author);
 			
 			Button startComputerButton = new Button("Automatic Landing");
 			startComputerButton.setPrefSize(200, 50);
 			startComputerButton.setAlignment(Pos.CENTER);
-			startComputerButton.setTranslateY(getHeight() / 8);
+			startComputerButton.setTranslateY(
+				author.getTranslateY() + author.getLayoutBounds().getHeight() + textButtonMargin);
 			startComputerButton.setStyle("-fx-font-size:18");
 			startComputerButton.setOnAction(event -> startComputerSimulation(stage));
 	
 			Button startUserButton = new Button("Interactive Landing");
 			startUserButton.setPrefSize(200, 50);
 			startUserButton.setAlignment(Pos.CENTER);
-			startUserButton.setTranslateY(2 * (getHeight() / 8));
+			startUserButton.setTranslateY(
+				startComputerButton.getTranslateY() + startComputerButton.getPrefHeight() + buttonMargin);
 			startUserButton.setOnAction(event -> startUserControlledSimulation(stage));
 			startUserButton.setStyle("-fx-font-size:18");
 			stackPane.getChildren().addAll(startComputerButton, startUserButton);
 
+			Button optionsMenuButton = new Button("Options");
+			optionsMenuButton.setPrefSize(200, 50);
+			optionsMenuButton.setAlignment(Pos.CENTER);
+			optionsMenuButton.setTranslateY(
+				startUserButton.getTranslateY() + startUserButton.getPrefHeight() + buttonMargin);
+			optionsMenuButton.setOnAction(event -> showOptionsMenu(stage));
+			optionsMenuButton.setStyle("-fx-font-size:18");
+			stackPane.getChildren().add(optionsMenuButton);
+
 		}
 		
+		public void showOptionsMenu(Stage stage) {
+
+			double textButtonMargin = 20;
+			double titleOptionMargin = 20;
+			double optionBackToMainMenuMargin = 50;
+
+			StackPane stackPane = new StackPane();
+			stackPane.setStyle("-fx-background-color: " + getbackgroundColorHex());
+	
+			Scene optionsMenuScene = new Scene(stackPane, getWidth(), getHeight());
+			stage.setScene(optionsMenuScene);
+			
+			Text title = new Text("Options");
+			title.setFont(Font.font("Tahoma", FontWeight.BOLD, FontPosture.REGULAR, 50));
+			title.setTranslateY(-getHeight() / 4);
+
+			stackPane.getChildren().add(title);
+			
+			Text paletteSelectorText = new Text("Color Palette");
+			paletteSelectorText.setFont(Font.font("Tahoma", FontWeight.BOLD, FontPosture.REGULAR, 24));
+			paletteSelectorText.setTranslateY(
+				title.getTranslateY() + title.getLayoutBounds().getHeight() + titleOptionMargin);
+			paletteSelectorText.setTranslateX(-paletteSelectorText.getLayoutBounds().getWidth() / 2 - textButtonMargin / 2);
+			stackPane.getChildren().add(paletteSelectorText);
+
+			ComboBox paletteSelector = new ComboBox<ColorPalette>(paletteOptions);
+			paletteSelector.setMinWidth(100);
+			paletteSelector.setMinHeight(paletteSelectorText.getLayoutBounds().getHeight());
+			paletteSelector.getSelectionModel().select(getPalette());
+			paletteSelector.setOnAction((Event event) -> {
+				setPalette((ColorPalette) paletteSelector.getSelectionModel().getSelectedItem());
+			});
+
+			paletteSelector.setTranslateX(paletteSelector.getMinWidth()/2 + textButtonMargin / 2);
+			paletteSelector.setTranslateY(paletteSelectorText.getTranslateY());
+
+			stackPane.getChildren().add(paletteSelector);
+
+			Button backToMainMenu = new Button("Back to Main Menu");
+			backToMainMenu.setTranslateY(
+				paletteSelectorText.getTranslateY() + 
+				paletteSelectorText.getLayoutBounds().getHeight() + 
+				optionBackToMainMenuMargin);
+			backToMainMenu.setPrefSize(200, 50);
+			backToMainMenu.setAlignment(Pos.CENTER);
+			backToMainMenu.setOnAction(event -> showTitleScreen(getPrimaryStage()));
+
+			stackPane.getChildren().add(backToMainMenu);
+
+		}
+
 		public Group getAutoLandingMenu() {
 
 			Group autoLandingMenu = new Group();
@@ -477,9 +566,6 @@ public class HoverslamSimulator extends Application {
 
 			userLandingMenu.getChildren().addAll(
 				backgroundBox, landingTypeTextBox, velocityTextBox, angleTextBox, backToMainMenu);
-
-			System.out.println("Velocity: " + userRocket.getVelocity().getMagnitude() + " ACCEPTABLE: " + userRocket.getAcceptableLandingVelocity());
-			System.out.println("Landing Angle(\u00B0): " + userRocket.getDirection() + " ACCEPTABLE: 90 +/-" + userRocket.getLandingAngleMargin());
 
 			return userLandingMenu;
 

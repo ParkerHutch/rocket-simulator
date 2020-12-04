@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
+import design.ColorPalette;
+
 public class MountainManager {
 	
 	private ArrayList<Double> mountainXPoints = new ArrayList<Double>();
@@ -14,14 +16,17 @@ public class MountainManager {
 	
 	private double groundY;
 	private double windowWidth;
-	
+
+	private ColorPalette palette;
+
 	public MountainManager(double windowWidth, double xStep, 
-			double maxShiftMagnitude, double groundY) {
+			double maxShiftMagnitude, double groundY, ColorPalette palette) {
 		
 		this.xStep = xStep;
 		this.maxShiftMagnitude = maxShiftMagnitude;
 		this.windowWidth = windowWidth;
 		this.groundY = groundY;
+		this.palette = palette;
 		fillPoints(windowWidth, 10);
 		
 	}
@@ -67,6 +72,14 @@ public class MountainManager {
 		return (lastY - maxShiftMagnitude) + 
 				Math.random() * (2 * maxShiftMagnitude);
 		
+	}
+
+	public ColorPalette getPalette() {
+		return this.palette;
+	}
+
+	public void setPalette(ColorPalette palette) {
+		this.palette = palette;
 	}
 	
 	private void fillPoints(double windowWidth, int initialGenSize) {
@@ -155,7 +168,7 @@ public class MountainManager {
 	public void draw(GraphicsContext gc) {
 		
 		fillViewingWindow(-gc.getTransform().getTx(), 500);
-		gc.setFill(Color.SADDLEBROWN);
+		gc.setFill(getPalette().getMountainColor());
 		
 		for (int i = 0; i < getMountainXPoints().size() - 1; i++) {
 			
@@ -180,8 +193,7 @@ public class MountainManager {
 					
 			);
 			
-			
-			gc.setStroke(Color.GRAY.darker());
+			gc.setStroke(getPalette().getMountainColor().darker());
 			gc.setLineWidth(3);
 			gc.strokeLine(getMountainXPoints().get(i), getMountainYPoints().get(i), 
 					getMountainXPoints().get(i+1), getMountainYPoints().get(i+1));
