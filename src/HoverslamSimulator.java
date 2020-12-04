@@ -13,6 +13,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
@@ -395,6 +396,7 @@ public class HoverslamSimulator extends Application {
 		
 		public void showOptionsMenu(Stage stage) {
 
+			double textButtonMargin = 20;
 			StackPane stackPane = new StackPane();
 			stackPane.setStyle("-fx-background-color: " + getbackgroundColorHex());
 	
@@ -407,21 +409,35 @@ public class HoverslamSimulator extends Application {
 
 			stackPane.getChildren().add(title);
 
+			
+			Text paletteSelectorText = new Text("Color Palette");
+			paletteSelectorText.setFont(Font.font("Tahoma", FontWeight.BOLD, FontPosture.REGULAR, 24));
+			paletteSelectorText.setTranslateY(
+				title.getTranslateY() + title.getLayoutBounds().getHeight() + 10);
+			paletteSelectorText.setTranslateX(-paletteSelectorText.getLayoutBounds().getWidth() / 2 - textButtonMargin / 2);
+			stackPane.getChildren().add(paletteSelectorText);
+
+			ComboBox paletteSelector = new ComboBox<ColorPalette>(paletteOptions);
+			paletteSelector.setMinWidth(100);
+			paletteSelector.setMinHeight(paletteSelectorText.getLayoutBounds().getHeight());
+			paletteSelector.getSelectionModel().select(getPalette());
+			paletteSelector.setOnAction((Event event) -> {
+				setPalette((ColorPalette) paletteSelector.getSelectionModel().getSelectedItem());
+			});
+
+			paletteSelector.setTranslateX(paletteSelector.getMinWidth()/2 + textButtonMargin / 2);
+			paletteSelector.setTranslateY(paletteSelectorText.getTranslateY());
+
+			stackPane.getChildren().add(paletteSelector);
+
 			Button backToMainMenu = new Button("Back to Main Menu");
-			backToMainMenu.setTranslateY(-getHeight() / 8);
+			backToMainMenu.setTranslateY(
+				paletteSelectorText.getTranslateY() + paletteSelectorText.getLayoutBounds().getHeight() + 50);
 			backToMainMenu.setPrefSize(200, 50);
 			backToMainMenu.setAlignment(Pos.CENTER);
 			backToMainMenu.setOnAction(event -> showTitleScreen(getPrimaryStage()));
 
 			stackPane.getChildren().add(backToMainMenu);
-
-			ComboBox paletteSelector = new ComboBox<ColorPalette>(paletteOptions);
-			paletteSelector.setMinWidth(200);
-			paletteSelector.getSelectionModel().select(getPalette());
-			paletteSelector.setOnAction((Event event) -> {
-				setPalette((ColorPalette) paletteSelector.getSelectionModel().getSelectedItem());
-			});
-			stackPane.getChildren().add(paletteSelector);
 
 		}
 
