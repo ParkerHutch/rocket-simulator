@@ -54,6 +54,7 @@ public class HoverslamSimulator extends Application {
 	private MenuManager menuManager = new MenuManager(WIDTH, HEIGHT);
 	
 	double maxSpeed = 250;
+	private double initialFuel = 10;
 
 	private UserControlledRocket userRocket;
 	private Rocket autoRocket;
@@ -88,7 +89,7 @@ public class HoverslamSimulator extends Application {
 		// Initialize a rocket so that keyboard handling and the UI can be configured
 		double rocketX = WIDTH  / 2;
 		double rocketY = world.getGroundY() - 500;
-		userRocket = new UserControlledRocket(rocketX, rocketY, 10, world.getGroundY());
+		userRocket = new UserControlledRocket(rocketX, rocketY, getInitialFuel(), world.getGroundY());
 		world.setPrimaryRocket(userRocket);
 
 		keyboardHandler = new KeyboardHandler(userRocket);
@@ -244,6 +245,14 @@ public class HoverslamSimulator extends Application {
 
 	private UserInterface getUserInterface() {
 		return userInterface;
+	}
+
+	public double getInitialFuel() {
+		return this.initialFuel;
+	}
+
+	public void setInitialFuel(double initialFuel) {
+		this.initialFuel = initialFuel;
 	}
 
 	private boolean shouldUpdateGame() {
@@ -584,7 +593,7 @@ public class HoverslamSimulator extends Application {
 			double rocketY = world.getGroundY() - 500;
 			double xVelocity = Math.random() * maxSpeed * 2 - maxSpeed;
 			Vector2D acceleration = new Vector2D(0.0, World.GRAVITY);
-			autoRocket = new Rocket(rocketX, rocketY, 10, world.getGroundY());
+			autoRocket = new Rocket(rocketX, rocketY, getInitialFuel(), world.getGroundY());
 			autoRocket.getVelocity().setX(xVelocity);
 			autoRocket.setAcceleration(acceleration);
 			landingHandled = false;
