@@ -222,7 +222,6 @@ public class World {
 		// TODO After adding random terrain features, add code to
 		// make the camera just follow the Rocket horizontally
 		
-		
 		double xTranslate = centerOnRocketHorizontally() ? 
 				-center.getX() - gc.getTransform().getTx() 
 				+ getWindowWidth() / 2 : 0;
