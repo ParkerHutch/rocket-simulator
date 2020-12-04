@@ -8,13 +8,13 @@ import javafx.scene.paint.Color;
 import rocket.Entity;
 import rocket.Rocket;
 
-public class VelocityIndicator extends Entity {
+public class HorizontalVelocityIndicator extends Entity {
 	
 	private double width;
 	private double height;
 	private Rocket rocket;
 	
-	public VelocityIndicator(double xOffset, double yOffset, 
+	public HorizontalVelocityIndicator(double xOffset, double yOffset, 
 			double width, double height, Rocket rocket) {
 		
 		setxOffset(xOffset);
@@ -97,7 +97,7 @@ public class VelocityIndicator extends Entity {
 		
         gc.fillText(
             ""+Math.min(
-                Math.abs(Math.round(getRocket().getVelocity().getY() / 10) * 10), 
+                Math.abs(Math.round(getRocket().getVelocity().getMagnitude() / 10) * 10), 
                 999
             ),
             getX() + getWidth() / 6, 
