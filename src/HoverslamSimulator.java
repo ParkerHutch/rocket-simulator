@@ -57,13 +57,12 @@ public class HoverslamSimulator extends Application {
 	private double initialFuel = 10;
 
 	private UserControlledRocket userRocket;
-	private Rocket autoRocket;
 	private World world;
 	boolean landingHandled = false;
 
 	Group landingSummary;
 
-	private ColorPalette palette = ColorPalette.EARTH;
+	private ColorPalette palette = ColorPalette.EARTH; // default color palette
 
 	ObservableList<ColorPalette> paletteOptions = 
     			FXCollections.observableArrayList(
@@ -125,7 +124,7 @@ public class HoverslamSimulator extends Application {
 					world.tick(timeSinceLastUpdateSeconds);
 				}
 				
-				if (!world.getPrimaryRocket().isAirborne() && !landingHandled) {
+				if (!world.getPrimaryRocket().isAirborne() && !isLandingHandled()) {
 
 					/*
 						If a Rocket just landed, show the landing summary, stop
@@ -135,7 +134,7 @@ public class HoverslamSimulator extends Application {
 					root.getChildren().add(landingSummary);
 
 					getUserInterface().getTogglePlayButton().setState("PLAY");
-					landingHandled = true;
+					setLandingHandled(true);
 					
 				}
 				userInterface.tick(timeSinceLastUpdateSeconds);
@@ -189,8 +188,7 @@ public class HoverslamSimulator extends Application {
 		addKeyboardHandling(primaryScene);
 		addMouseHandling(primaryScene);
 
-		// NOTE: It's important for these buttons to be added to the root
-		// after the Canvas: they won't receive MouseEvents otherwise.
+		// These buttons should be added last so they can receive events
 		for (CustomButton button : getUserInterface().getButtons()) {
 
 			root.getChildren().add(button);
@@ -214,7 +212,6 @@ public class HoverslamSimulator extends Application {
 	 * @param scene the Scene to add mouse event handling to
 	 */
 	private void addMouseHandling(Scene scene) {
-		// adds mouseEvent handling to the given scene
 		MouseHandler mouseHandler = new MouseHandler(this);
 		scene.setOnMouseMoved(mouseHandler);
 		scene.setOnMouseDragged(mouseHandler);
@@ -241,6 +238,14 @@ public class HoverslamSimulator extends Application {
 
 	public void setInitialFuel(double initialFuel) {
 		this.initialFuel = initialFuel;
+	}
+
+	public void setLandingHandled(boolean landingHandled) {
+		this.landingHandled = landingHandled;
+	}
+
+	public boolean isLandingHandled() {
+		return landingHandled;
 	}
 
 	private boolean shouldUpdateGame() {
@@ -567,10 +572,10 @@ public class HoverslamSimulator extends Application {
 			double rocketY = world.getGroundY() - 500;
 			double xVelocity = Math.random() * maxSpeed * 2 - maxSpeed;
 			Vector2D acceleration = new Vector2D(0.0, World.GRAVITY);
-			autoRocket = new Rocket(rocketX, rocketY, getInitialFuel(), world.getGroundY());
+			Rocket autoRocket = new Rocket(rocketX, rocketY, getInitialFuel(), world.getGroundY());
 			autoRocket.getVelocity().setX(xVelocity);
 			autoRocket.setAcceleration(acceleration);
-			landingHandled = false;
+			setLandingHandled(false);
 
 			world.getObjects().add(autoRocket);
 			world.setPrimaryRocket(autoRocket);
@@ -602,7 +607,7 @@ public class HoverslamSimulator extends Application {
 			
 			userRocket.setAcceleration(acceleration);
 
-			landingHandled = false;
+			setLandingHandled(false);
 	
 			world.getObjects().add(userRocket);
 			world.setPrimaryRocket(userRocket);
