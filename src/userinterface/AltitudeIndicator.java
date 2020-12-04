@@ -103,7 +103,7 @@ public class AltitudeIndicator extends Entity {
 		// of the AltitudeIndicator (give or take 2 pixels)
 		if (scaledAltitudeY - pointRadius >= getY() - 2 && scaledAltitudeY + pointRadius <= getY() + getHeight() + 2) {
 
-			gc.setFill(Color.BLUE);
+			gc.setFill(Color.CORNFLOWERBLUE);
 			gc.fillOval(getX() - pointRadius, scaledAltitudeY - pointRadius, pointRadius * 2, pointRadius * 2);
 
 		}
