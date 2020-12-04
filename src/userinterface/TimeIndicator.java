@@ -159,7 +159,6 @@ public class TimeIndicator extends Entity {
 		
 	}
 	
-	
 	private void drawTimeLabel(GraphicsContext gc) {
 		
 		gc.setFill(Color.WHITE);
@@ -177,11 +176,11 @@ public class TimeIndicator extends Entity {
 		
 		gc.setTextAlign(TextAlignment.CENTER);
 		
-		gc.setFont(new Font(20));
+		gc.setFont(new Font(20)); // TODO use tahoma font here
 		
 		gc.setTextBaseline(VPos.CENTER);
 		
-		gc.fillText("T=" + (int) (Math.round(getInternalTime())), getX(), 
+		gc.fillText("T=" + (Math.round(getInternalTime())), getX(), 
 				getY() + getHeight() - getTimeLabelHeight() / 2 - 1);
 
 	}
