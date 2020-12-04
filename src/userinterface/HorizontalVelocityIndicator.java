@@ -51,36 +51,39 @@ public class HorizontalVelocityIndicator extends Entity {
 
     private void drawVelocityArrow(GraphicsContext gc) {
 
-        // arrow
+		// arrow
         gc.setLineWidth(3);
-        double arrowWidth = getWidth() / 5;
-        double arrowheadHeight = 10;
+        double lineWidth = getHeight() / 2;
+
+        double arrowWidth = 10;
+        double arrowheadHeight = getWidth() / 5;
         double lineCenterX = getX() - getWidth() / 4;
-        double lineTopY = getY() + getHeight() / 4;
-        double lineBottomY = getY() + 3 * getHeight() / 4;
+        double lineCenterY = getY() + getHeight() / 2;
+
+        double lineLeftX = lineCenterX - lineWidth / 2;
+        double lineRightX = lineCenterX + lineWidth / 2;
 
         gc.setStroke(Color.BLACK);
 
-        gc.strokeLine(lineCenterX, lineTopY, lineCenterX, lineBottomY);
-
-        if (getRocket().getVelocity().getY() < 0) {
+		gc.strokeLine(lineLeftX, lineCenterY, lineRightX, lineCenterY);
+		
+        if (getRocket().getVelocity().getX() < 0) {
             
-            // Draw velocity arrow pointed down
-            gc.strokeLine(lineCenterX - arrowWidth / 2, lineTopY + arrowheadHeight, 
-                lineCenterX, lineTopY);
-            gc.strokeLine(lineCenterX + arrowWidth / 2, lineTopY + arrowheadHeight, 
-                lineCenterX, lineTopY);
+            // Draw velocity arrow pointed left
+            gc.strokeLine(lineLeftX, lineCenterY, 
+				lineLeftX + arrowWidth, lineCenterY + arrowheadHeight / 2);
+			gc.strokeLine(lineLeftX, lineCenterY, 
+                lineLeftX + arrowWidth, lineCenterY - arrowheadHeight / 2);
 
         } else {
 
-            // Draw velocity arrow pointed up
-            gc.strokeLine(lineCenterX - arrowWidth / 2, lineBottomY - arrowheadHeight, 
-                lineCenterX, lineBottomY);
-            gc.strokeLine(lineCenterX + arrowWidth / 2, lineBottomY - arrowheadHeight, 
-                lineCenterX, lineBottomY);
+			// Draw velocity arrow pointed right
+			gc.strokeLine(lineRightX, lineCenterY,
+				lineRightX - arrowWidth, lineCenterY + arrowheadHeight / 2);
+			gc.strokeLine(lineRightX, lineCenterY,
+				lineRightX - arrowWidth, lineCenterY - arrowheadHeight / 2);
 
-        }
-
+		}
     }
 
     private void drawVelocityText(GraphicsContext gc) {
@@ -97,7 +100,7 @@ public class HorizontalVelocityIndicator extends Entity {
 		
         gc.fillText(
             ""+Math.min(
-                Math.abs(Math.round(getRocket().getVelocity().getMagnitude() / 10) * 10), 
+                Math.abs(Math.round(getRocket().getVelocity().getX() / 10) * 10), 
                 999
             ),
             getX() + getWidth() / 6, 
