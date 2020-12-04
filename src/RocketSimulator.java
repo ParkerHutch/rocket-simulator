@@ -186,7 +186,6 @@ public class RocketSimulator extends Application {
 		primaryStage.show();
 
 		addKeyboardHandling(primaryScene);
-		addMouseHandling(primaryScene);
 
 		// These buttons should be added last so they can receive events
 		for (CustomButton button : getUserInterface().getButtons()) {
@@ -205,19 +204,6 @@ public class RocketSimulator extends Application {
 		
 		scene.setOnKeyPressed(keyboardHandler);
 		scene.setOnKeyReleased(keyboardHandler);
-	}
-	
-	/**
-	 * Adds mouse event handling to the given Scene
-	 * @param scene the Scene to add mouse event handling to
-	 */
-	private void addMouseHandling(Scene scene) {
-		MouseHandler mouseHandler = new MouseHandler(this);
-		scene.setOnMouseMoved(mouseHandler);
-		scene.setOnMouseDragged(mouseHandler);
-		scene.setOnMousePressed(mouseHandler);
-		scene.setOnMouseClicked(mouseHandler);
-		scene.setOnMouseReleased(mouseHandler);
 	}
 	
 	private GraphicsContext getGraphicsContext() {
