@@ -523,7 +523,7 @@ public class RocketSimulator extends Application {
 				velocityTextBox.setFill(Color.BLACK);
 			}
 			
-			Text angleTextBox = new Text("Angle: " + (int) userRocket.getDirection() + "\u00B0");
+			Text angleTextBox = new Text("Angle: " + (int) world.getPrimaryRocket().getDirection() + "\u00B0");
 			angleTextBox.setFont(Font.font("Tahoma", FontWeight.BOLD, FontPosture.REGULAR, 20));
 			angleTextBox.setTranslateY(
 				velocityTextBox.getTranslateY() + 
@@ -626,7 +626,7 @@ public class RocketSimulator extends Application {
 			double xVelocity = Math.random() * getMaxSpeed() * 2 - getMaxSpeed();
 			Vector2D acceleration = new Vector2D(0.0, World.GRAVITY);
 			double rocketX = WIDTH  / 2;
-			//double rocketY = world.getGroundY() - 500;
+			//double rocketY = world.getGroundY() - 500; TODO remove
 			
 			userRocket.reset(rocketX, world.getGroundY() - getInitialRocketHeight(), getInitialFuel());
 			
