@@ -61,8 +61,8 @@ public class HoverslamSimulator extends Application {
 	private World world;
 	boolean landingHandled = false;
 
-	Group autoLandingMenu;
-	Group userLandingMenu = new Group();
+	Group landingSummary;
+	//Group userLandingMenu = new Group(); TODO remove
 
 
 	private ColorPalette palette = ColorPalette.EARTH;
@@ -132,21 +132,12 @@ public class HoverslamSimulator extends Application {
 				
 				if (!world.getPrimaryRocket().isAirborne() && !landingHandled) {
 
-					if (world.getPrimaryRocket().getClass() == UserControlledRocket.class) {
+					landingSummary = getMenuManager().getLandingSummary();
+					root.getChildren().add(landingSummary);
+					landingSummary.toFront();
 
-						userLandingMenu = getMenuManager().getUserLandingMenu();
-						root.getChildren().add(userLandingMenu);
-						userLandingMenu.toFront();
-						userLandingMenu.setVisible(true);
-
-					} else {
-						autoLandingMenu = getMenuManager().getAutoLandingMenu();
-						root.getChildren().add(autoLandingMenu);
-						autoLandingMenu.toFront();
-						autoLandingMenu.setVisible(true);
-					}
 					getUserInterface().getTogglePlayButton().setState("PLAY");
-					
+					getAnimator().start();
 					landingHandled = true;
 					
 				}
@@ -171,11 +162,8 @@ public class HoverslamSimulator extends Application {
 
 		world.getObjects().clear();
 		getUserInterface().reset();
-		if (root.getChildren().contains(userLandingMenu)) {
-			root.getChildren().remove(userLandingMenu);
-		}
-		if (root.getChildren().contains(autoLandingMenu)) {
-			root.getChildren().remove(autoLandingMenu);
+		if (root.getChildren().contains(landingSummary)) {
+			root.getChildren().remove(landingSummary);
 		}
 
 	}
@@ -457,106 +445,36 @@ public class HoverslamSimulator extends Application {
 
 		}
 
-		public Group getAutoLandingMenu() {
+		public Group getLandingSummary() {
 
-			Group autoLandingMenu = new Group();
-			autoLandingMenu.setVisible(false);
+			boolean acceptableVelocity = 
+				world.getPrimaryRocket().getLandingVelocity() < world.getPrimaryRocket().getAcceptableLandingVelocity();
+			boolean acceptableAngle = 
+				Math.abs(world.getPrimaryRocket().getDirection() - 90) <= world.getPrimaryRocket().getLandingAngleMargin();
+			boolean crash = !(acceptableVelocity && acceptableAngle);
+
+			Group landingSummary = new Group();
 
 			// horizontal distance between widest element and the box edge
 			double boxMargin = 10; 
 			double boxY = HEIGHT / 4 - 25; // top y coordinate of the box
 			double buttonWidth = 160;
 			double buttonHeight = 50;
-			
-			Text autoLandingMessage = new Text("Successful Landing");
-			autoLandingMessage.setFont(Font.font("Tahoma", FontWeight.BOLD, FontPosture.REGULAR, 24));
-			autoLandingMessage.setTranslateY(boxY + 25);
-			autoLandingMessage.setTranslateX(WIDTH / 2 - 
-				autoLandingMessage.getLayoutBounds().getWidth() / 2);
-
-			double fuelConsumedProportion = 
-				world.getPrimaryRocket().getFuel() / getInitialFuel();
-			
-			Text fuelUsedText = new Text(
-				"Fuel Consumed: " + (int) (fuelConsumedProportion * 100) + "%"
-			);
-			fuelUsedText.setFont(Font.font("Tahoma", FontWeight.BOLD, FontPosture.REGULAR, 16));
-			fuelUsedText.setTranslateY(
-				autoLandingMessage.getTranslateY() + 
-				autoLandingMessage.getLayoutBounds().getHeight() + 10
-			);
-			fuelUsedText.setTranslateX(WIDTH / 2 - 
-				fuelUsedText.getLayoutBounds().getWidth() / 2
-			);
-
-			Button backToMainMenu = new Button("Back to Main Menu");
-			backToMainMenu.setTranslateY(
-				fuelUsedText.getTranslateY() + 
-				fuelUsedText.getLayoutBounds().getHeight()
-			);
-			backToMainMenu.setTranslateX(WIDTH / 2 - buttonWidth / 2);
-			backToMainMenu.setPrefSize(buttonWidth, 50);
-			backToMainMenu.setAlignment(Pos.CENTER);
-			backToMainMenu.setOnAction(event -> showTitleScreen(getPrimaryStage()));
-			
-			double backToMainMenuBottomY = backToMainMenu.getTranslateY() + buttonHeight;
-			double backgroundBoxWidth = Math.max(
-				Math.max(autoLandingMessage.getLayoutBounds().getWidth(),
-					fuelUsedText.getLayoutBounds().getWidth()), 
-				backToMainMenu.getWidth()) + boxMargin;
-			double backgroundBoxHeight = backToMainMenuBottomY - boxY + 8;
-
-			Rectangle backgroundBox = new Rectangle(WIDTH / 2 - backgroundBoxWidth / 2, 
-														boxY, 
-														backgroundBoxWidth, 
-														backgroundBoxHeight);
-			backgroundBox.setArcWidth(10); // round edges
-			backgroundBox.setArcHeight(10); // round edges
-			backgroundBox.setStrokeWidth(3);
-			backgroundBox.setStroke(Color.BLACK);
-			backgroundBox.setFill(Color.WHITE);
-
-			autoLandingMenu.getChildren().addAll(
-				backgroundBox, autoLandingMessage, fuelUsedText, backToMainMenu);
-			return autoLandingMenu;
-
-		}
-
-		public Group getUserLandingMenu() {
-
-			boolean acceptableVelocity = 
-				userRocket.getLandingVelocity() < userRocket.getAcceptableLandingVelocity();
-			boolean acceptableAngle = 
-				Math.abs(userRocket.getDirection() - 90) <= userRocket.getLandingAngleMargin();
-			boolean crash = !(acceptableVelocity && acceptableAngle);
-			
-			Group userLandingMenu = new Group();
-
-			double boxY = HEIGHT / 4 - 25; // top y coordinate of the box
-			// approximate width of the text message, must be manually adjusted
-			double buttonWidth = 160;
-			double buttonHeight = 50;
-			double backgroundBoxWidth = 200;
-			double lineWidth = 3;
 			double textMargin = 5;
 			
 			String landingMessage = crash ? "Crash" : "Successful Landing";
 
-			Text landingTypeTextBox = new Text(landingMessage);
-			landingTypeTextBox.setFont(Font.font("Tahoma", FontWeight.BOLD, FontPosture.REGULAR, 16));
-			landingTypeTextBox.setTranslateY(boxY + lineWidth + textMargin + 10);
-			landingTypeTextBox.setTranslateX(WIDTH / 2 - landingTypeTextBox.getLayoutBounds().getWidth() / 2);
-			if (crash) {
-				landingTypeTextBox.setFill(Color.RED);
-			} else {
-				landingTypeTextBox.setFill(Color.BLACK);
-			}
+			Text landingMessageText = new Text(landingMessage);
+			landingMessageText.setFont(Font.font("Tahoma", FontWeight.BOLD, FontPosture.REGULAR, 24));
+			landingMessageText.setTranslateY(boxY + 25);
+			landingMessageText.setTranslateX(WIDTH / 2 - 
+			landingMessageText.getLayoutBounds().getWidth() / 2);
 
-			Text velocityTextBox = new Text("Velocity: " + (int) userRocket.getLandingVelocity());
+			Text velocityTextBox = new Text("Velocity: " + (int) world.getPrimaryRocket().getLandingVelocity());
 			velocityTextBox.setFont(Font.font("Tahoma", FontWeight.BOLD, FontPosture.REGULAR, 16));
 			velocityTextBox.setTranslateY(
-				landingTypeTextBox.getTranslateY() + 
-				landingTypeTextBox.getLayoutBounds().getHeight() + textMargin);
+				landingMessageText.getTranslateY() + 
+				landingMessageText.getLayoutBounds().getHeight() - 5);
 			velocityTextBox.setTranslateX(WIDTH / 2 - velocityTextBox.getLayoutBounds().getWidth() / 2);
 			if (!acceptableVelocity) {
 				velocityTextBox.setFill(Color.RED);
@@ -585,26 +503,29 @@ public class HoverslamSimulator extends Application {
 			fuelUsedText.setFont(Font.font("Tahoma", FontWeight.BOLD, FontPosture.REGULAR, 16));
 			fuelUsedText.setTranslateY(
 				angleTextBox.getTranslateY() + 
-				angleTextBox.getLayoutBounds().getHeight() + 10
+				angleTextBox.getLayoutBounds().getHeight() + textMargin
 			);
 			fuelUsedText.setTranslateX(WIDTH / 2 - 
 				fuelUsedText.getLayoutBounds().getWidth() / 2
 			);
 
-
-
 			Button backToMainMenu = new Button("Back to Main Menu");
 			backToMainMenu.setTranslateY(
 				fuelUsedText.getTranslateY() + 
-				fuelUsedText.getLayoutBounds().getHeight() - 5);
+				fuelUsedText.getLayoutBounds().getHeight()
+			);
 			backToMainMenu.setTranslateX(WIDTH / 2 - buttonWidth / 2);
-			backToMainMenu.setPrefSize(buttonWidth, buttonHeight);
+			backToMainMenu.setPrefSize(buttonWidth, 50);
 			backToMainMenu.setAlignment(Pos.CENTER);
 			backToMainMenu.setOnAction(event -> showTitleScreen(getPrimaryStage()));
 			
 			double backToMainMenuBottomY = backToMainMenu.getTranslateY() + buttonHeight;
-			
-			double backgroundBoxHeight = backToMainMenuBottomY - boxY + textMargin;
+			double backgroundBoxWidth = Math.max(
+				Math.max(landingMessageText.getLayoutBounds().getWidth(),
+					fuelUsedText.getLayoutBounds().getWidth()), 
+				Math.max(velocityTextBox.getLayoutBounds().getWidth(), backToMainMenu.getWidth())
+				) + boxMargin;
+			double backgroundBoxHeight = backToMainMenuBottomY - boxY + boxMargin;
 
 			Rectangle backgroundBox = new Rectangle(WIDTH / 2 - backgroundBoxWidth / 2, 
 														boxY, 
@@ -612,18 +533,17 @@ public class HoverslamSimulator extends Application {
 														backgroundBoxHeight);
 			backgroundBox.setArcWidth(10); // round edges
 			backgroundBox.setArcHeight(10); // round edges
-			backgroundBox.setStrokeWidth(lineWidth);
+			backgroundBox.setStrokeWidth(3);
 			backgroundBox.setStroke(Color.BLACK);
 			backgroundBox.setFill(Color.WHITE);
 
-			userLandingMenu.getChildren().addAll(
-				backgroundBox, landingTypeTextBox, velocityTextBox, angleTextBox, fuelUsedText,
-				backToMainMenu);
-
-			return userLandingMenu;
+			landingSummary.getChildren().addAll(
+				backgroundBox, landingMessageText, velocityTextBox, angleTextBox, 
+				fuelUsedText, backToMainMenu);
+			return landingSummary;
 
 		}
-		
+
 		/**
 		 * Starts an automatic rocket landing by creating a computer-controlled
 		 * rocket, adding it to the world, reverting the stage's scene to the
