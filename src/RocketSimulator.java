@@ -43,7 +43,6 @@ public class RocketSimulator extends Application {
 	private Group root;
 	private Stage primaryStage;
 	private Scene primaryScene;
-	private Canvas canvas;
 	private GraphicsContext gc;
 	private AnimationTimer animator;
 
@@ -171,7 +170,7 @@ public class RocketSimulator extends Application {
 		primaryStage.setWidth(WIDTH); 
 		primaryStage.setHeight(HEIGHT);
 
-		canvas = new Canvas(primaryStage.getWidth(), primaryStage.getHeight());
+		Canvas canvas = new Canvas(primaryStage.getWidth(), primaryStage.getHeight());
 		gc = canvas.getGraphicsContext2D();
 		root.getChildren().add(canvas);
 		
