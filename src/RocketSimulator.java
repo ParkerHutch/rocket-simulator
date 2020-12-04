@@ -54,6 +54,7 @@ public class RocketSimulator extends Application {
 	
 	private double maxSpeed = 250;
 	private double initialFuel = 10;
+	private double initialRocketHeight = 500;
 
 	private UserControlledRocket userRocket;
 	private World world;
@@ -81,8 +82,11 @@ public class RocketSimulator extends Application {
 		
 		// Initialize a rocket so that keyboard handling and the UI can be configured
 		double rocketX = WIDTH  / 2;
-		double rocketY = world.getGroundY() - 500;
-		userRocket = new UserControlledRocket(rocketX, rocketY, getInitialFuel(), world.getGroundY());
+		//double rocketY = world.getGroundY() - 500;
+		userRocket = new UserControlledRocket(rocketX, 
+			world.getGroundY() - getInitialRocketHeight(), 
+			getInitialFuel(), 
+			world.getGroundY());
 		world.setPrimaryRocket(userRocket);
 
 		keyboardHandler = new KeyboardHandler(userRocket);
@@ -243,6 +247,14 @@ public class RocketSimulator extends Application {
 
 	public void setInitialFuel(double initialFuel) {
 		this.initialFuel = initialFuel;
+	}
+
+	public double getInitialRocketHeight() {
+		return this.initialRocketHeight;
+	}
+
+	public void setInitialRocketHeight(double initialRocketHeight) {
+		this.initialRocketHeight = initialRocketHeight;
 	}
 
 	public void setLandingHandled(boolean landingHandled) {
@@ -581,10 +593,13 @@ public class RocketSimulator extends Application {
 	
 			// Create the rocket
 			double rocketX = WIDTH  / 2;
-			double rocketY = world.getGroundY() - 500;
+			//double rocketY = world.getGroundY() - 500;
 			double xVelocity = Math.random() * getMaxSpeed() * 2 - getMaxSpeed();
 			Vector2D acceleration = new Vector2D(0.0, World.GRAVITY);
-			Rocket autoRocket = new Rocket(rocketX, rocketY, getInitialFuel(), world.getGroundY());
+			Rocket autoRocket = new Rocket(rocketX, 
+				world.getGroundY() - getInitialRocketHeight(),
+				getInitialFuel(), 
+				world.getGroundY());
 			autoRocket.getVelocity().setX(xVelocity);
 			autoRocket.setAcceleration(acceleration);
 			setLandingHandled(false);
@@ -611,9 +626,9 @@ public class RocketSimulator extends Application {
 			double xVelocity = Math.random() * getMaxSpeed() * 2 - getMaxSpeed();
 			Vector2D acceleration = new Vector2D(0.0, World.GRAVITY);
 			double rocketX = WIDTH  / 2;
-			double rocketY = world.getGroundY() - 500;
+			//double rocketY = world.getGroundY() - 500;
 			
-			userRocket.reset(rocketX, rocketY, 10);
+			userRocket.reset(rocketX, world.getGroundY() - getInitialRocketHeight(), getInitialFuel());
 			
 			userRocket.getVelocity().setX(xVelocity);
 			
