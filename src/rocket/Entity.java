@@ -6,6 +6,8 @@ public abstract class Entity {
 	
 	private double x; 
 	private double y; 
+	private double width = 0;
+	private double height = 0;
 	private double xOffset = 0;
 	private double yOffset = 0;
 	private double direction = 90;
@@ -34,8 +36,6 @@ public abstract class Entity {
 	 * Creates an Entity with arguments for position, size, and color.
 	 * @param x the middle x coordinate of the Entity
 	 * @param y the top y coordinate of the Entity
-	 * @param width the width of the Entity
-	 * @param height the height of the Entity
 	 * @param color the color of the Entity
 	 */
 	public Entity(double x, double y, Color color) {
@@ -44,10 +44,19 @@ public abstract class Entity {
 		this.color = color;
 	}
 	
-	
 	public Entity(double x, double y, Color color, double xOffset, double yOffset) {
 		this.x = x;
 		this.y = y;
+		this.color = color;
+		this.xOffset = xOffset;
+		this.yOffset = yOffset;
+	}
+
+	public Entity(double x, double y, double width, double height, Color color, double xOffset, double yOffset) {
+		this.x = x;
+		this.y = y;
+		this.width = width;
+		this.height = height;
 		this.color = color;
 		this.xOffset = xOffset;
 		this.yOffset = yOffset;
@@ -96,6 +105,24 @@ public abstract class Entity {
 	public void setY(double y) {
 		this.y = y;
 	}
+
+
+	public double getWidth() {
+		return this.width;
+	}
+
+	public void setWidth(double width) {
+		this.width = width;
+	}
+
+	public double getHeight() {
+		return this.height;
+	}
+
+	public void setHeight(double height) {
+		this.height = height;
+	}
+
 
 	public double getxOffset() {
 		return xOffset;

@@ -32,7 +32,9 @@ public class UserInterface extends Entity {
 	ArrayList<Entity> interfaceElements = new ArrayList<Entity>();
 	
 	private double transitionSpeed = 2;
-	
+
+	private double buttonMargin = 15;
+
 	public UserInterface(double x, double y, double width, double height, 
 			Rocket rocket, double groundY, AnimationTimer animationTimer) {
 		
@@ -41,6 +43,8 @@ public class UserInterface extends Entity {
 		this.width = width * 2;
 		this.height = height;
 		
+		// TODO I shouldn't need the maneuver calculator below anymore,
+		// should be able to just pass in the initial altitude in rocket simulator.java
 		setAltitudeIndicator(new AltitudeIndicator(maxWidth / 4, 20, 30, 100, rocket, 
 			rocket.getManeuverCalculator().calculateAltitude()));
 		
@@ -48,20 +52,45 @@ public class UserInterface extends Entity {
 
 		setTimeIndicator(new TimeIndicator(maxWidth / 4, 200, 70, 70));
 
-		setTogglePlayButton(new TogglePlayButton(maxWidth / 4, 160, 30, 30, animationTimer));
-
 		this.verticalVelocityIndicator = new VerticalVelocityIndicator(maxWidth / 4, 425, 70, 50, rocket);
 		this.horizontalVelocityIndicator = new HorizontalVelocityIndicator(maxWidth / 4, 500, 70, 50, rocket);
-
-		interfaceElements.add(horizontalVelocityIndicator);
-		interfaceElements.add(verticalVelocityIndicator);
 
 		interfaceElements.add(getAltitudeIndicator());
 		interfaceElements.add(getFuelIndicator());
 		interfaceElements.add(getTimeIndicator());
+
+		interfaceElements.add(horizontalVelocityIndicator);
+		interfaceElements.add(verticalVelocityIndicator);
+
+		setUniformYOffsets(interfaceElements);
 		
+		Entity bottomElement = interfaceElements.get(interfaceElements.size() - 1);
+		double bottomElementBottomY = bottomElement.getyOffset() + bottomElement.getHeight();
+
+		setTogglePlayButton(new TogglePlayButton(maxWidth / 4, 
+			bottomElementBottomY + buttonMargin,
+			30, 
+			30, 
+			animationTimer));
 		buttons.add(getTogglePlayButton());
 		buttons.add(new MinimizeMaximizeButton((maxWidth + 20) / 2, height / 2 - 50, 20, 50));
+		
+	}
+
+	private void setUniformYOffsets(ArrayList<Entity> elements) {
+
+		Entity aboveEntity = elements.get(0);
+
+		for (int i = 1; i < elements.size(); i++) {
+
+			elements.get(i).setyOffset(
+				aboveEntity.getyOffset() + 
+				aboveEntity.getHeight() + 
+				buttonMargin);
+
+			aboveEntity = elements.get(i);
+
+		}
 
 	}
 
