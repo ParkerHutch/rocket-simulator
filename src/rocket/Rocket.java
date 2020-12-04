@@ -383,29 +383,14 @@ public class Rocket extends Entity {
 
 			setLandingVelocity(getVelocity().getMagnitude());
 
-			// Determine if landing was safe
-			if (getVelocity().getMagnitude() < getAcceptableLandingVelocity()) {
+			if (
+				getVelocity().getMagnitude() < getAcceptableLandingVelocity() &&
+				Math.abs(getDirection() - 90) <= getLandingAngleMargin()
+			) {
+				// Good landing, make the Rocket point straight up
+				setDirection(90);
 
-				
-				if (Math.abs(getDirection() - 90) <= getLandingAngleMargin()) {
-
-					// good landing
-					setDirection(90);
-					System.out.println("good landing");
-
-				} else {
-					
-					// Crash
-					System.out.println("That was a crash, bad angle");
-					
-				}
-
-			} else {
-
-				System.out.println("Crash, velocity: " + getVelocity().getMagnitude());
-				// crash
-
-			}
+			} 
 
 			getVelocity().setX(0);
 			getVelocity().setY(0);
