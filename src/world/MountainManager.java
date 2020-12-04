@@ -193,8 +193,7 @@ public class MountainManager {
 					
 			);
 			
-			
-			gc.setStroke(Color.GRAY.darker());
+			gc.setStroke(getPalette().getMountainColor().darker());
 			gc.setLineWidth(3);
 			gc.strokeLine(getMountainXPoints().get(i), getMountainYPoints().get(i), 
 					getMountainXPoints().get(i+1), getMountainYPoints().get(i+1));
