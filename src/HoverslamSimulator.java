@@ -62,8 +62,6 @@ public class HoverslamSimulator extends Application {
 	boolean landingHandled = false;
 
 	Group landingSummary;
-	//Group userLandingMenu = new Group(); TODO remove
-
 
 	private ColorPalette palette = ColorPalette.EARTH;
 
@@ -78,9 +76,6 @@ public class HoverslamSimulator extends Application {
 	public void init() {
 		
 		root = new Group();
-
-		//autoLandingMenu = getMenuManager().getAutoLandingMenu();
-		//root.getChildren().add(autoLandingMenu);
 
 		world = new World(WIDTH, HEIGHT, getPalette());
 		world.setCenterOnRocketHorizontally(true);
@@ -132,12 +127,14 @@ public class HoverslamSimulator extends Application {
 				
 				if (!world.getPrimaryRocket().isAirborne() && !landingHandled) {
 
+					/*
+						If a Rocket just landed, show the landing summary, stop
+						updating, and mark the landing as handled
+					*/
 					landingSummary = getMenuManager().getLandingSummary();
 					root.getChildren().add(landingSummary);
-					landingSummary.toFront();
 
 					getUserInterface().getTogglePlayButton().setState("PLAY");
-					getAnimator().start();
 					landingHandled = true;
 					
 				}
@@ -445,6 +442,12 @@ public class HoverslamSimulator extends Application {
 
 		}
 
+		/**
+		 * Gets a round rectangle containing textualized information about the
+		 * most recent Rocket landing.
+		 * @return a Group containing all relevant Nodes that contain the 
+		 * landing information
+		 */
 		public Group getLandingSummary() {
 
 			boolean acceptableVelocity = 
@@ -452,8 +455,6 @@ public class HoverslamSimulator extends Application {
 			boolean acceptableAngle = 
 				Math.abs(world.getPrimaryRocket().getDirection() - 90) <= world.getPrimaryRocket().getLandingAngleMargin();
 			boolean crash = !(acceptableVelocity && acceptableAngle);
-
-			Group landingSummary = new Group();
 
 			// distance between largest element and the box edge
 			double boxMargin = 16; 
@@ -537,6 +538,7 @@ public class HoverslamSimulator extends Application {
 			backgroundBox.setStroke(Color.BLACK);
 			backgroundBox.setFill(Color.WHITE);
 
+			Group landingSummary = new Group();
 			landingSummary.getChildren().addAll(
 				backgroundBox, landingMessageText, velocityTextBox, angleTextBox, 
 				fuelUsedText, backToMainMenu);
