@@ -32,6 +32,7 @@ import userinterface.TogglePlayButton;
 import userinterface.UserInterface;
 import world.World;
 import rocket.Rocket;
+import design.ColorPalette;
 
 public class HoverslamSimulator extends Application {
 
@@ -192,10 +193,6 @@ public class HoverslamSimulator extends Application {
 
 		getMenuManager().showTitleScreen(primaryStage);
 
-		// TODO remove the below lines, just for dev
-		//autoLandingMenu.toFront();
-		//autoLandingMenu.setVisible(true);
-
 		primaryStage.show();
 
 		addKeyboardHandling(primaryScene);
@@ -274,6 +271,8 @@ public class HoverslamSimulator extends Application {
 
 	public void setPalette(ColorPalette palette) {
 		this.palette = palette;
+		// Set the palette for all relevant objects
+		world.setPalette(palette);
 	}
 
 	public static void main(String[] args) {
@@ -423,6 +422,9 @@ public class HoverslamSimulator extends Application {
 				setPalette((ColorPalette) paletteSelector.getSelectionModel().getSelectedItem());
 			});
 			stackPane.getChildren().add(paletteSelector);
+
+			// TODO the setPalette() function should probably call the setPalette() function
+			// for every relevant object
 
 		}
 

@@ -1,3 +1,4 @@
+package design;
 import javafx.scene.paint.Color;
 
 public class ColorPalette {
