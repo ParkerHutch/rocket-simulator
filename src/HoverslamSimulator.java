@@ -397,6 +397,9 @@ public class HoverslamSimulator extends Application {
 		public void showOptionsMenu(Stage stage) {
 
 			double textButtonMargin = 20;
+			double titleOptionMargin = 20;
+			double optionBackToMainMenuMargin = 50;
+
 			StackPane stackPane = new StackPane();
 			stackPane.setStyle("-fx-background-color: " + getbackgroundColorHex());
 	
@@ -408,12 +411,11 @@ public class HoverslamSimulator extends Application {
 			title.setTranslateY(-getHeight() / 4);
 
 			stackPane.getChildren().add(title);
-
 			
 			Text paletteSelectorText = new Text("Color Palette");
 			paletteSelectorText.setFont(Font.font("Tahoma", FontWeight.BOLD, FontPosture.REGULAR, 24));
 			paletteSelectorText.setTranslateY(
-				title.getTranslateY() + title.getLayoutBounds().getHeight() + 10);
+				title.getTranslateY() + title.getLayoutBounds().getHeight() + titleOptionMargin);
 			paletteSelectorText.setTranslateX(-paletteSelectorText.getLayoutBounds().getWidth() / 2 - textButtonMargin / 2);
 			stackPane.getChildren().add(paletteSelectorText);
 
@@ -432,7 +434,9 @@ public class HoverslamSimulator extends Application {
 
 			Button backToMainMenu = new Button("Back to Main Menu");
 			backToMainMenu.setTranslateY(
-				paletteSelectorText.getTranslateY() + paletteSelectorText.getLayoutBounds().getHeight() + 50);
+				paletteSelectorText.getTranslateY() + 
+				paletteSelectorText.getLayoutBounds().getHeight() + 
+				optionBackToMainMenuMargin);
 			backToMainMenu.setPrefSize(200, 50);
 			backToMainMenu.setAlignment(Pos.CENTER);
 			backToMainMenu.setOnAction(event -> showTitleScreen(getPrimaryStage()));
