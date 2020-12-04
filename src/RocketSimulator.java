@@ -53,14 +53,14 @@ public class RocketSimulator extends Application {
 	
 	private MenuManager menuManager = new MenuManager(WIDTH, HEIGHT);
 	
-	double maxSpeed = 250;
+	private double maxSpeed = 250;
 	private double initialFuel = 10;
 
 	private UserControlledRocket userRocket;
 	private World world;
-	boolean landingHandled = false;
+	private boolean landingHandled = false;
 
-	Group landingSummary;
+	private Group landingSummary;
 
 	private ColorPalette palette = ColorPalette.EARTH; // default color palette
 
@@ -150,10 +150,6 @@ public class RocketSimulator extends Application {
 		
 	}
 
-	public Stage getPrimaryStage() {
-		return primaryStage;
-	}
-
 	public void resetConfiguration() {
 
 		world.getObjects().clear();
@@ -214,8 +210,20 @@ public class RocketSimulator extends Application {
 		return animator;
 	}
 
+	public Stage getPrimaryStage() {
+		return primaryStage;
+	}
+
 	private UserInterface getUserInterface() {
 		return userInterface;
+	}
+
+	public double getMaxSpeed() {
+		return this.maxSpeed;
+	}
+
+	public void setMaxSpeed(double maxSpeed) {
+		this.maxSpeed = maxSpeed;
 	}
 
 	public double getInitialFuel() {
@@ -556,7 +564,7 @@ public class RocketSimulator extends Application {
 			// Create the rocket
 			double rocketX = WIDTH  / 2;
 			double rocketY = world.getGroundY() - 500;
-			double xVelocity = Math.random() * maxSpeed * 2 - maxSpeed;
+			double xVelocity = Math.random() * getMaxSpeed() * 2 - getMaxSpeed();
 			Vector2D acceleration = new Vector2D(0.0, World.GRAVITY);
 			Rocket autoRocket = new Rocket(rocketX, rocketY, getInitialFuel(), world.getGroundY());
 			autoRocket.getVelocity().setX(xVelocity);
@@ -582,7 +590,7 @@ public class RocketSimulator extends Application {
 		public void startUserControlledSimulation(Stage stage) {
 	
 			// Create the rocket
-			double xVelocity = Math.random() * maxSpeed * 2 - maxSpeed;
+			double xVelocity = Math.random() * getMaxSpeed() * 2 - getMaxSpeed();
 			Vector2D acceleration = new Vector2D(0.0, World.GRAVITY);
 			double rocketX = WIDTH  / 2;
 			double rocketY = world.getGroundY() - 500;
