@@ -1,5 +1,5 @@
-# Hoverslam
-An interactive simulation of the hoverslam rocketry maneuver
+# Rocket Simulator
+An interactive rocket landing simulator
 
 ![Hoverslam gif](https://thumbs.gfycat.com/TanJitteryBuffalo-size_restricted.gif)
 

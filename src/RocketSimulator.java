@@ -35,7 +35,7 @@ import world.World;
 import rocket.Rocket;
 import design.ColorPalette;
 
-public class HoverslamSimulator extends Application {
+public class RocketSimulator extends Application {
 
 	private final int WIDTH = 800;
 	private final int HEIGHT = 750;
@@ -168,7 +168,7 @@ public class HoverslamSimulator extends Application {
 	public void start(Stage stage) throws Exception {
 
 		primaryStage = stage;
-		primaryStage.setTitle("Hoverslam Simulation");
+		primaryStage.setTitle("Rocket Simulator");
 
 		primaryScene = new Scene(root, WIDTH, HEIGHT);
 
@@ -361,7 +361,7 @@ public class HoverslamSimulator extends Application {
 			Scene mainMenuScene = new Scene(stackPane, getWidth(), getHeight());
 			stage.setScene(mainMenuScene);
 			
-			Text title = new Text("Hoverslam Simulator");
+			Text title = new Text("Rocket Simulator");
 			title.setFont(Font.font("Tahoma", FontWeight.BOLD, FontPosture.REGULAR, 50));
 			title.setTranslateY(-getHeight() / 4);
 	

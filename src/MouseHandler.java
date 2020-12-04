@@ -3,15 +3,16 @@ import javafx.scene.input.MouseEvent;
 
 class MouseHandler implements EventHandler<MouseEvent> {
 	
-		HoverslamSimulator simulator;
+		RocketSimulator simulator;
 
-		MouseHandler(HoverslamSimulator simulator) {
+		MouseHandler(RocketSimulator simulator) {
 			this.simulator = simulator;
 		}
 
 		public void handle(MouseEvent arg0) {
 			//System.out.println(arg0.getEventType());
 			/*
+			TODO cleanup
 			mouseX = arg0.getX() + getGameCamera().getxOffset();
 			mouseY = arg0.getY() + getGameCamera().getyOffset();
 			if (arg0.getEventType().equals(MouseEvent.MOUSE_CLICKED)) {
