@@ -405,6 +405,13 @@ public class RocketSimulator extends Application {
 
 		}
 
+		/**
+		 * Returns a button of the given dimensions that returns the user to 
+		 * the main menu when clicked.
+		 * @param width the width of the button
+		 * @param height the height of the button
+		 * @return a 'Back to Main Menu' button
+		 */
 		public Button getBackToMainMenuButton(double width, double height) {
 
 			Button backToMainMenu = new Button("Back to Main Menu");
