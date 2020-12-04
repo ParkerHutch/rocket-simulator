@@ -8,13 +8,13 @@ import javafx.scene.paint.Color;
 import rocket.Entity;
 import rocket.Rocket;
 
-public class VelocityIndicator extends Entity {
+public class VerticalVelocityIndicator extends Entity {
 	
 	private double width;
 	private double height;
 	private Rocket rocket;
 	
-	public VelocityIndicator(double xOffset, double yOffset, 
+	public VerticalVelocityIndicator(double xOffset, double yOffset, 
 			double width, double height, Rocket rocket) {
 		
 		setxOffset(xOffset);

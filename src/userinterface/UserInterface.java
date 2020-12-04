@@ -24,7 +24,7 @@ public class UserInterface extends Entity {
 
 	private TogglePlayButton togglePlayButton;
 
-	private VelocityIndicator velocityIndicator;
+	private VerticalVelocityIndicator verticalVelocityIndicator;
 
 	private HorizontalVelocityIndicator horizontalVelocityIndicator;
 
@@ -50,11 +50,11 @@ public class UserInterface extends Entity {
 
 		setTogglePlayButton(new TogglePlayButton(maxWidth / 4, 160, 30, 30, animationTimer));
 
-		this.velocityIndicator = new VelocityIndicator(maxWidth / 4, 425, 70, 50, rocket);
+		this.verticalVelocityIndicator = new VerticalVelocityIndicator(maxWidth / 4, 425, 70, 50, rocket);
 		this.horizontalVelocityIndicator = new HorizontalVelocityIndicator(maxWidth / 4, 500, 70, 50, rocket);
 
 		interfaceElements.add(horizontalVelocityIndicator);
-		interfaceElements.add(velocityIndicator);
+		interfaceElements.add(verticalVelocityIndicator);
 
 		interfaceElements.add(getAltitudeIndicator());
 		interfaceElements.add(getFuelIndicator());
@@ -72,7 +72,7 @@ public class UserInterface extends Entity {
 	public void focusElements(Rocket rocket) {
 		getAltitudeIndicator().setRocket(rocket);
 		getFuelIndicator().setRocket(rocket);
-		velocityIndicator.setRocket(rocket);
+		verticalVelocityIndicator.setRocket(rocket);
 		horizontalVelocityIndicator.setRocket(rocket);
 	}
 
