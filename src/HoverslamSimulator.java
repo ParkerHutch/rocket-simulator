@@ -342,6 +342,10 @@ public class HoverslamSimulator extends Application {
 			double textButtonMargin = 20; // vertical distance between author and first button
 			double buttonMargin = 10; // vertical distance between buttons
 
+			double buttonWidth = 200;
+			double buttonHeight = 50;
+			double optionsButtonWidth = 100;
+
 			resetConfiguration();
 			
 			stage.sizeToScene();
@@ -364,7 +368,7 @@ public class HoverslamSimulator extends Application {
 			stackPane.getChildren().addAll(title, author);
 			
 			Button startComputerButton = new Button("Automatic Landing");
-			startComputerButton.setPrefSize(200, 50);
+			startComputerButton.setPrefSize(buttonWidth, buttonHeight);
 			startComputerButton.setAlignment(Pos.CENTER);
 			startComputerButton.setTranslateY(
 				author.getTranslateY() + author.getLayoutBounds().getHeight() + textButtonMargin);
@@ -372,7 +376,7 @@ public class HoverslamSimulator extends Application {
 			startComputerButton.setOnAction(event -> startComputerSimulation(stage));
 	
 			Button startUserButton = new Button("Interactive Landing");
-			startUserButton.setPrefSize(200, 50);
+			startUserButton.setPrefSize(buttonWidth, buttonHeight);
 			startUserButton.setAlignment(Pos.CENTER);
 			startUserButton.setTranslateY(
 				startComputerButton.getTranslateY() + startComputerButton.getPrefHeight() + buttonMargin);
@@ -381,7 +385,7 @@ public class HoverslamSimulator extends Application {
 			stackPane.getChildren().addAll(startComputerButton, startUserButton);
 
 			Button optionsMenuButton = new Button("Options");
-			optionsMenuButton.setPrefSize(200, 50);
+			optionsMenuButton.setPrefSize(optionsButtonWidth, buttonHeight);
 			optionsMenuButton.setAlignment(Pos.CENTER);
 			optionsMenuButton.setTranslateY(
 				startUserButton.getTranslateY() + startUserButton.getPrefHeight() + buttonMargin);
