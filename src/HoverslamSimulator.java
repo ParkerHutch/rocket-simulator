@@ -79,8 +79,8 @@ public class HoverslamSimulator extends Application {
 		
 		root = new Group();
 
-		autoLandingMenu = getMenuManager().getAutoLandingMenu();
-		root.getChildren().add(autoLandingMenu);
+		//autoLandingMenu = getMenuManager().getAutoLandingMenu();
+		//root.getChildren().add(autoLandingMenu);
 
 		world = new World(WIDTH, HEIGHT, getPalette());
 		world.setCenterOnRocketHorizontally(true);
@@ -140,6 +140,8 @@ public class HoverslamSimulator extends Application {
 						userLandingMenu.setVisible(true);
 
 					} else {
+						autoLandingMenu = getMenuManager().getAutoLandingMenu();
+						root.getChildren().add(autoLandingMenu);
 						autoLandingMenu.toFront();
 						autoLandingMenu.setVisible(true);
 					}
@@ -169,9 +171,11 @@ public class HoverslamSimulator extends Application {
 
 		world.getObjects().clear();
 		getUserInterface().reset();
-		autoLandingMenu.setVisible(false);
 		if (root.getChildren().contains(userLandingMenu)) {
 			root.getChildren().remove(userLandingMenu);
+		}
+		if (root.getChildren().contains(autoLandingMenu)) {
+			root.getChildren().remove(autoLandingMenu);
 		}
 
 	}
@@ -199,7 +203,6 @@ public class HoverslamSimulator extends Application {
 
 		addKeyboardHandling(primaryScene);
 		addMouseHandling(primaryScene);
-		
 
 		// NOTE: It's important for these buttons to be added to the root
 		// after the Canvas: they won't receive MouseEvents otherwise.
@@ -459,26 +462,48 @@ public class HoverslamSimulator extends Application {
 			Group autoLandingMenu = new Group();
 			autoLandingMenu.setVisible(false);
 
+			// horizontal distance between widest element and the box edge
+			double boxMargin = 10; 
 			double boxY = HEIGHT / 4 - 25; // top y coordinate of the box
 			double buttonWidth = 160;
 			double buttonHeight = 50;
-			double backgroundBoxWidth = 200;
 			
 			Text autoLandingMessage = new Text("Successful Landing");
-			autoLandingMessage.setFont(Font.font("Tahoma", FontWeight.BOLD, FontPosture.REGULAR, 16));
+			autoLandingMessage.setFont(Font.font("Tahoma", FontWeight.BOLD, FontPosture.REGULAR, 24));
 			autoLandingMessage.setTranslateY(boxY + 25);
 			autoLandingMessage.setTranslateX(WIDTH / 2 - 
 				autoLandingMessage.getLayoutBounds().getWidth() / 2);
 
+			double fuelConsumedProportion = 
+				world.getPrimaryRocket().getFuel() / getInitialFuel();
+			
+			Text fuelUsedText = new Text(
+				"Fuel Consumed: " + (int) (fuelConsumedProportion * 100) + "%"
+			);
+			fuelUsedText.setFont(Font.font("Tahoma", FontWeight.BOLD, FontPosture.REGULAR, 16));
+			fuelUsedText.setTranslateY(
+				autoLandingMessage.getTranslateY() + 
+				autoLandingMessage.getLayoutBounds().getHeight() + 10
+			);
+			fuelUsedText.setTranslateX(WIDTH / 2 - 
+				fuelUsedText.getLayoutBounds().getWidth() / 2
+			);
+
 			Button backToMainMenu = new Button("Back to Main Menu");
 			backToMainMenu.setTranslateY(
-				autoLandingMessage.getTranslateY() + autoLandingMessage.getLayoutBounds().getHeight());
+				fuelUsedText.getTranslateY() + 
+				fuelUsedText.getLayoutBounds().getHeight()
+			);
 			backToMainMenu.setTranslateX(WIDTH / 2 - buttonWidth / 2);
 			backToMainMenu.setPrefSize(buttonWidth, 50);
 			backToMainMenu.setAlignment(Pos.CENTER);
 			backToMainMenu.setOnAction(event -> showTitleScreen(getPrimaryStage()));
 			
 			double backToMainMenuBottomY = backToMainMenu.getTranslateY() + buttonHeight;
+			double backgroundBoxWidth = Math.max(
+				Math.max(autoLandingMessage.getLayoutBounds().getWidth(),
+					fuelUsedText.getLayoutBounds().getWidth()), 
+				backToMainMenu.getWidth()) + boxMargin;
 			double backgroundBoxHeight = backToMainMenuBottomY - boxY + 8;
 
 			Rectangle backgroundBox = new Rectangle(WIDTH / 2 - backgroundBoxWidth / 2, 
@@ -491,7 +516,8 @@ public class HoverslamSimulator extends Application {
 			backgroundBox.setStroke(Color.BLACK);
 			backgroundBox.setFill(Color.WHITE);
 
-			autoLandingMenu.getChildren().addAll(backgroundBox, autoLandingMessage, backToMainMenu);
+			autoLandingMenu.getChildren().addAll(
+				backgroundBox, autoLandingMessage, fuelUsedText, backToMainMenu);
 			return autoLandingMenu;
 
 		}
@@ -550,10 +576,27 @@ public class HoverslamSimulator extends Application {
 				angleTextBox.setFill(Color.BLACK);
 			}
 
+			double fuelConsumedProportion = 
+				world.getPrimaryRocket().getFuel() / getInitialFuel();
+			
+			Text fuelUsedText = new Text(
+				"Fuel Consumed: " + (int) (fuelConsumedProportion * 100) + "%"
+			);
+			fuelUsedText.setFont(Font.font("Tahoma", FontWeight.BOLD, FontPosture.REGULAR, 16));
+			fuelUsedText.setTranslateY(
+				angleTextBox.getTranslateY() + 
+				angleTextBox.getLayoutBounds().getHeight() + 10
+			);
+			fuelUsedText.setTranslateX(WIDTH / 2 - 
+				fuelUsedText.getLayoutBounds().getWidth() / 2
+			);
+
+
+
 			Button backToMainMenu = new Button("Back to Main Menu");
 			backToMainMenu.setTranslateY(
-				angleTextBox.getTranslateY() + 
-				angleTextBox.getLayoutBounds().getHeight() - 5);
+				fuelUsedText.getTranslateY() + 
+				fuelUsedText.getLayoutBounds().getHeight() - 5);
 			backToMainMenu.setTranslateX(WIDTH / 2 - buttonWidth / 2);
 			backToMainMenu.setPrefSize(buttonWidth, buttonHeight);
 			backToMainMenu.setAlignment(Pos.CENTER);
@@ -574,7 +617,8 @@ public class HoverslamSimulator extends Application {
 			backgroundBox.setFill(Color.WHITE);
 
 			userLandingMenu.getChildren().addAll(
-				backgroundBox, landingTypeTextBox, velocityTextBox, angleTextBox, backToMainMenu);
+				backgroundBox, landingTypeTextBox, velocityTextBox, angleTextBox, fuelUsedText,
+				backToMainMenu);
 
 			return userLandingMenu;
 
