@@ -156,7 +156,6 @@ public class World {
 	public void drawSky(GraphicsContext gc) {
 		
 		gc.setFill(getPalette().getSkyColor());
-		//gc.setFill(Color.DEEPSKYBLUE); // TODO use color palette variable
 		
 		double leftX = -gc.getTransform().getTx();
 		double topY = -gc.getTransform().getTy();
@@ -176,7 +175,6 @@ public class World {
 	public void drawGround(GraphicsContext gc) {
 		
 		gc.setFill(getPalette().getGroundColor());
-		//gc.setFill(Color.GREEN);
 		double leftX = -gc.getTransform().getTx();
 		double topY = getWindowHeight() - getGroundHeight();
 		// Stretch the ground rectangle to the bottom of the screen

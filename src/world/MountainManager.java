@@ -169,7 +169,6 @@ public class MountainManager {
 		
 		fillViewingWindow(-gc.getTransform().getTx(), 500);
 		gc.setFill(getPalette().getMountainColor());
-		//gc.setFill(Color.SADDLEBROWN);
 		
 		for (int i = 0; i < getMountainXPoints().size() - 1; i++) {
 			
