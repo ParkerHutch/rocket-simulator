@@ -63,7 +63,7 @@ public class HoverslamSimulator extends Application {
 	Group userLandingMenu = new Group();
 
 
-	private ColorPalette palette;
+	private ColorPalette palette = ColorPalette.EARTH;
 
 	ObservableList<ColorPalette> paletteOptions = 
     			FXCollections.observableArrayList(
@@ -80,7 +80,7 @@ public class HoverslamSimulator extends Application {
 		autoLandingMenu = getMenuManager().getAutoLandingMenu();
 		root.getChildren().add(autoLandingMenu);
 
-		world = new World(WIDTH, HEIGHT);
+		world = new World(WIDTH, HEIGHT, getPalette());
 		world.setCenterOnRocketHorizontally(true);
 		world.setCenterOnRocketVertically(true);
 		

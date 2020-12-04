@@ -16,11 +16,11 @@ public class ColorPalette {
     }
 
     public static final ColorPalette EARTH = new ColorPalette(
-        "Earth", Color.BLUE, Color.BROWN, Color.ORANGE);
+        "Earth", Color.DEEPSKYBLUE, Color.GREEN, Color.SADDLEBROWN);
     public static final ColorPalette MARS = new ColorPalette(
         "Mars", Color.ORANGERED, Color.ORANGE, Color.BROWN);
     public static final ColorPalette NIGHT = new ColorPalette(
-        "Night", Color.BLACK, Color.BROWN, Color.ORANGE);
+        "Night", Color.DARKGRAY, Color.GREEN, Color.SADDLEBROWN);
 
     public String getName() {
         return this.name;

@@ -1,11 +1,12 @@
 package world;
 import java.util.ArrayList;
-
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+
 import rocket.Entity;
 import rocket.Rocket;
 import rocket.UserControlledRocket;
+import design.ColorPalette;
 
 public class World {
 	
@@ -26,16 +27,18 @@ public class World {
 
 	private Rocket primaryRocket;
 
+	private ColorPalette palette;
+
 	World() {}
 	
-	public World(double windowWidth, double windowHeight) {
+	public World(double windowWidth, double windowHeight, ColorPalette palette) {
 		
 		this.windowWidth = windowWidth;
 		this.windowHeight = windowHeight;
 		this.groundY = windowHeight - getGroundHeight();
 		this.mountainManager = new MountainManager(
-				windowWidth, 100, 100, groundY);
-		
+				windowWidth, 100, 100, groundY, palette);
+		this.palette = palette;
 	}
 
 	public double getWindowWidth() {
@@ -123,6 +126,15 @@ public class World {
 	public void setPrimaryRocket(Rocket primaryRocket) {
 		this.primaryRocket = primaryRocket;
 	}
+
+	public ColorPalette getPalette() {
+		return this.palette;
+	}
+
+	public void setPalette(ColorPalette palette) {
+		this.palette = palette;
+		getMountainManager().setPalette(palette);
+	}
 	
 	/**
 	 * Updates all the objects of the World, and increments
@@ -143,7 +155,8 @@ public class World {
 	
 	public void drawSky(GraphicsContext gc) {
 		
-		gc.setFill(Color.DEEPSKYBLUE); // TODO use color palette variable
+		gc.setFill(getPalette().getSkyColor());
+		//gc.setFill(Color.DEEPSKYBLUE); // TODO use color palette variable
 		
 		double leftX = -gc.getTransform().getTx();
 		double topY = -gc.getTransform().getTy();
@@ -162,7 +175,8 @@ public class World {
 	 */
 	public void drawGround(GraphicsContext gc) {
 		
-		gc.setFill(Color.GREEN);
+		gc.setFill(getPalette().getGroundColor());
+		//gc.setFill(Color.GREEN);
 		double leftX = -gc.getTransform().getTx();
 		double topY = getWindowHeight() - getGroundHeight();
 		// Stretch the ground rectangle to the bottom of the screen
