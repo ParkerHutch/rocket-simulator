@@ -8,50 +8,28 @@ import javafx.scene.paint.Color;
 import rocket.Entity;
 import rocket.Rocket;
 
-public class VerticalVelocityIndicator extends Entity {
-	
-	private double width;
-	private double height;
-	private Rocket rocket;
+public class VerticalVelocityIndicator extends VelocityIndicator {
 	
 	public VerticalVelocityIndicator(double xOffset, double yOffset, 
 			double width, double height, Rocket rocket) {
 		
-		setxOffset(xOffset);
-		setyOffset(yOffset);
-		this.width = width;
-		this.height = height;
-		this.rocket = rocket;
+		super(xOffset, yOffset, width, height, rocket);
 		
 	}
 
-	private Rocket getRocket() {
-		return rocket;
+	@Override
+	public String getVelocityText() {
+
+		return ""+Math.min(
+            Math.abs(Math.round(getRocket().getVelocity().getY() / 10) * 10), 
+            999
+        );
+
 	}
 
-	public void setRocket(Rocket rocket) {
-		this.rocket = rocket;
-	}
+	@Override
+    protected void drawVelocityArrow(GraphicsContext gc) {
 
-	public double getWidth() {
-		return width;
-	}
-
-	public void setWidth(double width) {
-		this.width = width;
-	}
-
-	public double getHeight() {
-		return height;
-	}
-
-	public void setHeight(double height) {
-		this.height = height;
-	}
-
-    private void drawVelocityArrow(GraphicsContext gc) {
-
-        // arrow
         gc.setLineWidth(3);
         double arrowWidth = getWidth() / 5;
         double arrowheadHeight = 10;
@@ -83,55 +61,4 @@ public class VerticalVelocityIndicator extends Entity {
 
     }
 
-    private void drawVelocityText(GraphicsContext gc) {
-		
-		gc.setFill(Color.WHITE);
-		
-		gc.setFill(Color.BLACK);
-		
-		gc.setTextAlign(TextAlignment.CENTER);
-		
-		//gc.setFont(new Font(20)); TODO use tahoma font
-		
-		gc.setTextBaseline(VPos.CENTER); // TODO needed?
-		
-        gc.fillText(
-            ""+Math.min(
-                Math.abs(Math.round(getRocket().getVelocity().getY() / 10) * 10), 
-                999
-            ),
-            getX() + getWidth() / 6, 
-			getY() + getHeight() / 2);
-
-	}
-
-	@Override
-	public void draw(GraphicsContext gc) {
-		
-		if (isVisible()) {
-            
-            // Background box
-			gc.setFill(Color.WHITE);
-            gc.fillRoundRect(getX() - getWidth() / 2, getY(), getWidth(), getHeight(), 10, 10);
-            gc.setStroke(Color.BLACK);
-            gc.setLineWidth(3);
-            gc.strokeRoundRect(getX() - getWidth() / 2, getY(), getWidth(), getHeight(), 10, 10);
-
-            drawVelocityArrow(gc);
-            drawVelocityText(gc);
-
-		}
-		
-		
-	}
-	
-	@Override
-	public void tick(double timeElapsed) {
-        
-        // TODO might not even need this method
-		
-	}
-	
-	
-	
 }
