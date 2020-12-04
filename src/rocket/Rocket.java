@@ -476,7 +476,6 @@ public class Rocket extends Entity {
 	@Override
 	public void draw(GraphicsContext gc) {
 		
-		//getComputer().draw(gc);
 		gc.save();
 		
 		rotateGraphicsContext(gc);
