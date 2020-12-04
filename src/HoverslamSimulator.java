@@ -393,7 +393,6 @@ public class HoverslamSimulator extends Application {
 
 		}
 		
-
 		public void showOptionsMenu(Stage stage) {
 
 			StackPane stackPane = new StackPane();
@@ -418,13 +417,11 @@ public class HoverslamSimulator extends Application {
 
 			ComboBox paletteSelector = new ComboBox<ColorPalette>(paletteOptions);
 			paletteSelector.setMinWidth(200);
+			paletteSelector.getSelectionModel().select(getPalette());
 			paletteSelector.setOnAction((Event event) -> {
 				setPalette((ColorPalette) paletteSelector.getSelectionModel().getSelectedItem());
 			});
 			stackPane.getChildren().add(paletteSelector);
-
-			// TODO the setPalette() function should probably call the setPalette() function
-			// for every relevant object
 
 		}
 
