@@ -20,7 +20,7 @@ public class ColorPalette {
     public static final ColorPalette MARS = new ColorPalette(
         "Mars", Color.ORANGERED, Color.ORANGE, Color.BROWN);
     public static final ColorPalette NIGHT = new ColorPalette(
-        "Night", Color.DARKGRAY, Color.GREEN, Color.SADDLEBROWN);
+        "Night", Color.DARKSLATEGRAY, Color.GREEN, Color.SADDLEBROWN);
 
     public String getName() {
         return this.name;
