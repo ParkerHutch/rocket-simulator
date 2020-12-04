@@ -455,8 +455,8 @@ public class HoverslamSimulator extends Application {
 
 			Group landingSummary = new Group();
 
-			// horizontal distance between widest element and the box edge
-			double boxMargin = 10; 
+			// distance between largest element and the box edge
+			double boxMargin = 16; 
 			double boxY = HEIGHT / 4 - 25; // top y coordinate of the box
 			double buttonWidth = 160;
 			double buttonHeight = 50;
@@ -465,16 +465,16 @@ public class HoverslamSimulator extends Application {
 			String landingMessage = crash ? "Crash" : "Successful Landing";
 
 			Text landingMessageText = new Text(landingMessage);
-			landingMessageText.setFont(Font.font("Tahoma", FontWeight.BOLD, FontPosture.REGULAR, 24));
-			landingMessageText.setTranslateY(boxY + 25);
+			landingMessageText.setFont(Font.font("Tahoma", FontWeight.BOLD, FontPosture.REGULAR, 26));
+			landingMessageText.setTranslateY(boxY + 20 + boxMargin);
 			landingMessageText.setTranslateX(WIDTH / 2 - 
 			landingMessageText.getLayoutBounds().getWidth() / 2);
 
 			Text velocityTextBox = new Text("Velocity: " + (int) world.getPrimaryRocket().getLandingVelocity());
-			velocityTextBox.setFont(Font.font("Tahoma", FontWeight.BOLD, FontPosture.REGULAR, 16));
+			velocityTextBox.setFont(Font.font("Tahoma", FontWeight.BOLD, FontPosture.REGULAR, 20));
 			velocityTextBox.setTranslateY(
 				landingMessageText.getTranslateY() + 
-				landingMessageText.getLayoutBounds().getHeight() - 5);
+				landingMessageText.getLayoutBounds().getHeight() + textMargin);
 			velocityTextBox.setTranslateX(WIDTH / 2 - velocityTextBox.getLayoutBounds().getWidth() / 2);
 			if (!acceptableVelocity) {
 				velocityTextBox.setFill(Color.RED);
@@ -483,7 +483,7 @@ public class HoverslamSimulator extends Application {
 			}
 			
 			Text angleTextBox = new Text("Angle: " + (int) userRocket.getDirection() + "\u00B0");
-			angleTextBox.setFont(Font.font("Tahoma", FontWeight.BOLD, FontPosture.REGULAR, 16));
+			angleTextBox.setFont(Font.font("Tahoma", FontWeight.BOLD, FontPosture.REGULAR, 20));
 			angleTextBox.setTranslateY(
 				velocityTextBox.getTranslateY() + 
 				velocityTextBox.getLayoutBounds().getHeight() + textMargin);
@@ -500,7 +500,7 @@ public class HoverslamSimulator extends Application {
 			Text fuelUsedText = new Text(
 				"Fuel Consumed: " + (int) (fuelConsumedProportion * 100) + "%"
 			);
-			fuelUsedText.setFont(Font.font("Tahoma", FontWeight.BOLD, FontPosture.REGULAR, 16));
+			fuelUsedText.setFont(Font.font("Tahoma", FontWeight.BOLD, FontPosture.REGULAR, 20));
 			fuelUsedText.setTranslateY(
 				angleTextBox.getTranslateY() + 
 				angleTextBox.getLayoutBounds().getHeight() + textMargin
