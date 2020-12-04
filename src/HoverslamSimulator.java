@@ -390,6 +390,16 @@ public class HoverslamSimulator extends Application {
 			stackPane.getChildren().add(optionsMenuButton);
 
 		}
+
+		public Button getBackToMainMenuButton(double width, double height) {
+
+			Button backToMainMenu = new Button("Back to Main Menu");
+			backToMainMenu.setPrefSize(width, height);
+			backToMainMenu.setOnAction(event -> showTitleScreen(getPrimaryStage()));
+
+			return backToMainMenu;
+
+		}
 		
 		public void showOptionsMenu(Stage stage) {
 
@@ -429,14 +439,11 @@ public class HoverslamSimulator extends Application {
 
 			stackPane.getChildren().add(paletteSelector);
 
-			Button backToMainMenu = new Button("Back to Main Menu");
+			Button backToMainMenu = getBackToMainMenuButton(200, 50);
 			backToMainMenu.setTranslateY(
 				paletteSelectorText.getTranslateY() + 
 				paletteSelectorText.getLayoutBounds().getHeight() + 
 				optionBackToMainMenuMargin);
-			backToMainMenu.setPrefSize(200, 50);
-			backToMainMenu.setAlignment(Pos.CENTER);
-			backToMainMenu.setOnAction(event -> showTitleScreen(getPrimaryStage()));
 
 			stackPane.getChildren().add(backToMainMenu);
 
@@ -510,15 +517,12 @@ public class HoverslamSimulator extends Application {
 				fuelUsedText.getLayoutBounds().getWidth() / 2
 			);
 
-			Button backToMainMenu = new Button("Back to Main Menu");
+			Button backToMainMenu = getBackToMainMenuButton(buttonWidth, buttonHeight);
 			backToMainMenu.setTranslateY(
 				fuelUsedText.getTranslateY() + 
 				fuelUsedText.getLayoutBounds().getHeight()
 			);
 			backToMainMenu.setTranslateX(WIDTH / 2 - buttonWidth / 2);
-			backToMainMenu.setPrefSize(buttonWidth, 50);
-			backToMainMenu.setAlignment(Pos.CENTER);
-			backToMainMenu.setOnAction(event -> showTitleScreen(getPrimaryStage()));
 			
 			double backToMainMenuBottomY = backToMainMenu.getTranslateY() + buttonHeight;
 			double backgroundBoxWidth = Math.max(
