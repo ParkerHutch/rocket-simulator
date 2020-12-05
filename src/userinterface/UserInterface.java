@@ -1,8 +1,6 @@
 package userinterface;
 import java.util.ArrayList;
 
-import javafx.animation.Animation;
-import javafx.animation.AnimationTimer;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import rocket.Entity;
@@ -36,7 +34,7 @@ public class UserInterface extends Entity {
 	private double buttonMargin = 15;
 
 	public UserInterface(double x, double y, double width, double height, 
-			Rocket rocket, double groundY, AnimationTimer animationTimer) {
+			Rocket rocket, double groundY) {
 		
 		super(x, y);
 		this.maxWidth = width * 2;
@@ -70,8 +68,8 @@ public class UserInterface extends Entity {
 		setTogglePlayButton(new TogglePlayButton(maxWidth / 4, 
 			bottomElementBottomY + buttonMargin,
 			30, 
-			30, 
-			animationTimer));
+			30
+		));
 		buttons.add(getTogglePlayButton());
 		buttons.add(new MinimizeMaximizeButton((maxWidth + 20) / 2, height / 2 - 50, 20, 50));
 		
@@ -212,6 +210,7 @@ public class UserInterface extends Entity {
 	public void tick(double timeElapsed) {
 
 		boolean timeIndicatorShouldPause = false;
+		// TODO I can clean a lot of this up since components are named now
 		for (CustomButton button : getButtons()) {
 
 			if (button.getClass() == MinimizeMaximizeButton.class) {

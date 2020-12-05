@@ -6,7 +6,6 @@ import javafx.scene.paint.Color;
 public class TogglePlayButton extends CustomButton {
 	
 	private String state = "PAUSE";
-	private AnimationTimer animator;
 	
 	private Color playButtonColor = Color.GREEN;
 	private Color pauseButtonColor = Color.RED;
@@ -14,11 +13,9 @@ public class TogglePlayButton extends CustomButton {
 	private double symbolWidth;
 	private double symbolHeight;
 	
-	public TogglePlayButton(double xOffset, double yOffset, double width, double height, 
-			AnimationTimer animator) {
+	public TogglePlayButton(double xOffset, double yOffset, double width, double height) {
 		
 		super(xOffset, yOffset, width, height);
-		this.animator = animator;
 		this.symbolWidth = width / 2;
 		this.symbolHeight = symbolWidth;
 	
@@ -64,14 +61,6 @@ public class TogglePlayButton extends CustomButton {
 		this.state = state;
 	}
 
-	private AnimationTimer getAnimator() {
-		return animator;
-	}
-
-	public void setAnimator(AnimationTimer animator) {
-		this.animator = animator;
-	}
-	
 	public void drawPlaySymbol(GraphicsContext gc) {
 		
 		double [] triangleXPoints = new double[] {
@@ -135,23 +124,15 @@ public class TogglePlayButton extends CustomButton {
 	@Override
 	void onClick() {
 		
-		if (getAnimator() != null) {
-			
-			if (getState().equals("PLAY")) {
+		if (getState().equals("PLAY")) {
 				
-				//getAnimator().start();
-				setState("PAUSE");
-				//draw(getGraphicsContext());
+			setState("PAUSE");
 
-			} else {
+		} else {
 
-				//getAnimator().stop();
-				setState("PLAY");
-				//draw(getGraphicsContext());
+			setState("PLAY");
 
-			}
-		} 
-		
+		}
 	}
 
 }

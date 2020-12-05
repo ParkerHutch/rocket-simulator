@@ -130,13 +130,12 @@ public class RocketSimulator extends Application {
 				if (!world.getPrimaryRocket().isAirborne() && !isLandingHandled()) {
 
 					/*
-						If a Rocket just landed, show the landing summary, stop
-						updating, and mark the landing as handled
+						If a Rocket just landed, show the landing summary
+						and mark the landing as handled
 					*/
 					landingSummary = getMenuManager().getLandingSummary();
 					root.getChildren().add(landingSummary);
 
-					getUserInterface().getTogglePlayButton().setState("PLAY");
 					setLandingHandled(true);
 					
 				}
@@ -148,8 +147,8 @@ public class RocketSimulator extends Application {
 		};
 		
 		userInterface = new UserInterface(0, 0, 100, HEIGHT, 
-				userRocket, 
-				world.getGroundY(), getAnimator());
+			userRocket, 
+			world.getGroundY());
 		
 	}
 
