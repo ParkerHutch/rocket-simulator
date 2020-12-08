@@ -46,12 +46,12 @@ public class UserInterface extends Entity {
 		setAltitudeIndicator(new AltitudeIndicator(maxWidth / 4, 20, 30, 100, rocket, 
 			rocket.getManeuverCalculator().calculateAltitude()));
 		
-		setFuelIndicator(new FuelIndicator(maxWidth / 4, 300, 30, 100, rocket));
+		setFuelIndicator(new FuelIndicator(maxWidth / 4, 30, 100, rocket));
 
-		setTimeIndicator(new TimeIndicator(maxWidth / 4, 200, 70, 70));
+		setTimeIndicator(new TimeIndicator(maxWidth / 4, 70, 70));
 
-		setVerticalVelocityIndicator(new VerticalVelocityIndicator(maxWidth / 4, 425, 70, 50, rocket));
-		setHorizontalVelocityIndicator(new HorizontalVelocityIndicator(maxWidth / 4, 500, 70, 50, rocket));
+		setVerticalVelocityIndicator(new VerticalVelocityIndicator(maxWidth / 4, 70, 50, rocket));
+		setHorizontalVelocityIndicator(new HorizontalVelocityIndicator(maxWidth / 4, 70, 50, rocket));
 
 		interfaceElements.add(getAltitudeIndicator());
 		interfaceElements.add(getFuelIndicator());
