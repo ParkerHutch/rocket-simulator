@@ -21,6 +21,17 @@ public class AltitudeIndicator extends Entity {
 		
 	}
 
+	public AltitudeIndicator(double xOffset,
+			double width, double height, Rocket rocket, 
+			double initialAltitude) {
+		
+		super(xOffset, 0, width, height);
+		this.rocket = rocket;
+
+		this.maxAltitude = initialAltitude;
+		
+	}
+
 	private Rocket getRocket() {
 		return rocket;
 	}

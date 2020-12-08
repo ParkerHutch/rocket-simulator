@@ -19,6 +19,15 @@ public class FuelIndicator extends Entity {
 		
 	}
 
+	public FuelIndicator(double xOffset, 
+			double width, double height, Rocket rocket) {
+		
+		super(xOffset, 0, width, height);
+		this.rocket = rocket;
+		this.maxFuelLevel = rocket.getFuel();
+		
+	}
+
 	public Rocket getRocket() {
 		return rocket;
 	}

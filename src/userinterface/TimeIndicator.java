@@ -29,6 +29,14 @@ public class TimeIndicator extends Entity {
 		
 	}
 
+	public TimeIndicator(double xOffset, double width, double height) {
+		
+		super(xOffset, 0, width, height);
+		this.timeLabelHeight = height / 4 + 5;
+		this.clockRadius = (height - timeLabelHeight) / 2;
+		
+	}
+
 	public double getInternalTime() {
 		return internalTime;
 	}

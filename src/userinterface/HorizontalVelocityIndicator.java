@@ -15,6 +15,13 @@ public class HorizontalVelocityIndicator extends VelocityIndicator {
 		
 		super(xOffset, yOffset, width, height, rocket);
 		
+    }
+    
+    public HorizontalVelocityIndicator(double xOffset,  
+			double width, double height, Rocket rocket) {
+		
+		super(xOffset, 0, width, height, rocket);
+		
 	}
 
 	@Override
