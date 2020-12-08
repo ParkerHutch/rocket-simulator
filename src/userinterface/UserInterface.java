@@ -24,6 +24,8 @@ public class UserInterface extends Entity {
 
 	private HorizontalVelocityIndicator horizontalVelocityIndicator;
 
+	private MinimizeMaximizeButton minimizeMaximizeButton;
+
 	ArrayList<CustomButton> buttons = new ArrayList<CustomButton>();
 	ArrayList<Entity> interfaceElements = new ArrayList<Entity>();
 	
@@ -35,7 +37,7 @@ public class UserInterface extends Entity {
 			Rocket rocket, double groundY) {
 		
 		super(x, y);
-		this.maxWidth = width * 2;
+		setMaxWidth(width * 2);
 		setWidth(width * 2);
 		setHeight(height);
 		
@@ -48,15 +50,15 @@ public class UserInterface extends Entity {
 
 		setTimeIndicator(new TimeIndicator(maxWidth / 4, 200, 70, 70));
 
-		this.verticalVelocityIndicator = new VerticalVelocityIndicator(maxWidth / 4, 425, 70, 50, rocket);
-		this.horizontalVelocityIndicator = new HorizontalVelocityIndicator(maxWidth / 4, 500, 70, 50, rocket);
+		setVerticalVelocityIndicator(new VerticalVelocityIndicator(maxWidth / 4, 425, 70, 50, rocket));
+		setHorizontalVelocityIndicator(new HorizontalVelocityIndicator(maxWidth / 4, 500, 70, 50, rocket));
 
 		interfaceElements.add(getAltitudeIndicator());
 		interfaceElements.add(getFuelIndicator());
 		interfaceElements.add(getTimeIndicator());
 
-		interfaceElements.add(horizontalVelocityIndicator);
-		interfaceElements.add(verticalVelocityIndicator);
+		interfaceElements.add(getHorizontalVelocityIndicator());
+		interfaceElements.add(getVerticalVelocityIndicator());
 
 		setUniformYOffsets(interfaceElements);
 		
@@ -69,7 +71,9 @@ public class UserInterface extends Entity {
 			30
 		));
 		buttons.add(getTogglePlayButton());
-		buttons.add(new MinimizeMaximizeButton((maxWidth + 20) / 2, height / 2 - 50, 20, 50));
+
+		setMinimizeMaximizeButton(new MinimizeMaximizeButton((maxWidth + 20) / 2, height / 2 - 50, 20, 50));
+		buttons.add(getMinimizeMaximizeButton());
 		
 	}
 
@@ -165,6 +169,33 @@ public class UserInterface extends Entity {
 	public void setTogglePlayButton(TogglePlayButton togglePlayButton) {
 		this.togglePlayButton = togglePlayButton;
 	}
+
+
+	public MinimizeMaximizeButton getMinimizeMaximizeButton() {
+		return this.minimizeMaximizeButton;
+	}
+
+	public void setMinimizeMaximizeButton(MinimizeMaximizeButton minimizeMaximizeButton) {
+		this.minimizeMaximizeButton = minimizeMaximizeButton;
+	}
+
+
+	public VerticalVelocityIndicator getVerticalVelocityIndicator() {
+		return this.verticalVelocityIndicator;
+	}
+
+	public void setVerticalVelocityIndicator(VerticalVelocityIndicator verticalVelocityIndicator) {
+		this.verticalVelocityIndicator = verticalVelocityIndicator;
+	}
+
+	public HorizontalVelocityIndicator getHorizontalVelocityIndicator() {
+		return this.horizontalVelocityIndicator;
+	}
+
+	public void setHorizontalVelocityIndicator(HorizontalVelocityIndicator horizontalVelocityIndicator) {
+		this.horizontalVelocityIndicator = horizontalVelocityIndicator;
+	}
+
 
 	public ArrayList<CustomButton> getButtons() {
 		return buttons;
