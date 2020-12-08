@@ -223,56 +223,55 @@ public class UserInterface extends Entity {
 	
 	public void tick(double timeElapsed) {
 
-		boolean timeIndicatorShouldPause = false;
-		// TODO I can clean a lot of this up since components are named now
+		// Derive the UI's maximized state from the minimize/maximize button
+		if (isMaximized() != getMinimizeMaximizeButton().isMaximized()) {
+			setMaximized(getMinimizeMaximizeButton().isMaximized());
+		}
+
+		if (isMaximized() && getWidth() < getMaxWidth()) {
+
+			/*
+				If the UI is maximized but doesn't have the maximized width
+				yet, increase the width by an amount proportional to the
+				difference between the current width and the maximized width.
+			*/
+			double widthDiff = getMaxWidth() - getWidth();
+			setWidth(getWidth() + widthDiff / getTransitionSpeed());
+
+		} else if (!isMaximized() && getWidth() > getMinWidth()) {
+
+			/*
+				If the UI is minimized but doesn't have the minimized width
+				yet, decrease the width by an amount proportional to the
+				difference between the current width and the minimized width.
+			*/
+			double widthDiff = getWidth() - getMinWidth();
+			setWidth(widthDiff / (1 + 1 / getTransitionSpeed()));
+
+		}
+
+		/*
+			Set the x-position pf the minimize/maximize button so it's on the 
+			right of the UI bar
+		*/
+		getMinimizeMaximizeButton().setxOffset((getWidth() + getMinimizeMaximizeButton().getWidth()) / 2);
+
 		for (CustomButton button : getButtons()) {
 
-			if (button.getClass() == MinimizeMaximizeButton.class) {
-
-				MinimizeMaximizeButton toggleButton = (MinimizeMaximizeButton) button;
-
-				if (isMaximized() != toggleButton.isMaximized()) {
-
-					setMaximized(toggleButton.isMaximized());
-
-				}
-
-				if (isMaximized() && getWidth() < getMaxWidth()) {
-
-					double widthDiff = getMaxWidth() - getWidth();
-					setWidth(getWidth() + widthDiff / 10);
-
-				} else if (!isMaximized() && getWidth() > getMinWidth()) {
-
-					double widthDiff = getWidth() - getMinWidth();
-					setWidth(widthDiff / (1 + 1 / getTransitionSpeed()));
-
-				}
-
-				toggleButton.setxOffset((getWidth() + toggleButton.getWidth()) / 2);
-
-			} else {
+			if (button.getClass() != MinimizeMaximizeButton.class) {
 
 				button.setDisable(!isMaximized());
 				button.setxOffset(getWidth() / 4);
 
-			}
-			
-			if (button.getClass() == TogglePlayButton.class) {
-				
-				timeIndicatorShouldPause = !((TogglePlayButton) button).getState().equals("PAUSE");
-				
-			}
+			} 
 			
 		}
 
+		// Derive the TimeIndicator's paused state from the TogglePlayButton's state
+		boolean timeIndicatorShouldPause = !getTogglePlayButton().getState().equals("PAUSE");
+		getTimeIndicator().setPaused(timeIndicatorShouldPause);
+
 		for (Entity element : getInterfaceElements()) {
-			
-			if (element.getClass() == TimeIndicator.class) {
-				
-				((TimeIndicator) element).setPaused(timeIndicatorShouldPause);
-				
-			}
 			
 			element.tick(timeElapsed);
 			element.setVisible(isMaximized());
