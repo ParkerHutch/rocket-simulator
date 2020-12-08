@@ -312,6 +312,10 @@ public class RocketSimulator extends Application {
 		private String paletteSelectorFontFamily = "Tahoma";
 		private double paletteSelectorFontSize = 18;
 
+		private double buttonWidth = 200;
+		private double buttonHeight = 50;
+		private double smallButtonWidth = buttonWidth / 2;
+
 		/**
 		 * Creates a MenuManager object configured for the given dimensions
 		 * @param width the width of the menu's window
@@ -367,10 +371,6 @@ public class RocketSimulator extends Application {
 			double textButtonMargin = 20; // vertical distance between author and first button
 			double buttonMargin = 10; // vertical distance between buttons
 
-			double buttonWidth = 200;
-			double buttonHeight = 50;
-			double optionsButtonWidth = 100;
-
 			resetConfiguration();
 			
 			stage.sizeToScene();
@@ -410,7 +410,7 @@ public class RocketSimulator extends Application {
 			stackPane.getChildren().addAll(startComputerButton, startUserButton);
 
 			Button optionsMenuButton = new Button("Options");
-			optionsMenuButton.setPrefSize(optionsButtonWidth, buttonHeight);
+			optionsMenuButton.setPrefSize(smallButtonWidth, buttonHeight);
 			optionsMenuButton.setAlignment(Pos.CENTER);
 			optionsMenuButton.setTranslateY(
 				startUserButton.getTranslateY() + startUserButton.getPrefHeight() + buttonMargin);
@@ -452,7 +452,6 @@ public class RocketSimulator extends Application {
 			
 			Text title = new Text("Options");
 			title.setFont(headingFont);
-			//title.setFont(Font.font("Tahoma", FontWeight.BOLD, FontPosture.REGULAR, 50));
 			title.setTranslateY(-getHeight() / 4);
 
 			stackPane.getChildren().add(title);
@@ -506,8 +505,6 @@ public class RocketSimulator extends Application {
 			// distance between largest element and the box edge
 			double boxMargin = 16; 
 			double boxY = HEIGHT / 4 - 25; // top y coordinate of the box
-			double buttonWidth = 200;
-			double buttonHeight = 50;
 			double textMargin = 5;
 			
 			String landingMessage = crash ? "Crash" : "Successful Landing";
