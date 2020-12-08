@@ -268,19 +268,6 @@ public class RocketSimulator extends Application {
 	private boolean shouldUpdateGame() {
 		
 		return getUserInterface().getTogglePlayButton().getState().equals("PAUSE");
-		/*
-		for (CustomButton button : getUserInterface().getButtons()) {
-			
-			if (button.getClass() == TogglePlayButton.class && !world.getPrimaryRocket().isAirborne()) {
-				
-				System.out.println("pausing");
-				return ((TogglePlayButton) button).getState().equals("PAUSE");
-				
-			}
-			
-		}*/
-
-		//return true;
 		
 	}
 
@@ -294,7 +281,6 @@ public class RocketSimulator extends Application {
 
 	public void setPalette(ColorPalette palette) {
 		this.palette = palette;
-		// Set the palette for all relevant objects
 		world.setPalette(palette);
 	}
 
@@ -596,7 +582,6 @@ public class RocketSimulator extends Application {
 	
 			// Create the rocket
 			double rocketX = WIDTH  / 2;
-			//double rocketY = world.getGroundY() - 500;
 			double xVelocity = Math.random() * getMaxSpeed() * 2 - getMaxSpeed();
 			Vector2D acceleration = new Vector2D(0.0, World.GRAVITY);
 			Rocket autoRocket = new Rocket(rocketX, 
@@ -629,7 +614,6 @@ public class RocketSimulator extends Application {
 			double xVelocity = Math.random() * getMaxSpeed() * 2 - getMaxSpeed();
 			Vector2D acceleration = new Vector2D(0.0, World.GRAVITY);
 			double rocketX = WIDTH  / 2;
-			//double rocketY = world.getGroundY() - 500; TODO remove
 			
 			userRocket.reset(rocketX, world.getGroundY() - getInitialRocketHeight(), getInitialFuel());
 			
