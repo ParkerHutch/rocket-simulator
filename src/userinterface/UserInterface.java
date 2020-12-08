@@ -34,7 +34,7 @@ public class UserInterface extends Entity {
 	private double buttonMargin = 15;
 
 	public UserInterface(double x, double y, double width, double height, 
-			Rocket rocket, double groundY) {
+			Rocket rocket, double groundY, double rocketInitialHeight) {
 		
 		super(x, y);
 		setMaxWidth(width * 2);
@@ -44,7 +44,7 @@ public class UserInterface extends Entity {
 		// TODO I shouldn't need the maneuver calculator below anymore,
 		// should be able to just pass in the initial altitude in rocket simulator.java
 		setAltitudeIndicator(new AltitudeIndicator(maxWidth / 4, 20, 30, 100, rocket, 
-			rocket.getManeuverCalculator().calculateAltitude()));
+			rocketInitialHeight));
 		
 		setFuelIndicator(new FuelIndicator(maxWidth / 4, 30, 100, rocket));
 

@@ -148,7 +148,8 @@ public class RocketSimulator extends Application {
 		
 		userInterface = new UserInterface(0, 0, 100, HEIGHT, 
 			userRocket, 
-			world.getGroundY());
+			world.getGroundY(),
+			getInitialRocketHeight());
 		
 	}
 
