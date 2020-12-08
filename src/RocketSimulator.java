@@ -609,7 +609,7 @@ public class RocketSimulator extends Application {
 
 			world.getObjects().add(autoRocket);
 			world.setPrimaryRocket(autoRocket);
-			userInterface.focusElements(autoRocket);
+			userInterface.calibrateElements(autoRocket);
 
 			stage.setScene(getSimulationScene()); 
 			animator.start();
@@ -641,7 +641,7 @@ public class RocketSimulator extends Application {
 	
 			world.getObjects().add(userRocket);
 			world.setPrimaryRocket(userRocket);
-			userInterface.focusElements(userRocket);
+			userInterface.calibrateElements(userRocket);
 
 			stage.setScene(getSimulationScene());
 			animator.start();

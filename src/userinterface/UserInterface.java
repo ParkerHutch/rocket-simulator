@@ -95,7 +95,7 @@ public class UserInterface extends Entity {
 	 * Updates the Rocket-tracking indicators to track the given Rocket object.
 	 * @param rocket the Rocket which the indicators should track
 	 */
-	public void focusElements(Rocket rocket) {
+	public void calibrateElements(Rocket rocket) {
 		getAltitudeIndicator().setRocket(rocket);
 		getFuelIndicator().setRocket(rocket);
 		verticalVelocityIndicator.setRocket(rocket);
