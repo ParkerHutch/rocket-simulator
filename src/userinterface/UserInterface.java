@@ -41,8 +41,6 @@ public class UserInterface extends Entity {
 		setWidth(width * 2);
 		setHeight(height);
 		
-		// TODO I shouldn't need the maneuver calculator below anymore,
-		// should be able to just pass in the initial altitude in rocket simulator.java
 		setAltitudeIndicator(new AltitudeIndicator(maxWidth / 4, 20, 30, 100, rocket, 
 			rocketInitialHeight));
 		
@@ -56,7 +54,6 @@ public class UserInterface extends Entity {
 		interfaceElements.add(getAltitudeIndicator());
 		interfaceElements.add(getFuelIndicator());
 		interfaceElements.add(getTimeIndicator());
-
 		interfaceElements.add(getHorizontalVelocityIndicator());
 		interfaceElements.add(getVerticalVelocityIndicator());
 
