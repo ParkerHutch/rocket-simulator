@@ -9,6 +9,7 @@ import rocket.Entity;
 
 public class TimeIndicator extends Entity {
 	
+	private boolean forcePaused = false;
 	private boolean paused = false;
 	private double width;
 	private double height;
@@ -55,6 +56,19 @@ public class TimeIndicator extends Entity {
 
 	public void setInternalTime(double internalTime) {
 		this.internalTime = internalTime;
+	}
+
+
+	public boolean isForcePaused() {
+		return this.forcePaused;
+	}
+
+	public boolean getForcePaused() {
+		return this.forcePaused;
+	}
+
+	public void setForcePaused(boolean forcePaused) {
+		this.forcePaused = forcePaused;
 	}
 
 	public boolean isPaused() {
@@ -209,7 +223,7 @@ public class TimeIndicator extends Entity {
 	@Override
 	public void tick(double timeElapsed) {
 
-		if (!isPaused()) {
+		if (!isPaused() && !isForcePaused()) {
 
 			setClockHandAngle(getClockHandAngle() + (timeElapsed * 360));
 			

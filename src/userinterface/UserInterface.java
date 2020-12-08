@@ -108,6 +108,7 @@ public class UserInterface extends Entity {
 		getTogglePlayButton().setState("PAUSE");
 		getTimeIndicator().setInternalTime(0);
 		getTimeIndicator().setPaused(false);
+		getTimeIndicator().setForcePaused(false);
 
 	}
 	

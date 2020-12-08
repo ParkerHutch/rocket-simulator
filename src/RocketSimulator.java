@@ -135,7 +135,7 @@ public class RocketSimulator extends Application {
 					*/
 					landingSummary = getMenuManager().getLandingSummary();
 					root.getChildren().add(landingSummary);
-
+					getUserInterface().getTimeIndicator().setForcePaused(true);
 					setLandingHandled(true);
 					
 				}
@@ -266,17 +266,20 @@ public class RocketSimulator extends Application {
 
 	private boolean shouldUpdateGame() {
 		
+		return getUserInterface().getTogglePlayButton().getState().equals("PAUSE");
+		/*
 		for (CustomButton button : getUserInterface().getButtons()) {
 			
-			if (button.getClass() == TogglePlayButton.class) {
+			if (button.getClass() == TogglePlayButton.class && !world.getPrimaryRocket().isAirborne()) {
 				
+				System.out.println("pausing");
 				return ((TogglePlayButton) button).getState().equals("PAUSE");
 				
 			}
 			
-		}
+		}*/
 
-		return true;
+		//return true;
 		
 	}
 
