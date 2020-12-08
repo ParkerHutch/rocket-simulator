@@ -296,7 +296,22 @@ public class RocketSimulator extends Application {
 	
 		// Hex code for the menu's background color
 		private String backgroundColorHex = "#4BCDFF";
+
+		private String headingFontFamily = "Tahoma";
+		private int headingFontSize = 50;
+		private Font headingFont = Font.font(headingFontFamily, FontWeight.BOLD, FontPosture.REGULAR, headingFontSize);
+
+		private String buttonFontFamily = "Tahoma";
+		private int buttonFontSize = 18;
+		private Font buttonFont = Font.font(buttonFontFamily, buttonFontSize);
+
+		private String optionFontFamily = "Tahoma";
+		private int optionFontSize = 24;
+		private Font optionFont = Font.font(optionFontFamily, FontWeight.BOLD, FontPosture.REGULAR, optionFontSize);
 		
+		private String paletteSelectorFontFamily = "Tahoma";
+		private double paletteSelectorFontSize = 18;
+
 		/**
 		 * Creates a MenuManager object configured for the given dimensions
 		 * @param width the width of the menu's window
@@ -367,11 +382,11 @@ public class RocketSimulator extends Application {
 			stage.setScene(mainMenuScene);
 			
 			Text title = new Text("Rocket Simulator");
-			title.setFont(Font.font("Tahoma", FontWeight.BOLD, FontPosture.REGULAR, 50));
+			title.setFont(headingFont);
 			title.setTranslateY(-getHeight() / 4);
 	
 			Text author = new Text("Parker Hutchinson");
-			author.setFont(Font.font("Tahoma", FontWeight.BOLD, FontPosture.REGULAR, 50));
+			author.setFont(headingFont);
 			author.setTranslateY(
 				title.getTranslateY() + title.getLayoutBounds().getHeight() + textMargin);
 	
@@ -382,7 +397,7 @@ public class RocketSimulator extends Application {
 			startComputerButton.setAlignment(Pos.CENTER);
 			startComputerButton.setTranslateY(
 				author.getTranslateY() + author.getLayoutBounds().getHeight() + textButtonMargin);
-			startComputerButton.setStyle("-fx-font-size:18");
+			startComputerButton.setFont(buttonFont);
 			startComputerButton.setOnAction(event -> startComputerSimulation(stage));
 	
 			Button startUserButton = new Button("Interactive Landing");
@@ -391,7 +406,7 @@ public class RocketSimulator extends Application {
 			startUserButton.setTranslateY(
 				startComputerButton.getTranslateY() + startComputerButton.getPrefHeight() + buttonMargin);
 			startUserButton.setOnAction(event -> startUserControlledSimulation(stage));
-			startUserButton.setStyle("-fx-font-size:18");
+			startUserButton.setFont(buttonFont);
 			stackPane.getChildren().addAll(startComputerButton, startUserButton);
 
 			Button optionsMenuButton = new Button("Options");
@@ -400,7 +415,7 @@ public class RocketSimulator extends Application {
 			optionsMenuButton.setTranslateY(
 				startUserButton.getTranslateY() + startUserButton.getPrefHeight() + buttonMargin);
 			optionsMenuButton.setOnAction(event -> showOptionsMenu(stage));
-			optionsMenuButton.setStyle("-fx-font-size:18");
+			optionsMenuButton.setFont(buttonFont);
 			stackPane.getChildren().add(optionsMenuButton);
 
 		}
@@ -417,6 +432,7 @@ public class RocketSimulator extends Application {
 			Button backToMainMenu = new Button("Back to Main Menu");
 			backToMainMenu.setPrefSize(width, height);
 			backToMainMenu.setOnAction(event -> showTitleScreen(getPrimaryStage()));
+			backToMainMenu.setFont(buttonFont);
 
 			return backToMainMenu;
 
@@ -435,13 +451,14 @@ public class RocketSimulator extends Application {
 			stage.setScene(optionsMenuScene);
 			
 			Text title = new Text("Options");
-			title.setFont(Font.font("Tahoma", FontWeight.BOLD, FontPosture.REGULAR, 50));
+			title.setFont(headingFont);
+			//title.setFont(Font.font("Tahoma", FontWeight.BOLD, FontPosture.REGULAR, 50));
 			title.setTranslateY(-getHeight() / 4);
 
 			stackPane.getChildren().add(title);
 			
 			Text paletteSelectorText = new Text("Color Palette");
-			paletteSelectorText.setFont(Font.font("Tahoma", FontWeight.BOLD, FontPosture.REGULAR, 24));
+			paletteSelectorText.setFont(optionFont);
 			paletteSelectorText.setTranslateY(
 				title.getTranslateY() + title.getLayoutBounds().getHeight() + titleOptionMargin);
 			paletteSelectorText.setTranslateX(-paletteSelectorText.getLayoutBounds().getWidth() / 2 - textButtonMargin / 2);
@@ -454,6 +471,8 @@ public class RocketSimulator extends Application {
 			paletteSelector.setOnAction((Event event) -> {
 				setPalette((ColorPalette) paletteSelector.getSelectionModel().getSelectedItem());
 			});
+			paletteSelector.setStyle("-fx-font: " + paletteSelectorFontSize + "px \"" + paletteSelectorFontFamily + "\";");
+
 
 			paletteSelector.setTranslateX(paletteSelector.getMinWidth()/2 + textButtonMargin / 2);
 			paletteSelector.setTranslateY(paletteSelectorText.getTranslateY());
@@ -487,7 +506,7 @@ public class RocketSimulator extends Application {
 			// distance between largest element and the box edge
 			double boxMargin = 16; 
 			double boxY = HEIGHT / 4 - 25; // top y coordinate of the box
-			double buttonWidth = 160;
+			double buttonWidth = 200;
 			double buttonHeight = 50;
 			double textMargin = 5;
 			
