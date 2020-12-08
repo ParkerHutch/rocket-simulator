@@ -10,8 +10,6 @@ public class UserInterface extends Entity {
 
 	private double minWidth = 0;
 	private double maxWidth;
-	private double width;
-	private double height;
 	private boolean maximized = true;
 	
 	private AltitudeIndicator altitudeIndicator;
@@ -38,8 +36,8 @@ public class UserInterface extends Entity {
 		
 		super(x, y);
 		this.maxWidth = width * 2;
-		this.width = width * 2;
-		this.height = height;
+		setWidth(width * 2);
+		setHeight(height);
 		
 		// TODO I shouldn't need the maneuver calculator below anymore,
 		// should be able to just pass in the initial altitude in rocket simulator.java
@@ -112,14 +110,6 @@ public class UserInterface extends Entity {
 
 	}
 	
-	public double getWidth() {
-		return width;
-	}
-
-	public void setWidth(double width) {
-		this.width = width;
-	}
-
 	public double getMinWidth() {
 		return minWidth;
 	}
@@ -134,14 +124,6 @@ public class UserInterface extends Entity {
 
 	public void setMaxWidth(double maxWidth) {
 		this.maxWidth = maxWidth;
-	}
-
-	public double getHeight() {
-		return height;
-	}
-
-	public void setHeight(double height) {
-		this.height = height;
 	}
 
 	public double getTransitionSpeed() {

@@ -6,8 +6,6 @@ import rocket.Rocket;
 
 public class FuelIndicator extends Entity {
 	
-	private double width;
-	private double height;
 	private Rocket rocket;
 	private double maxFuelLevel;
 	private Color baseColor = Color.LIGHTGRAY;
@@ -15,10 +13,7 @@ public class FuelIndicator extends Entity {
 	public FuelIndicator(double xOffset, double yOffset, 
 			double width, double height, Rocket rocket) {
 		
-		setxOffset(xOffset);
-		setyOffset(yOffset);
-		this.width = width;
-		this.height = height;
+		super(xOffset, yOffset, width, height);
 		this.rocket = rocket;
 		this.maxFuelLevel = rocket.getFuel();
 		
@@ -30,22 +25,6 @@ public class FuelIndicator extends Entity {
 
 	public void setRocket(Rocket rocket) {
 		this.rocket = rocket;
-	}
-
-	public double getWidth() {
-		return width;
-	}
-
-	public void setWidth(double width) {
-		this.width = width;
-	}
-
-	public double getHeight() {
-		return height;
-	}
-
-	public void setHeight(double height) {
-		this.height = height;
 	}
 
 	public Color getBaseColor() {

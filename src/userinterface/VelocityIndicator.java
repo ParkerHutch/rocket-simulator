@@ -10,17 +10,12 @@ import rocket.Rocket;
 
 public abstract class VelocityIndicator extends Entity {
 	
-	private double width;
-	private double height;
 	private Rocket rocket;
 	
 	public VelocityIndicator(double xOffset, double yOffset, 
 			double width, double height, Rocket rocket) {
 		
-		setxOffset(xOffset);
-		setyOffset(yOffset);
-		this.width = width;
-		this.height = height;
+		super(xOffset, yOffset, width, height);
 		this.rocket = rocket;
 		
 	}
@@ -31,22 +26,6 @@ public abstract class VelocityIndicator extends Entity {
 
 	public void setRocket(Rocket rocket) {
 		this.rocket = rocket;
-	}
-
-	public double getWidth() {
-		return width;
-	}
-
-	public void setWidth(double width) {
-		this.width = width;
-	}
-
-	public double getHeight() {
-		return height;
-	}
-
-	public void setHeight(double height) {
-		this.height = height;
 	}
 
     protected abstract void drawVelocityArrow(GraphicsContext gc);

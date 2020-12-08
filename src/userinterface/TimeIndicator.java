@@ -11,8 +11,6 @@ public class TimeIndicator extends Entity {
 	
 	private boolean forcePaused = false;
 	private boolean paused = false;
-	private double width;
-	private double height;
 	private double internalTime = 0;
 	
 	private double clockHandAngle = 90;
@@ -25,29 +23,10 @@ public class TimeIndicator extends Entity {
 	public TimeIndicator(double xOffset, double yOffset, 
 			double width, double height) {
 		
-		setxOffset(xOffset);
-		setyOffset(yOffset);
-		this.width = width;
-		this.height = height;
+		super(xOffset, yOffset, width, height);
 		this.timeLabelHeight = height / 4 + 5;
 		this.clockRadius = (height - timeLabelHeight) / 2;
 		
-	}
-
-	public double getWidth() {
-		return width;
-	}
-
-	public void setWidth(double width) {
-		this.width = width;
-	}
-
-	public double getHeight() {
-		return height;
-	}
-
-	public void setHeight(double height) {
-		this.height = height;
 	}
 
 	public double getInternalTime() {

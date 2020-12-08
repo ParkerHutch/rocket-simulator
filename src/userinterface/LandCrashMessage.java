@@ -6,8 +6,6 @@ import rocket.Entity;
 
 public class LandCrashMessage extends Entity {
 
-	private double width;
-	private double height;
 	private CustomButton backToMenuButton;
 	private CustomButton playAgainButton;
 	private Color baseColor = Color.LIGHTGRAY;
@@ -15,30 +13,10 @@ public class LandCrashMessage extends Entity {
 	public LandCrashMessage(double xOffset, double yOffset, 
 			double width, double height) {
 		
-		setxOffset(xOffset);
-		setyOffset(yOffset);
-		this.width = width;
-		this.height = height;
+		super(xOffset, yOffset, width, height);
 		
 	}
 	
-	public double getWidth() {
-		return width;
-	}
-
-	public void setWidth(double width) {
-		this.width = width;
-	}
-
-	public double getHeight() {
-		return height;
-	}
-
-	public void setHeight(double height) {
-		this.height = height;
-	}
-	
-
 	public Color getBaseColor() {
 		return baseColor;
 	}

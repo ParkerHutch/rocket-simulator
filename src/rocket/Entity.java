@@ -62,6 +62,15 @@ public abstract class Entity {
 		this.yOffset = yOffset;
 	}
 
+
+	public Entity(double xOffset, double yOffset, double width, double height) {
+		this.xOffset = xOffset;
+		this.yOffset = yOffset;
+		this.width = width;
+		this.height = height;
+	}
+	
+
 	/**
 	 * Draws the Entity on a Canvas
 	 * @param gc the Canvas's GraphicsContext
