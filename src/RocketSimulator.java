@@ -82,7 +82,6 @@ public class RocketSimulator extends Application {
 		
 		// Initialize a rocket so that keyboard handling and the UI can be configured
 		double rocketX = WIDTH  / 2;
-		//double rocketY = world.getGroundY() - 500;
 		userRocket = new UserControlledRocket(rocketX, 
 			world.getGroundY() - getInitialRocketHeight(), 
 			getInitialFuel(), 
