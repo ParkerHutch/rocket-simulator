@@ -315,7 +315,6 @@ public class RocketSimulator extends Application {
 
 		private double buttonWidth = 200;
 		private double buttonHeight = 50;
-		private double smallButtonWidth = buttonWidth / 2;
 
 		/**
 		 * Creates a MenuManager object configured for the given dimensions
@@ -326,6 +325,7 @@ public class RocketSimulator extends Application {
 			
 			this.width = width;
 			this.height = height;
+
 			
 		}
 
@@ -343,6 +343,32 @@ public class RocketSimulator extends Application {
 		 */
 		private int getHeight() {
 			return height;
+		}
+
+		private double getButtonWidth() {
+
+			return buttonWidth;
+
+		}
+
+		private void setButtonWidth(double buttonWidth) {
+
+			this.buttonWidth = buttonWidth;
+
+		}
+
+		private double getSmallButtonWidth() {
+
+			return getButtonWidth() / 2;
+
+		}
+
+		private double getButtonHeight() {
+			return buttonHeight;
+		}
+
+		private void setButtonHeight(double buttonHeight) {
+			this.buttonHeight = buttonHeight;
 		}
 	
 		/**
@@ -410,7 +436,7 @@ public class RocketSimulator extends Application {
 			stackPane.getChildren().addAll(title, author);
 			
 			Button startComputerButton = new Button("Automatic Landing");
-			startComputerButton.setPrefSize(buttonWidth, buttonHeight);
+			startComputerButton.setPrefSize(getButtonWidth(), getButtonHeight());
 			startComputerButton.setAlignment(Pos.CENTER);
 			startComputerButton.setTranslateY(
 				author.getTranslateY() + author.getLayoutBounds().getHeight() + textButtonMargin);
@@ -419,8 +445,8 @@ public class RocketSimulator extends Application {
 			startComputerButton.setOnAction(event -> startComputerSimulation(stage));
 	
 			Button startUserButton = new Button("Interactive Landing");
-			startUserButton.setPrefSize(buttonWidth, buttonHeight);
-			startUserButton.setAlignment(Pos.CENTER);
+			startUserButton.setPrefSize(getButtonWidth(), getButtonHeight());
+			startUserButton.setAlignment(Pos.CENTER); // TODO remove?
 			startUserButton.setTranslateY(
 				startComputerButton.getTranslateY() + startComputerButton.getPrefHeight() + buttonMargin);
 			startUserButton.setOnAction(event -> startUserControlledSimulation(stage));
@@ -429,7 +455,7 @@ public class RocketSimulator extends Application {
 			stackPane.getChildren().addAll(startComputerButton, startUserButton);
 
 			Button optionsMenuButton = new Button("Options");
-			optionsMenuButton.setPrefSize(smallButtonWidth, buttonHeight);
+			optionsMenuButton.setPrefSize(getSmallButtonWidth(), getButtonHeight());
 			optionsMenuButton.setAlignment(Pos.CENTER);
 			optionsMenuButton.setTranslateY(
 				startUserButton.getTranslateY() + startUserButton.getPrefHeight() + buttonMargin);
@@ -576,14 +602,14 @@ public class RocketSimulator extends Application {
 				fuelUsedText.getLayoutBounds().getWidth() / 2
 			);
 
-			Button backToMainMenu = getBackToMainMenuButton(buttonWidth, buttonHeight);
+			Button backToMainMenu = getBackToMainMenuButton(getButtonWidth(), getButtonHeight());
 			backToMainMenu.setTranslateY(
 				fuelUsedText.getTranslateY() + 
 				fuelUsedText.getLayoutBounds().getHeight()
 			);
-			backToMainMenu.setTranslateX(WIDTH / 2 - buttonWidth / 2);
+			backToMainMenu.setTranslateX(WIDTH / 2 - getButtonWidth() / 2);
 			
-			double backToMainMenuBottomY = backToMainMenu.getTranslateY() + buttonHeight;
+			double backToMainMenuBottomY = backToMainMenu.getTranslateY() + getButtonHeight();
 			double backgroundBoxWidth = Math.max(
 				Math.max(landingMessageText.getLayoutBounds().getWidth(),
 					fuelUsedText.getLayoutBounds().getWidth()), 
