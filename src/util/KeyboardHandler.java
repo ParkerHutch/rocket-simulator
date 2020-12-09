@@ -1,4 +1,4 @@
-package general;
+package util;
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyEvent;
 import rocket.UserControlledRocket;
