@@ -34,6 +34,7 @@ import userinterface.UserInterface;
 import world.World;
 import rocket.Rocket;
 import design.ColorPalette;
+import general.KeyboardHandler;
 
 public class RocketSimulator extends Application {
 

@@ -1,3 +1,4 @@
+package general;
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyEvent;
 import rocket.UserControlledRocket;
@@ -11,7 +12,7 @@ public class KeyboardHandler implements EventHandler<KeyEvent> {
 	
 	UserControlledRocket userRocket;
 
-	KeyboardHandler(UserControlledRocket userRocket) {
+	public KeyboardHandler(UserControlledRocket userRocket) {
 		
 		this.userRocket = userRocket;
 	
