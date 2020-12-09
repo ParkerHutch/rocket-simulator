@@ -2,7 +2,7 @@ package userinterface;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.paint.Color;
-import rocket.Entity;
+import util.Entity;
 
 public abstract class CustomButton extends Button {
 

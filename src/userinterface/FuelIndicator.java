@@ -1,7 +1,7 @@
 package userinterface;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
-import rocket.Entity;
+import util.Entity;
 import rocket.Rocket;
 
 public class FuelIndicator extends Entity {

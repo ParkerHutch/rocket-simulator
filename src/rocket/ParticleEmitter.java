@@ -1,9 +1,9 @@
 package rocket;
 import java.util.Iterator;
 import java.util.LinkedList;
-
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import util.Entity;
 
 public class ParticleEmitter extends Entity {
 	

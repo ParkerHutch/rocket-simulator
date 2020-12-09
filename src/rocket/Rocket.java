@@ -5,6 +5,7 @@ import javafx.scene.shape.ArcType;
 import javafx.scene.transform.Affine;
 import javafx.scene.transform.Rotate;
 import world.World;
+import util.Entity;
 
 /**
  * @author Parker Hutchinson

@@ -5,7 +5,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.paint.Color;
-import rocket.Entity;
+import util.Entity;
 import rocket.Rocket;
 
 public abstract class VelocityIndicator extends Entity {

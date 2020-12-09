@@ -5,7 +5,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.ArcType;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
-import rocket.Entity;
+import util.Entity;
 
 public class TimeIndicator extends Entity {
 	

@@ -3,7 +3,7 @@ import java.util.ArrayList;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
-import rocket.Entity;
+import util.Entity;
 import rocket.Rocket;
 import rocket.UserControlledRocket;
 import design.ColorPalette;

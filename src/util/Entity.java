@@ -1,6 +1,7 @@
-package rocket;
+package util;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import rocket.Vector2D;
 
 public abstract class Entity {
 	
