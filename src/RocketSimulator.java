@@ -309,7 +309,7 @@ public class RocketSimulator extends Application {
 
 		private String buttonFontFamily = "Tahoma";
 		private int buttonFontSize = 18;
-		private Font buttonFont = Font.font(buttonFontFamily, buttonFontSize);
+		private Font buttonFont = Font.font(buttonFontFamily, FontWeight.BOLD, FontPosture.REGULAR, buttonFontSize);
 
 		private String optionFontFamily = "Tahoma";
 		private int optionFontSize = 24;
