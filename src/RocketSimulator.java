@@ -547,8 +547,8 @@ public class RocketSimulator extends Application {
 			});
 			paletteSelector.setStyle(
 				"-fx-font: " + paletteSelectorFontSize + "px \"" + paletteSelectorFontFamily + "\";" +
-				"-fx-background-color: " + getButtonColorHex() + ";" + 
-				"-fx-text-fill: " + getTextColorHex() + ";");
+				"-fx-background-color: " + getButtonColorHex() + ";"
+			);
 			
 			paletteSelector.setTranslateX(paletteSelector.getMinWidth()/2 + textButtonMargin / 2);
 			paletteSelector.setTranslateY(paletteSelectorText.getTranslateY());
