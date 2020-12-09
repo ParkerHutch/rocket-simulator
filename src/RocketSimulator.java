@@ -295,8 +295,9 @@ public class RocketSimulator extends Application {
 		private int height;
 	
 		// Hex code for the menu's background color
-		private String backgroundColorHex = "#4BCDFF";
-		private String buttonColorHex = "#82E0AA";
+		private String backgroundColorHex = "#0033A0";
+		private String buttonColorHex = "#E4002B";
+		private String textColorHex = "#75787B";
 
 		private String headingFontFamily = "Tahoma";
 		private int headingFontSize = 50;
@@ -407,6 +408,22 @@ public class RocketSimulator extends Application {
 		public String getButtonColorHex() {
 			return buttonColorHex;
 		}
+
+		/**
+		 * Sets the fill color for all text.
+		 * @param colorCode the Hex code for the text color
+		 */
+		public void setTextColorHex(String colorCode) {
+			this.textColorHex = colorCode;
+		}
+		
+		/**
+		 * Gets the fill color used for all text.
+		 * @return the text fill color's Hex code
+		 */
+		public String getTextColorHex() {
+			return textColorHex;
+		}
 		
 		/**
 		 * Shows a title screen menu on the stage given. The menu includes
@@ -430,10 +447,12 @@ public class RocketSimulator extends Application {
 			
 			Text title = new Text("Rocket Simulator");
 			title.setFont(headingFont);
+			title.setFill(Color.web(getTextColorHex()));
 			title.setTranslateY(-getHeight() / 4);
 	
 			Text author = new Text("Parker Hutchinson");
 			author.setFont(subheadingFont);
+			author.setFill(Color.web(getTextColorHex()));
 			author.setTranslateY(
 				title.getTranslateY() + title.getLayoutBounds().getHeight());
 	
@@ -444,7 +463,9 @@ public class RocketSimulator extends Application {
 			startComputerButton.setTranslateY(
 				author.getTranslateY() + author.getLayoutBounds().getHeight() + textButtonMargin);
 			startComputerButton.setFont(buttonFont);
-			startComputerButton.setStyle("-fx-background-color: " + getButtonColorHex() + ";");
+			startComputerButton.setStyle(
+				"-fx-background-color: " + getButtonColorHex() + ";" + 
+				"-fx-text-fill: " + getTextColorHex() + ";");
 			startComputerButton.setOnAction(event -> startComputerSimulation(stage));
 	
 			Button startUserButton = new Button("Interactive Landing");
@@ -453,7 +474,9 @@ public class RocketSimulator extends Application {
 				startComputerButton.getTranslateY() + startComputerButton.getPrefHeight() + buttonMargin);
 			startUserButton.setOnAction(event -> startUserControlledSimulation(stage));
 			startUserButton.setFont(buttonFont);
-			startUserButton.setStyle("-fx-background-color: " + getButtonColorHex() + ";");
+			startUserButton.setStyle(
+				"-fx-background-color: " + getButtonColorHex() + ";" + 
+				"-fx-text-fill: " + getTextColorHex() + ";");
 			stackPane.getChildren().addAll(startComputerButton, startUserButton);
 
 			Button optionsMenuButton = new Button("Options");
@@ -462,7 +485,9 @@ public class RocketSimulator extends Application {
 				startUserButton.getTranslateY() + startUserButton.getPrefHeight() + buttonMargin);
 			optionsMenuButton.setOnAction(event -> showOptionsMenu(stage));
 			optionsMenuButton.setFont(buttonFont);
-			optionsMenuButton.setStyle("-fx-background-color: " + getButtonColorHex() + ";");
+			optionsMenuButton.setStyle(
+				"-fx-background-color: " + getButtonColorHex() + ";" +
+				"-fx-text-fill: " + getTextColorHex() + ";");
 			stackPane.getChildren().add(optionsMenuButton);
 
 		}
@@ -480,7 +505,9 @@ public class RocketSimulator extends Application {
 			backToMainMenu.setPrefSize(width, height);
 			backToMainMenu.setOnAction(event -> showTitleScreen(getPrimaryStage()));
 			backToMainMenu.setFont(buttonFont);
-			backToMainMenu.setStyle("-fx-background-color: " + getButtonColorHex() + ";");
+			backToMainMenu.setStyle(
+				"-fx-background-color: " + getButtonColorHex() + ";" +
+				"-fx-text-fill: " + getTextColorHex() + ";");
 
 			return backToMainMenu;
 
@@ -519,9 +546,10 @@ public class RocketSimulator extends Application {
 				setPalette((ColorPalette) paletteSelector.getSelectionModel().getSelectedItem());
 			});
 			paletteSelector.setStyle(
-				"-fx-font: " + paletteSelectorFontSize + "px \"" + paletteSelectorFontFamily + "\";"
-				+ "-fx-background-color: " + getButtonColorHex() + ";");
-
+				"-fx-font: " + paletteSelectorFontSize + "px \"" + paletteSelectorFontFamily + "\";" +
+				"-fx-background-color: " + getButtonColorHex() + ";" + 
+				"-fx-text-fill: " + getTextColorHex() + ";");
+			
 			paletteSelector.setTranslateX(paletteSelector.getMinWidth()/2 + textButtonMargin / 2);
 			paletteSelector.setTranslateY(paletteSelectorText.getTranslateY());
 
@@ -560,6 +588,8 @@ public class RocketSimulator extends Application {
 
 			Text landingMessageText = new Text(landingMessage);
 			landingMessageText.setFont(Font.font("Tahoma", FontWeight.BOLD, FontPosture.REGULAR, 26));
+			landingMessageText.setFill(Color.web(getTextColorHex()));
+			landingMessageText.setStyle("-fx-text-fill: " + getTextColorHex() + ";");
 			landingMessageText.setTranslateY(boxY + 20 + boxMargin);
 			landingMessageText.setTranslateX(WIDTH / 2 - 
 			landingMessageText.getLayoutBounds().getWidth() / 2);
@@ -571,9 +601,9 @@ public class RocketSimulator extends Application {
 				landingMessageText.getLayoutBounds().getHeight() + textMargin);
 			velocityTextBox.setTranslateX(WIDTH / 2 - velocityTextBox.getLayoutBounds().getWidth() / 2);
 			if (!acceptableVelocity) {
-				velocityTextBox.setFill(Color.RED);
+				velocityTextBox.setFill(Color.YELLOW);
 			} else {
-				velocityTextBox.setFill(Color.BLACK);
+				velocityTextBox.setFill(Color.web(getTextColorHex()));
 			}
 			
 			Text angleTextBox = new Text("Angle: " + (int) world.getPrimaryRocket().getDirection() + "\u00B0");
@@ -583,9 +613,9 @@ public class RocketSimulator extends Application {
 				velocityTextBox.getLayoutBounds().getHeight() + textMargin);
 			angleTextBox.setTranslateX(WIDTH / 2 - angleTextBox.getLayoutBounds().getWidth() / 2);
 			if (!acceptableAngle) {
-				angleTextBox.setFill(Color.RED);
+				angleTextBox.setFill(Color.YELLOW);
 			} else {
-				angleTextBox.setFill(Color.BLACK);
+				angleTextBox.setFill(Color.web(getTextColorHex()));
 			}
 
 			double fuelConsumedProportion = 
@@ -595,6 +625,7 @@ public class RocketSimulator extends Application {
 				"Fuel Consumed: " + (int) (fuelConsumedProportion * 100) + "%"
 			);
 			fuelUsedText.setFont(Font.font("Tahoma", FontWeight.BOLD, FontPosture.REGULAR, 20));
+			fuelUsedText.setFill(Color.web(getTextColorHex()));
 			fuelUsedText.setTranslateY(
 				angleTextBox.getTranslateY() + 
 				angleTextBox.getLayoutBounds().getHeight() + textMargin
@@ -625,8 +656,8 @@ public class RocketSimulator extends Application {
 			backgroundBox.setArcWidth(10); // round edges
 			backgroundBox.setArcHeight(10); // round edges
 			backgroundBox.setStrokeWidth(3);
-			backgroundBox.setStroke(Color.BLACK);
-			backgroundBox.setFill(Color.WHITE);
+			backgroundBox.setStroke(Color.BLACK); // TODO use declared variables here
+			backgroundBox.setFill(Color.web(getBackgroundColorHex()));
 
 			Group landingSummary = new Group();
 			landingSummary.getChildren().addAll(
