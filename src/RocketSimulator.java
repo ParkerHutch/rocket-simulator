@@ -296,6 +296,7 @@ public class RocketSimulator extends Application {
 	
 		// Hex code for the menu's background color
 		private String backgroundColorHex = "#4BCDFF";
+		private String buttonColorHex = "#82E0AA";
 
 		private String headingFontFamily = "Tahoma";
 		private int headingFontSize = 50;
@@ -348,16 +349,32 @@ public class RocketSimulator extends Application {
 		 * Sets the background color of the menu
 		 * @param colorCode the Hex code for the background color
 		 */
-		public void setbackgroundColorHex(String colorCode) {
+		public void setBackgroundColorHex(String colorCode) {
 			this.backgroundColorHex = colorCode;
 		}
 		
 		/**
-		 * Gets the background color of the menu
+		 * Gets the background color of the menu.
 		 * @return the background color's Hex code
 		 */
-		public String getbackgroundColorHex() {
+		public String getBackgroundColorHex() {
 			return backgroundColorHex;
+		}
+
+		/**
+		 * Sets the fill color for all Buttons.
+		 * @param colorCode the Hex code for the Button color
+		 */
+		public void setButtonColorHex(String colorCode) {
+			this.buttonColorHex = colorCode;
+		}
+		
+		/**
+		 * Gets the fill color used for all Buttons.
+		 * @return the Button fill color's Hex code
+		 */
+		public String getButtonColorHex() {
+			return buttonColorHex;
 		}
 		
 		/**
@@ -376,7 +393,7 @@ public class RocketSimulator extends Application {
 			stage.sizeToScene();
 
 			StackPane stackPane = new StackPane();
-			stackPane.setStyle("-fx-background-color: " + getbackgroundColorHex());
+			stackPane.setStyle("-fx-background-color: " + getBackgroundColorHex());
 	
 			Scene mainMenuScene = new Scene(stackPane, getWidth(), getHeight());
 			stage.setScene(mainMenuScene);
@@ -398,6 +415,7 @@ public class RocketSimulator extends Application {
 			startComputerButton.setTranslateY(
 				author.getTranslateY() + author.getLayoutBounds().getHeight() + textButtonMargin);
 			startComputerButton.setFont(buttonFont);
+			startComputerButton.setStyle("-fx-background-color: " + getButtonColorHex() + ";");
 			startComputerButton.setOnAction(event -> startComputerSimulation(stage));
 	
 			Button startUserButton = new Button("Interactive Landing");
@@ -407,6 +425,7 @@ public class RocketSimulator extends Application {
 				startComputerButton.getTranslateY() + startComputerButton.getPrefHeight() + buttonMargin);
 			startUserButton.setOnAction(event -> startUserControlledSimulation(stage));
 			startUserButton.setFont(buttonFont);
+			startUserButton.setStyle("-fx-background-color: " + getButtonColorHex() + ";");
 			stackPane.getChildren().addAll(startComputerButton, startUserButton);
 
 			Button optionsMenuButton = new Button("Options");
@@ -416,6 +435,7 @@ public class RocketSimulator extends Application {
 				startUserButton.getTranslateY() + startUserButton.getPrefHeight() + buttonMargin);
 			optionsMenuButton.setOnAction(event -> showOptionsMenu(stage));
 			optionsMenuButton.setFont(buttonFont);
+			optionsMenuButton.setStyle("-fx-background-color: " + getButtonColorHex() + ";");
 			stackPane.getChildren().add(optionsMenuButton);
 
 		}
@@ -433,6 +453,7 @@ public class RocketSimulator extends Application {
 			backToMainMenu.setPrefSize(width, height);
 			backToMainMenu.setOnAction(event -> showTitleScreen(getPrimaryStage()));
 			backToMainMenu.setFont(buttonFont);
+			backToMainMenu.setStyle("-fx-background-color: " + getButtonColorHex() + ";");
 
 			return backToMainMenu;
 
@@ -445,7 +466,7 @@ public class RocketSimulator extends Application {
 			double optionBackToMainMenuMargin = 50;
 
 			StackPane stackPane = new StackPane();
-			stackPane.setStyle("-fx-background-color: " + getbackgroundColorHex());
+			stackPane.setStyle("-fx-background-color: " + getBackgroundColorHex());
 	
 			Scene optionsMenuScene = new Scene(stackPane, getWidth(), getHeight());
 			stage.setScene(optionsMenuScene);
@@ -470,8 +491,9 @@ public class RocketSimulator extends Application {
 			paletteSelector.setOnAction((Event event) -> {
 				setPalette((ColorPalette) paletteSelector.getSelectionModel().getSelectedItem());
 			});
-			paletteSelector.setStyle("-fx-font: " + paletteSelectorFontSize + "px \"" + paletteSelectorFontFamily + "\";");
-
+			paletteSelector.setStyle(
+				"-fx-font: " + paletteSelectorFontSize + "px \"" + paletteSelectorFontFamily + "\";"
+				+ "-fx-background-color: " + getButtonColorHex() + ";");
 
 			paletteSelector.setTranslateX(paletteSelector.getMinWidth()/2 + textButtonMargin / 2);
 			paletteSelector.setTranslateY(paletteSelectorText.getTranslateY());
