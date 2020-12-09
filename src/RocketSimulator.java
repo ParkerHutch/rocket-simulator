@@ -297,7 +297,7 @@ public class RocketSimulator extends Application {
 		// Hex code for the menu's background color
 		private String backgroundColorHex = "#0033A0";
 		private String buttonColorHex = "#E4002B";
-		private String textColorHex = "#75787B";
+		private String textColorHex = "#8A8D8F";
 
 		private String headingFontFamily = "Tahoma";
 		private int headingFontSize = 50;
