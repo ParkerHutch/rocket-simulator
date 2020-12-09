@@ -318,7 +318,7 @@ public class RocketSimulator extends Application {
 		private String paletteSelectorFontFamily = "Tahoma";
 		private double paletteSelectorFontSize = 18;
 
-		private double buttonWidth = 200;
+		private double buttonWidth = 220;
 		private double buttonHeight = 50;
 
 		/**
@@ -331,7 +331,7 @@ public class RocketSimulator extends Application {
 			this.width = width;
 			this.height = height;
 
-			setButtonWidth(Math.max(200, width / 4.0));
+			setButtonWidth(Math.max(buttonWidth, width / 4.0));
 			
 		}
 
