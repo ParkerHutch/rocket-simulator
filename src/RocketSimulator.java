@@ -125,7 +125,7 @@ public class RocketSimulator extends Application {
 				world.draw(gc);
 				userInterface.draw(gc);
 				
-				if (shouldUpdateGame()) {
+				if (shouldUpdateSimulator()) {
 					world.tick(timeSinceLastUpdateSeconds);
 				}
 				
@@ -374,6 +374,9 @@ public class RocketSimulator extends Application {
 
 	}
 
+	/**
+	 * A class for serving user menus before and after simulations are started.
+	 */
 	private class MenuManager {
 	
 		private int width;
@@ -403,7 +406,7 @@ public class RocketSimulator extends Application {
 		private String paletteSelectorFontFamily = "Tahoma";
 		private double paletteSelectorFontSize = 18;
 
-		private double buttonWidth = 220;
+		private double buttonWidth = 210;
 		private double buttonHeight = 50;
 
 		/**
@@ -436,28 +439,48 @@ public class RocketSimulator extends Application {
 			return height;
 		}
 
+		/**
+		 * Gets the width associated with every normal button in the menus.
+		 * @return the normal button width
+		 */
 		private double getButtonWidth() {
 
 			return buttonWidth;
 
 		}
 
+		/**
+		 * Sets the width associated with every normal button in the menus.
+		 * @param buttonWidth the new button width
+		 */
 		private void setButtonWidth(double buttonWidth) {
 
 			this.buttonWidth = buttonWidth;
 
 		}
 
+		/**
+		 * Gets the width of the menu's small buttons.
+		 * @return the small button width
+		 */
 		private double getSmallButtonWidth() {
 
 			return getButtonWidth() / 2;
 
 		}
 
+		/**
+		 * Gets the height of every button in the menus.
+		 * @return the button height
+		 */
 		private double getButtonHeight() {
 			return buttonHeight;
 		}
 
+		/**
+		 * Sets the height used by every button in the menus.
+		 * @param buttonHeight the new button height
+		 */
 		private void setButtonHeight(double buttonHeight) {
 			this.buttonHeight = buttonHeight;
 		}
@@ -598,6 +621,11 @@ public class RocketSimulator extends Application {
 
 		}
 		
+		/**
+		 * Shows a menu allowing the user to customize options associated with
+		 * the simulation.
+		 * @param stage the stage to show the menu on
+		 */
 		public void showOptionsMenu(Stage stage) {
 
 			double textButtonMargin = 20;
