@@ -77,18 +77,18 @@ public class RocketSimulator extends Application {
 		
 		root = new Group();
 
+		// Create the World and center the camera on its Rocket
 		world = new World(WIDTH, HEIGHT, getPalette());
 		world.setCenterOnRocketHorizontally(true);
 		world.setCenterOnRocketVertically(true);
 		
-		// Initialize a rocket so that keyboard handling and the UI can be configured
+		// Initialize a rocket so that keyboard handling can be configured
 		double rocketX = WIDTH  / 2;
 		userRocket = new UserControlledRocket(rocketX, 
 			world.getGroundY() - getInitialRocketHeight(), 
 			getInitialFuel(), 
 			world.getGroundY());
 		world.setPrimaryRocket(userRocket);
-
 		keyboardHandler = new KeyboardHandler(userRocket);
 		
 		animator = new AnimationTimer() {
@@ -115,6 +115,8 @@ public class RocketSimulator extends Application {
 			
 			@Override
 			public void handle(long now) {
+
+				// SIMULATION LOOP
 
 				clearScreen(gc);
 
@@ -153,6 +155,9 @@ public class RocketSimulator extends Application {
 		
 	}
 
+	/**
+	 * Reset objects so that everything is cleared for a new simulation.
+	 */
 	public void resetConfiguration() {
 
 		world.getObjects().clear();
@@ -205,80 +210,159 @@ public class RocketSimulator extends Application {
 		scene.setOnKeyReleased(keyboardHandler);
 	}
 	
+	/**
+	 * Gets the GraphicsContext used to draw on the primary Stage's Canvas.
+	 * @return the primary Stage's Canvas's GraphicsContext
+	 */
 	private GraphicsContext getGraphicsContext() {
 		return gc;
 	}
 
+	/**
+	 * Gets the AnimationTimer which runs the simulation loop.
+	 * @return the simulation AnimationTimer
+	 */
 	private AnimationTimer getAnimator() {
 		return animator;
 	}
 
+	/**
+	 * Gets the stage used to display the simulation.
+	 * @return the primary stage
+	 */
 	public Stage getPrimaryStage() {
 		return primaryStage;
 	}
 	
+	/**
+	 * Sets the stage used to display the simulation.
+	 * @param primaryStage the new primary stage. 
+	 */
 	public void setPrimaryStage(Stage primaryStage) {
 		this.primaryStage = primaryStage;
 	}
 
+	/**
+	 * Gets the Scene associated with the simulation.
+	 * @return the simulation Scene
+	 */
 	public Scene getSimulationScene() {
 		return this.simulationScene;
 	}
 
+	/**
+	 * Sets the Scene associated with the simulation.
+	 * @param simulationScene the new simulation Scene
+	 */
 	public void setSimulationScene(Scene simulationScene) {
 		this.simulationScene = simulationScene;
 	}
 
+	/**
+	 * Gets the UserInterface used to control various aspects of the simulation.
+	 * @return the simulation's UserInterface
+	 */
 	private UserInterface getUserInterface() {
 		return userInterface;
 	}
 
+	/**
+	 * Gets the max speed the Rocket should have on initialization.
+	 * @return the max initial speed of the Rocket
+	 */
 	public double getMaxSpeed() {
 		return this.maxSpeed;
 	}
 
+	/**
+	 * Sets the max speed the Rocket should have on initialization.
+	 * @param maxSpeed the new max initial speed of the Rocket
+	 */
 	public void setMaxSpeed(double maxSpeed) {
 		this.maxSpeed = maxSpeed;
 	}
 
+	/**
+	 * Gets the fuel amount the Rocket has(or had) on initialization.
+	 * @return the Rocket's initial fuel amount
+	 */
 	public double getInitialFuel() {
 		return this.initialFuel;
 	}
 
+	/**
+	 * Sets the fuel amount the Rocket has on intialization.
+	 * @param initialFuel the Rocket's new initial fuel amount
+	 */
 	public void setInitialFuel(double initialFuel) {
 		this.initialFuel = initialFuel;
 	}
 
+	/**
+	 * Gets the height of the Rocket when the simulation is(was)
+	 * started. The height is the distance between the Rocket and the ground.
+	 * @return the Rocket's initial height
+	 */
 	public double getInitialRocketHeight() {
 		return this.initialRocketHeight;
 	}
 
+	/**
+	 * Sets the Rocket's distance from the ground on initialization.
+	 * @param initialRocketHeight the new initial height
+	 */
 	public void setInitialRocketHeight(double initialRocketHeight) {
 		this.initialRocketHeight = initialRocketHeight;
 	}
 
+	/**
+	 * Sets the status of the last landing handling.
+	 * @param landingHandled whether the landing was handled
+	 */
 	public void setLandingHandled(boolean landingHandled) {
 		this.landingHandled = landingHandled;
 	}
 
+	/**
+	 * Returns the status of the last landing's handling.
+	 * @return whether the last landing was handled
+	 */
 	public boolean isLandingHandled() {
 		return landingHandled;
 	}
 
-	private boolean shouldUpdateGame() {
+	/**
+	 * Determines if the simulator should update by checking the state of the
+	 * UserInterface's TogglePlayButton. Will return true if the button's state
+	 * is "PAUSE".
+	 * @return whether the simulator should update
+	 */
+	private boolean shouldUpdateSimulator() {
 		
 		return getUserInterface().getTogglePlayButton().getState().equals("PAUSE");
 		
 	}
 
+	/**
+	 * Gets the primary MenuManager.
+	 * @return the MenuManager
+	 */
 	private MenuManager getMenuManager() {
 		return menuManager;
 	}
 
+	/**
+	 * Gets the ColorPalette associated with the simulation.
+	 * @return the simulation's color palette
+	 */
 	public ColorPalette getPalette() {
 		return this.palette;
 	}
 
+	/**
+	 * Sets the simulation's and world's color palette to the one given.
+	 * @param palette the new color palette
+	 */
 	public void setPalette(ColorPalette palette) {
 		this.palette = palette;
 		world.setPalette(palette);
