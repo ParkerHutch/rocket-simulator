@@ -38,7 +38,7 @@ import design.ColorPalette;
 public class RocketSimulator extends Application {
 
 	private final int WIDTH = 800;
-	private final int HEIGHT = 750;
+	private final int HEIGHT = 700;
 
 	private Group root;
 	private Stage primaryStage;
