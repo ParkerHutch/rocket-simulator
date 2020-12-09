@@ -302,6 +302,10 @@ public class RocketSimulator extends Application {
 		private int headingFontSize = 50;
 		private Font headingFont = Font.font(headingFontFamily, FontWeight.BOLD, FontPosture.REGULAR, headingFontSize);
 
+		private String subheadingFontFamily = "Arial";
+		private int subheadingFontSize = 26;
+		private Font subheadingFont = Font.font(subheadingFontFamily, FontWeight.THIN, FontPosture.ITALIC, subheadingFontSize);
+
 		private String buttonFontFamily = "Tahoma";
 		private int buttonFontSize = 18;
 		private Font buttonFont = Font.font(buttonFontFamily, buttonFontSize);
@@ -326,6 +330,7 @@ public class RocketSimulator extends Application {
 			this.width = width;
 			this.height = height;
 
+			setButtonWidth(Math.max(200, width / 4.0));
 			
 		}
 
@@ -410,8 +415,7 @@ public class RocketSimulator extends Application {
 		 */
 		public void showTitleScreen(Stage stage) {
 			
-			double textMargin = 10; // vertical distance between title and author
-			double textButtonMargin = 20; // vertical distance between author and first button
+			double textButtonMargin = 30; // vertical distance between author and first button
 			double buttonMargin = 10; // vertical distance between buttons
 
 			resetConfiguration();
@@ -429,15 +433,14 @@ public class RocketSimulator extends Application {
 			title.setTranslateY(-getHeight() / 4);
 	
 			Text author = new Text("Parker Hutchinson");
-			author.setFont(headingFont);
+			author.setFont(subheadingFont);
 			author.setTranslateY(
-				title.getTranslateY() + title.getLayoutBounds().getHeight() + textMargin);
+				title.getTranslateY() + title.getLayoutBounds().getHeight());
 	
 			stackPane.getChildren().addAll(title, author);
 			
 			Button startComputerButton = new Button("Automatic Landing");
 			startComputerButton.setPrefSize(getButtonWidth(), getButtonHeight());
-			startComputerButton.setAlignment(Pos.CENTER);
 			startComputerButton.setTranslateY(
 				author.getTranslateY() + author.getLayoutBounds().getHeight() + textButtonMargin);
 			startComputerButton.setFont(buttonFont);
@@ -446,7 +449,6 @@ public class RocketSimulator extends Application {
 	
 			Button startUserButton = new Button("Interactive Landing");
 			startUserButton.setPrefSize(getButtonWidth(), getButtonHeight());
-			startUserButton.setAlignment(Pos.CENTER); // TODO remove?
 			startUserButton.setTranslateY(
 				startComputerButton.getTranslateY() + startComputerButton.getPrefHeight() + buttonMargin);
 			startUserButton.setOnAction(event -> startUserControlledSimulation(stage));
@@ -456,7 +458,6 @@ public class RocketSimulator extends Application {
 
 			Button optionsMenuButton = new Button("Options");
 			optionsMenuButton.setPrefSize(getSmallButtonWidth(), getButtonHeight());
-			optionsMenuButton.setAlignment(Pos.CENTER);
 			optionsMenuButton.setTranslateY(
 				startUserButton.getTranslateY() + startUserButton.getPrefHeight() + buttonMargin);
 			optionsMenuButton.setOnAction(event -> showOptionsMenu(stage));
