@@ -5,8 +5,6 @@ import util.Entity;
 
 public class Particle extends Entity {
 
-	// TODO: Do a fading away effect with lifetime (particle not transparent at start,
-	// very transparent towards end)
 	private double radius;
 	
 	private double initialLifetime = 5;
@@ -28,7 +26,6 @@ public class Particle extends Entity {
 	public Particle(double x, double y, Color color, double groundY) {
 		super(x, y, color);
 		this.groundY = groundY;
-
 	}
 	
 	/**
@@ -61,38 +58,54 @@ public class Particle extends Entity {
 		
 	}
 
+	/**
+	 * Gets the radius of the Particle.
+	 * @return the radius
+	 */
 	public double getRadius() {
 		return radius;
 	}
 
+	/**
+	 * Sets the radius of the Particle.
+	 * @param radius the new radius
+	 */
 	public void setRadius(double radius) {
 		this.radius = radius;
 	}
 
+	/**
+	 * Gets the amount of time the Particle will be alive for when created.
+	 * @return the Particle's lifetime on initialization
+	 */
 	public double getInitialLifetime() {
 		return initialLifetime;
 	}
 
+	/**
+	 * Sets the amount of time the Particle will be alive for when created.
+	 * @param initialLifetime the Particle's lifetime on initialization
+	 */
 	public void setInitialLifetime(double initialLifetime) {
 		this.initialLifetime = initialLifetime;
 	}
 
+	/**
+	 * Gets the amount of lifetime the Particle has left. When this value is 0,
+	 * the Particle will no longer be considered 'alive'.
+	 * @return the Particle's current lifetime left
+	 */
 	public double getLifetime() {
 		return lifetime;
 	}
 
+	/**
+	 * Sets the lifetime the Particle has left.
+	 * @param lifetime the Particle's time left to live
+	 */
 	public void setLifetime(double lifetime) {
 		this.lifetime = lifetime;
 	}
-
-	/*
-	public double getFadeProportionRate() {
-		return fadeProportionRate;
-	}
-
-	public void setFadeProportionRate(double fadeProportionRate) {
-		this.fadeProportionRate = fadeProportionRate;
-	}*/
 
 	/**
 	 * Decreases the Particle's lifetime by the time, in seconds, that has
@@ -171,8 +184,6 @@ public class Particle extends Entity {
 		setLifetime(getLifetime() - timeElapsed);
 		bounceOffGround(timeElapsed);
 		applyForces(timeElapsed);
-		//applyVelocity(timeElapsed);
-		
 		
 	}
 
