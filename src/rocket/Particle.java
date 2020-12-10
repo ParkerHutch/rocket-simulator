@@ -3,6 +3,9 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import util.Entity;
 
+/**
+ * A class used to store data about particles from Rocket exhaust.
+ */
 public class Particle extends Entity {
 
 	private double radius;
