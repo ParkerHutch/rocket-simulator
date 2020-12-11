@@ -4,7 +4,8 @@ import javafx.scene.input.KeyEvent;
 import rocket.UserControlledRocket;
 
 /**
- * A class for handling keyboard input
+ * A class for taking in keyboard input and using it to control the 
+ * simulation's UserControlledRocket.
  */
 public class KeyboardHandler implements EventHandler<KeyEvent> {
 
@@ -12,18 +13,22 @@ public class KeyboardHandler implements EventHandler<KeyEvent> {
 	
 	UserControlledRocket userRocket;
 
+	/**
+	 * Creates a KeyboardHandler that controls a given UserControlledRocket.
+	 * @param userRocket the UserControlledRocket to control
+	 */
 	public KeyboardHandler(UserControlledRocket userRocket) {
 		
 		this.userRocket = userRocket;
 	
 	}
 
+	@Override
 	public void handle(KeyEvent arg0) {
 
 		String code = arg0.getCode().toString().toUpperCase();
 		
 		if (arg0.getEventType() == KeyEvent.KEY_PRESSED) {
-			
 			
 			if ("WAD".contains(code) && !currentKeysPressed.contains(code)) {
 				
@@ -93,10 +98,18 @@ public class KeyboardHandler implements EventHandler<KeyEvent> {
 		
 	}
 
-	public UserControlledRocket getUserRocket() {
+	/**
+	 * Gets the UserControlledRocket that this KeyboardHandler controls.
+	 * @return the KeyboardHandler's UserControlledRocket
+	 */
+	private UserControlledRocket getUserRocket() {
 		return userRocket;
 	}
 
+	/**
+	 * Sets the UserControlledRocket that this KeyboardHandler controls.
+	 * @param userRocket the KeyboardHandler's UserControlledRocket
+	 */
 	public void setUserRocket(UserControlledRocket userRocket) {
 		this.userRocket = userRocket;
 	}
