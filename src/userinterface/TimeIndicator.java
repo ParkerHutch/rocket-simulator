@@ -7,6 +7,10 @@ import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import util.Entity;
 
+/**
+ * A clock element that shows the user how much time has passed since the start
+ * of the simulation.
+ */
 public class TimeIndicator extends Entity {
 	
 	private boolean forcePaused = false;
@@ -20,6 +24,13 @@ public class TimeIndicator extends Entity {
 	private double timeLabelWidth = 30; 
 	private double timeLabelHeight = 15;
 	
+	/**
+	 * Creates a TimeIndicator with the given x and y offsets and dimensions.
+	 * @param xOffset the TimeIndicator's x offset
+	 * @param yOffset the TimeIndicator's y offset
+	 * @param width the TimeIndicator's width
+	 * @param height the TimeIndicator's height
+	 */
 	public TimeIndicator(double xOffset, double yOffset, 
 			double width, double height) {
 		
@@ -29,6 +40,12 @@ public class TimeIndicator extends Entity {
 		
 	}
 
+	/**
+	 * Creates a TimeIndicator with the given x offset and dimensions.
+	 * @param xOffset the TimeIndicator's x offset
+	 * @param width the TimeIndicator's width
+	 * @param height the TimeIndicator's height
+	 */
 	public TimeIndicator(double xOffset, double width, double height) {
 		
 		super(xOffset, 0, width, height);
@@ -37,72 +54,135 @@ public class TimeIndicator extends Entity {
 		
 	}
 
+	/**
+	 * Gets the time that has elapsed since the simulation was started.
+	 * @return the TimeIndicator's internal time
+	 */
 	public double getInternalTime() {
 		return internalTime;
 	}
 
+	/**
+	 * Sets the stored time value of the TimeIndicator.
+	 * @param internalTime the TimeIndicator's new internal time value
+	 */
 	public void setInternalTime(double internalTime) {
 		this.internalTime = internalTime;
 	}
 
-
+	/**
+	 * Returns whether the TimeIndicator has been force paused. This property 
+	 * allows the TimeIndicator to be paused even if the TogglePlayButton state 
+	 * implies that it should be unpaused.
+	 * @return the TimeIndicator's force paused state
+	 */
 	public boolean isForcePaused() {
 		return this.forcePaused;
 	}
 
-	public boolean getForcePaused() {
-		return this.forcePaused;
-	}
-
+	/**
+	 * Sets the forcePaused state of the TimeIndicator. This property allows
+	 * the TimeIndicator to be paused even if the TogglePlayButton state 
+	 * implies that it should be unpaused.
+	 * @param forcePaused the new force paused state of the TimeIndicator
+	 */
 	public void setForcePaused(boolean forcePaused) {
 		this.forcePaused = forcePaused;
 	}
 
+	/**
+	 * Returns whether the TimeIndicator is currently paused.
+	 * @return the TimeIndicator's paused state
+	 */
 	public boolean isPaused() {
 		return paused;
 	}
 
+	/**
+	 * Sets whether the TimeIndicator is currently paused.
+	 * @param paused the new paused state of the TimeIndicator
+	 */
 	public void setPaused(boolean paused) {
 		this.paused = paused;
 	}
 
-	public double getClockHandAngle() {
+	/**
+	 * Gets the current angle of the clock hand
+	 * @return the clock hand angle
+	 */
+	private double getClockHandAngle() {
 		return clockHandAngle;
 	}
 
-	public void setClockHandAngle(double clockHandAngle) {
+	/**
+	 * Sets the current angle of the clock hand
+	 * @param clockHandAngle the new clock hand angle
+	 */
+	private void setClockHandAngle(double clockHandAngle) {
 		this.clockHandAngle = clockHandAngle;
 	}
 
-	public double getClockRadius() {
+	/**
+	 * Gets the radius of the TimeIndicator's clock face.
+	 * @return the clock face radius
+	 */
+	private double getClockRadius() {
 		return clockRadius;
 	}
 
-	public void setClockRadius(double clockRadius) {
+	/**
+	 * Sets the radius of the TimeIndicator's clock face.
+	 * @param clockRadius the new clock face radius
+	 */
+	private void setClockRadius(double clockRadius) {
 		this.clockRadius = clockRadius;
 	}
 
-	public double getKnobRadius() {
+	/**
+	 * Gets the radius of the TimeIndicator's clock's central knob.
+	 * @return the clock's knob radius
+	 */
+	private double getKnobRadius() {
 		return knobRadius;
 	}
 
-	public void setKnobRadius(double knobRadius) {
+	/**
+	 * Sets the radius of the TimeIndicator's clock's central knob.
+	 * @param knobRadius the clock's new knob radius
+	 */
+	private void setKnobRadius(double knobRadius) {
 		this.knobRadius = knobRadius;
 	}
 
-	public double getTimeLabelWidth() {
+	/**
+	 * Gets the width of the rectangle bounding the time label text.
+	 * @return the time label width
+	 */
+	private double getTimeLabelWidth() {
 		return timeLabelWidth;
 	}
 
-	public void setTimeLabelWidth(double timeLabelWidth) {
+	/**
+	 * Sets the width of the rectangle bounding the time label text.
+	 * @param timeLabelWidth the new time label width
+	 */
+	private void setTimeLabelWidth(double timeLabelWidth) {
 		this.timeLabelWidth = timeLabelWidth;
 	}
 
-	public double getTimeLabelHeight() {
+	/**
+	 * Gets the height of the rectangle bounding the time label text.
+	 * @return the time label height
+	 */
+	private double getTimeLabelHeight() {
 		return timeLabelHeight;
 	}
 
-	public void setTimeLabelHeight(double timeLabelHeight) {
+	/**
+	 * Sets the height of the rectangle bounding the time label text.
+	 * @param timeLabelHeight the new time label height
+	 */
+	private void setTimeLabelHeight(double timeLabelHeight) {
 		this.timeLabelHeight = timeLabelHeight;
 	}
 
@@ -131,6 +211,10 @@ public class TimeIndicator extends Entity {
 		
 	}
 	
+	/**
+	 * Draws the circle representing the clock face.
+	 * @param gc The GraphicsContext used to draw the TimeIndicator
+	 */
 	private void drawClockFace(GraphicsContext gc) {
 		
 		double x1 = getX();
@@ -148,6 +232,10 @@ public class TimeIndicator extends Entity {
 		
 	}
 	
+	/**
+	 * Draws a circle representing the clock's central knob.
+	 * @param gc the GraphicsContext used to draw the TimeIndicator
+	 */
 	private void drawKnob(GraphicsContext gc) {
 		
 		double x1 = getX();
@@ -160,6 +248,11 @@ public class TimeIndicator extends Entity {
 		
 	}
 	
+	/**
+	 * Draws a textual representation of the time elapsed with a rectangle
+	 * behind it.
+	 * @param gc the GraphicsContext used to draw the TimeIndicator
+	 */
 	private void drawTimeLabel(GraphicsContext gc) {
 		
 		gc.setFill(Color.WHITE);
@@ -177,7 +270,7 @@ public class TimeIndicator extends Entity {
 		
 		gc.setTextAlign(TextAlignment.CENTER);
 		
-		gc.setFont(new Font(20)); // TODO use tahoma font here
+		gc.setFont(new Font(20));
 		
 		gc.setTextBaseline(VPos.CENTER);
 		
@@ -224,7 +317,5 @@ public class TimeIndicator extends Entity {
 		} 
 
 	}
-	
-	
 	
 }
