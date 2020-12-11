@@ -117,7 +117,6 @@ public class Vector2D {
 	public void draw(double tailX, double tailY, Color color, 
 			double lineWidth, GraphicsContext gc) {
 		
-		// TODO Implement arrow head for vector
 		gc.setStroke(color);
 		gc.setLineWidth(lineWidth);
 		gc.strokeLine(tailX, tailY, tailX + getX(), tailY + getY());
