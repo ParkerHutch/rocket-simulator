@@ -114,6 +114,15 @@ public class Vector2D {
 		
 	}
 	
+	/**
+	 * Draws a line representing the extension of this vector from the given
+	 * point.
+	 * @param tailX the x-coordinate of the point to draw this vector from
+	 * @param tailY	the y-coordinate of the point to draw this vector from
+	 * @param color	the color to use when drawing this vector
+	 * @param lineWidth the line width to use when drawing this vector
+	 * @param gc the GraphicsContext used when drawing this vector
+	 */
 	public void draw(double tailX, double tailY, Color color, 
 			double lineWidth, GraphicsContext gc) {
 		
