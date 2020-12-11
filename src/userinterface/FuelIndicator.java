@@ -4,12 +4,25 @@ import javafx.scene.paint.Color;
 import util.Entity;
 import rocket.Rocket;
 
+/**
+ * An element that shows the user a visual representation of how much fuel the
+ * Rocket has left.
+ */
 public class FuelIndicator extends Entity {
 	
 	private Rocket rocket;
 	private double maxFuelLevel;
 	private Color baseColor = Color.LIGHTGRAY;
 	
+	/**
+	 * Creates a FuelIndicator with the given x and y offsets, dimensions, and
+	 * passes it a Rocket to track the fuel of.
+	 * @param xOffset the FuelIndicator's x offset
+	 * @param yOffset the FuelIndicator's y offset
+	 * @param width the FuelIndicator's width
+	 * @param height the FuelIndicator's height
+	 * @param rocket the Rocket to track the fuel of
+	 */
 	public FuelIndicator(double xOffset, double yOffset, 
 			double width, double height, Rocket rocket) {
 		
@@ -19,6 +32,14 @@ public class FuelIndicator extends Entity {
 		
 	}
 
+	/**
+	 * Creates a FuelIndicator with the given x offset and dimensions and 
+	 * passes it a Rocket to track the fuel of.
+	 * @param xOffset the FuelIndicator's x offset
+	 * @param width the FuelIndicator's width
+	 * @param height the FuelIndicator's height
+	 * @param rocket the Rocket to track the fuel of
+	 */
 	public FuelIndicator(double xOffset, 
 			double width, double height, Rocket rocket) {
 		
@@ -28,30 +49,61 @@ public class FuelIndicator extends Entity {
 		
 	}
 
-	public Rocket getRocket() {
+	/**
+	 * Gets the Rocket that the FuelIndicator is tracking the fuel of.
+	 * @return the FuelIndicator's Rocket
+	 */
+	private Rocket getRocket() {
 		return rocket;
 	}
 
+	/**
+	 * Sets the Rocket that the FuelIndicator should track the fuel of.
+	 * @param rocket the FuelIndicator's new Rocket
+	 */
 	public void setRocket(Rocket rocket) {
 		this.rocket = rocket;
 	}
 
+	/**
+	 * Gets the FuelIndicator's main (fill) color.
+	 * @return the FuelIndicator's base color
+	 */
 	public Color getBaseColor() {
 		return baseColor;
 	}
 
+	/**
+	 * Sets the FuelIndicator's main (fill) color.
+	 * @param baseColor the FuelIndicator's new base color
+	 */
 	public void setBaseColor(Color baseColor) {
 		this.baseColor = baseColor;
 	}
 
+	/**
+	 * Gets the maximum amount of fuel the Rocket can have. This is usually
+	 * the Rocket's initial fuel. This value will be the upper bound for the
+	 * fuel bar.
+	 * @return the Rocket's max fuel level
+	 */
 	public double getMaxFuelLevel() {
 		return maxFuelLevel;
 	}
 
+	/**
+	 * Sets the maximum fuel level. This value will be the upper bound for the
+	 * fuel bar.
+	 * @param maxFuelLevel the maximum fuel level
+	 */
 	public void setMaxFuelLevel(double maxFuelLevel) {
 		this.maxFuelLevel = maxFuelLevel;
 	}
 
+	/**
+	 * Draws evenly spaced horizontal tick marks on the FuelIndicator.
+	 * @param gc the GraphicsContext used to draw the FuelIndicator
+	 */
 	public void drawTickMarks(GraphicsContext gc) {
 		
 		gc.setFill(Color.BLACK);
@@ -80,10 +132,13 @@ public class FuelIndicator extends Entity {
 			
 		}
 		
-		
-		
 	}
 	
+	/**
+	 * Draws a dot to show how much fuel the Rocket has left, relative to the
+	 * maximum fuel level.
+	 * @param gc the GraphicsContext used to draw the FuelIndicator
+	 */
 	public void drawRocketFuelLevelPoint(GraphicsContext gc) {
 
 		double currentFuelProportion = getRocket().getFuel() / getMaxFuelLevel();
@@ -123,7 +178,5 @@ public class FuelIndicator extends Entity {
 		}
 		
 	}
-	
-	
 	
 }
