@@ -126,7 +126,7 @@ public class TogglePlayButton extends CustomButton {
 	 * Draws the 'play' symbol within the bounds of the TogglePlayButton.
 	 * @param gc the GraphicsContext used to draw the TogglePlayButton
 	 */
-	public void drawPlaySymbol(GraphicsContext gc) {
+	private void drawPlaySymbol(GraphicsContext gc) {
 		
 		double [] triangleXPoints = new double[] {
 				
@@ -153,7 +153,7 @@ public class TogglePlayButton extends CustomButton {
 	 * Draws the 'pause' symbol within the bounds of the TogglePlayButton.
 	 * @param gc the GraphicsContext used to draw the TogglePlayButton
 	 */
-	public void drawPauseSymbol(GraphicsContext gc) {
+	private void drawPauseSymbol(GraphicsContext gc) {
 		
 		gc.setFill(getPauseButtonColor());
 		
