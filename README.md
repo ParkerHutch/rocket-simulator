@@ -10,6 +10,7 @@ Use W, A, S, and D to control the rocket in interactive mode.
 
 ## General
 Double-click the jar file to run it.
+Running `mvn package` will create the jar file if it does not exist.
 
 ## Eclipse
 Right-click pom.xml -> Run as -> Maven Build -> Set Goals to `clean javafx:run`
