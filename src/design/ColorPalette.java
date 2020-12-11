@@ -11,7 +11,16 @@ public class ColorPalette {
     private Color groundColor;
     private Color mountainColor;
 
-    public ColorPalette(String name, Color skyColor, Color groundColor, Color mountainColor) {
+    /**
+     * Creates a ColorPalette with the given name and specified colors for the
+     * sky, ground, and mountains.
+     * @param name the name of the ColorPalette
+     * @param skyColor the sky color
+     * @param groundColor the ground color
+     * @param mountainColor the mountain color
+     */
+    public ColorPalette(String name, Color skyColor, Color groundColor, 
+                            Color mountainColor) {
         this.name = name;
         this.skyColor = skyColor;
         this.groundColor = groundColor;
@@ -19,11 +28,11 @@ public class ColorPalette {
     }
 
     public static final ColorPalette EARTH = new ColorPalette(
-        "Earth", Color.DEEPSKYBLUE, Color.GREEN, Color.SADDLEBROWN);
+        "Earth", Color.DEEPSKYBLUE, Color.DARKGREEN, Color.SADDLEBROWN);
     public static final ColorPalette MARS = new ColorPalette(
-        "Mars", Color.ORANGERED, Color.ORANGE, Color.BROWN);
+        "Mars", Color.SALMON, Color.DARKORANGE, Color.BROWN);
     public static final ColorPalette NIGHT = new ColorPalette(
-        "Night", Color.DARKSLATEGRAY, Color.GREEN, Color.SADDLEBROWN);
+        "Night", Color.DARKSLATEGRAY, Color.DARKGREEN, Color.SADDLEBROWN);
 
     /**
      * Gets the name of the color palette.
