@@ -5,11 +5,27 @@ import javafx.scene.paint.Color;
 import util.Entity;
 import rocket.Rocket;
 
+/**
+ * An element that shows the user a simple representation of the Rocket's
+ * altitude when drawn.
+ */
 public class AltitudeIndicator extends Entity {
 	
 	private Rocket rocket;
 	private double maxAltitude;
 	
+	/**
+	 * Creates an AltitudeIndicator with the given x and y offsets and
+	 * dimensions, and stores the Rocket it should be tracking as well as the 
+	 * Rocket's initial altitude
+	 * @param xOffset the AltitudeIndicator's x offset
+	 * @param yOffset the AltitudeIndicator's y offset
+	 * @param width the AltitudeIndicator's width
+	 * @param height the AltitudeIndicator's height
+	 * @param rocket the Rocket which the AltitudeIndicator tracks the height 
+	 * of
+	 * @param initialAltitude the Rocket's initial altitude
+	 */
 	public AltitudeIndicator(double xOffset, double yOffset, 
 			double width, double height, Rocket rocket, 
 			double initialAltitude) {
@@ -21,6 +37,17 @@ public class AltitudeIndicator extends Entity {
 		
 	}
 
+	/**
+	 * Creates an AltitudeIndicator with the given x offset and dimensions, a y
+	 * offset of 0, and stores the Rocket it should be tracking as well as the 
+	 * Rocket's initial altitude
+	 * @param xOffset the AltitudeIndicator's x offset
+	 * @param width the AltitudeIndicator's width
+	 * @param height the AltitudeIndicator's height
+	 * @param rocket the Rocket which the AltitudeIndicator tracks the height 
+	 * of
+	 * @param initialAltitude the Rocket's initial altitude
+	 */
 	public AltitudeIndicator(double xOffset,
 			double width, double height, Rocket rocket, 
 			double initialAltitude) {
@@ -32,22 +59,44 @@ public class AltitudeIndicator extends Entity {
 		
 	}
 
+	/**
+	 * Gets the Rocket that the AltitudeIndicator is tracking the altitude of.
+	 * @return the AltitudeIndicator's Rocket
+	 */
 	private Rocket getRocket() {
 		return rocket;
 	}
 
+	/**
+	 * Sets the Rocket that the AltitudeIndicator should track the altitude of.
+	 * @param rocket the Rocket to track
+	 */
 	public void setRocket(Rocket rocket) {
 		this.rocket = rocket;
 	}
 
-	public double getMaxAltitude() {
+	/**
+	 * Gets the max altitude value to use when drawing the AltitudeIndicator 
+	 * and determining the height of the Rocket's dot on the AltitudeIndicator.
+	 * @return the max altitude
+	 */
+	private double getMaxAltitude() {
 		return maxAltitude;
 	}
 
+	/**
+	 * Sets the max altitude value to use when drawing the AltitudeIndicator 
+	 * and determining the height of the Rocket's dot on the AltitudeIndicator.
+	 * @param maxAltitude the new max altitude
+	 */
 	public void setMaxAltitude(double maxAltitude) {
 		this.maxAltitude = maxAltitude;
 	}
 	
+	/**
+	 * Draws evenly spaced horizontal lines to represent increments of height.
+	 * @param gc the GraphicsContext used to draw the AltitudeIndicator
+	 */
 	public void drawTickMarks(GraphicsContext gc) {
 		
 		gc.setFill(Color.BLACK);
@@ -76,10 +125,12 @@ public class AltitudeIndicator extends Entity {
 			
 		}
 		
-		
-		
 	}
 	
+	/**
+	 * Draws a circle to represent the Rocket and its altitude.
+	 * @param gc the GraphicsContext used to draw the AltitudeIndicator
+	 */
 	public void drawRocketAltitudePoint(GraphicsContext gc) {
 
 		double pointRadius = 3;
