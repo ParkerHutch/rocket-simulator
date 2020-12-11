@@ -1,6 +1,10 @@
 package rocket;
 import world.World;
 
+/**
+ * A class which helps the Rocket class determine when to start firing its
+ * engine so as to land at a safe velocity.
+ */
 public class ManeuverCalculator {
 	
 	private Rocket rocket;

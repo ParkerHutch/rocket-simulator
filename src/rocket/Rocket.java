@@ -8,10 +8,9 @@ import world.World;
 import util.Entity;
 
 /**
- * @author Parker Hutchinson
- * Start Date: September 13, 2019
+ * A class for storing data about a Rocket body, with relevant flight functions
+ * and variables included.
  */
-
 public class Rocket extends Entity {
 	
 	// Physics variables
@@ -23,7 +22,7 @@ public class Rocket extends Entity {
 	private double finHeight = 20;
 	private double engineConeWidth = centerTankWidth;
 	private double engineConeHeight = 10;
-	private double turnRate = 60; // degrees per second (note: 360 works well with 1 engine)
+	private double turnRate = 60; // degrees per second
 	
 	// Flight attributes
 	private boolean airborne = true;
@@ -90,14 +89,6 @@ public class Rocket extends Entity {
 		this.width = width;
 	}
 
-	public double getCenterTankWidth() {
-		return centerTankWidth;
-	}
-
-	public void setCenterTankWidth(double centerTankWidth) {
-		this.centerTankWidth = centerTankWidth;
-	}
-
 	/**
 	 * Gets the height of the Rocket
 	 * @return the height
@@ -114,42 +105,98 @@ public class Rocket extends Entity {
 		this.height = height;
 	}
 
+	/**
+	 * Gets the width of the Rocket's center tank.
+	 * @return the center tank width
+	 */
+	public double getCenterTankWidth() {
+		return centerTankWidth;
+	}
+
+	/**
+	 * Sets the width of the Rocket's center tank.
+	 * @param centerTankWidth the new center tank width
+	 */
+	public void setCenterTankWidth(double centerTankWidth) {
+		this.centerTankWidth = centerTankWidth;
+	}
+
+	/**
+	 * Gets the height of the Rocket's center tank.
+	 * @return the center tank height
+	 */
 	public double getCenterTankHeight() {
 		return centerTankHeight;
 	}
 
+	/**
+	 * Sets the height of the Rocket's center tank.
+	 * @param centerTankWidth the new center tank height
+	 */
 	public void setCenterTankHeight(double centerTankHeight) {
 		this.centerTankHeight = centerTankHeight;
 	}
 
+	/**
+	 * Gets the height of the Rocket's fins.
+	 * @return the Rocket's fin height
+	 */
 	public double getFinHeight() {
 		return finHeight;
 	}
 
+	/**
+	 * Sets the height of the Rocket's fins.
+	 * @param finHeight the new fin height
+	 */
 	public void setFinHeight(double finHeight) {
 		this.finHeight = finHeight;
 	}
 
+	/**
+	 * Gets the height of the Rocket's nose cone.
+	 * @return the nose cone height
+	 */
 	public double getNoseConeHeight() {
 		return noseConeHeight;
 	}
 
+	/**
+	 * Sets the height of the Rocket's nose cone.
+	 * @param noseConeHeight the new nose cone height
+	 */
 	public void setNoseConeHeight(double noseConeHeight) {
 		this.noseConeHeight = noseConeHeight;
 	}
 
+	/**
+	 * Gets the width of the Rocket's engine cone.
+	 * @return the engine cone width
+	 */
 	public double getEngineConeWidth() {
 		return engineConeWidth;
 	}
 
+	/**
+	 * Sets the width of the Rocket's engine cone.
+	 * @param engineConeWidth the new engine cone width
+	 */
 	public void setEngineConeWidth(double engineConeWidth) {
 		this.engineConeWidth = engineConeWidth;
 	}
 
+	/**
+	 * Gets the height of the Rocket's engine cone.
+	 * @return the engine cone height
+	 */
 	public double getEngineConeHeight() {
 		return engineConeHeight;
 	}
 
+	/**
+	 * Sets the height of the Rocket's engine cone.
+	 * @param engineConeHeight the new engine cone height
+	 */
 	public void setEngineConeHeight(double engineConeHeight) {
 		this.engineConeHeight = engineConeHeight;
 	}
@@ -169,7 +216,6 @@ public class Rocket extends Entity {
 	public void setTurnRate(double turnRate) {
 		this.turnRate = turnRate;
 	}
-
 
 	/**
 	 * Gets the amount of fuel left in the Rocket
@@ -203,10 +249,20 @@ public class Rocket extends Entity {
 		this.engines = engines;
 	}
 
+	/**
+	 * Gets the ParticleEmitter objects representing RCS thrusters for the 
+	 * Rocket.
+	 * @return the Rocket's RCS thrusters as ParticleEmitters
+	 */
 	public ParticleEmitter[] getRCSThrusters() {
 		return rcsThrusters;
 	}
 	
+	/**
+	 * Sets the ParticleEmitter objects representing RCS thrusters for the 
+	 * Rocket.
+	 * @param rcsThrusters the new RCS thruster ParticleEmitters
+	 */
 	public void setRCSThrusters(ParticleEmitter[] rcsThrusters) {
 		this.rcsThrusters = rcsThrusters;
 	}
@@ -227,34 +283,74 @@ public class Rocket extends Entity {
 		this.airborne = airborne;
 	}
 	
+	/**
+	 * Gets the maximum deviation from 90 degrees that the Rocket can have when
+	 * landing and still have the landing be considered safe.
+	 * @return the landing angle margin, in degrees
+	 */
 	public double getLandingAngleMargin() {
 		return landingAngleMargin;
 	}
 
+	/**
+	 * Sets the maximum deviation from 90 degrees that the Rocket can have when
+	 * landing and still have the landing be considered safe.
+	 * @param landingAngleMargin the landing angle margin, in degrees
+	 */
 	public void setLandingAngleMargin(double landingAngleMargin) {
 		this.landingAngleMargin = landingAngleMargin;
 	}
 
+	/**
+	 * Gets the maximum velocity the Rocket can have when landing and still
+	 * have the landing be considered safe.
+	 * @return the highest acceptable landing velocity
+	 */
 	public double getAcceptableLandingVelocity() {
 		return acceptableLandingVelocity;
 	}
-
+	
+	/**
+	 * Sets the maximum velocity the Rocket can have when landing and still
+	 * have the landing be considered safe.
+	 * @param acceptableLandingVelocity the highest acceptable landing velocity
+	 */
 	public void setAcceptableLandingVelocity(double acceptableLandingVelocity) {
 		this.acceptableLandingVelocity = acceptableLandingVelocity;
 	}
 
+	/**
+	 * Gets the Rocket's ManeuverCalculator, which is used to help the Rocket
+	 * determine when to start firing its engine(s).
+	 * @return the Rocket's ManeuverCalculator
+	 */
 	public ManeuverCalculator getManeuverCalculator() {
 		return maneuverCalculator;
 	}
 
+	/**
+	 * Sets the Rocket's ManeuverCalculator, which is used to help the Rocket
+	 * determine when to start firing its engine(s).
+	 * @param maneuverCalculator the new ManeuverCalculator
+	 */
 	public void setManeuverCalculator(ManeuverCalculator maneuverCalculator) {
 		this.maneuverCalculator = maneuverCalculator;
 	}
 
+	/**
+	 * Gets the magnitude of the velocity the Rocket had on its most recent 
+	 * landing.
+	 * @return the Rocket's landing velocity
+	 */
 	public double getLandingVelocity() {
 		return this.landingVelocity;
 	}
 
+	/**
+	 * Sets the magnitude of the velocity the Rocket had on its most recent 
+	 * landing.
+	 * @param landingVelocity the Rocket's landing velocity
+	 */
 	public void setLandingVelocity(double landingVelocity) {
 		this.landingVelocity = landingVelocity;
 	}
@@ -446,6 +542,10 @@ public class Rocket extends Entity {
 		
 	}
 
+	/**
+	 * Draws Rocket's fins at the bottom of its center tank.
+	 * @param gc the GraphicsContext of the Canvas to draw the Rocket on
+	 */
 	public void drawFins(GraphicsContext gc) {
 		
 		double [] fin1xPoints = new double[] {
