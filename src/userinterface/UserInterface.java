@@ -67,7 +67,8 @@ public class UserInterface extends Entity {
 			getInterfaceElements().size() - 1);
 		double bottomElementBottomY = bottomElement.getyOffset() + bottomElement.getHeight();
 			
-		double togglePlayButtonTopY = bottomElementBottomY + buttonMargin;
+		double togglePlayButtonTopY = bottomElementBottomY + 
+			getElementVerticalSpacing();
 		
 		createButtons(togglePlayButtonTopY);
 		
