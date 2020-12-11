@@ -8,8 +8,22 @@ import javafx.scene.paint.Color;
 import util.Entity;
 import rocket.Rocket;
 
+/**
+ * An element that shows the user a visual and numerical representation of the
+ * Rocket's horizontal velocity's magnitude and sign.
+ */
 public class HorizontalVelocityIndicator extends VelocityIndicator {
-	
+    
+    /**
+     * Creates a HorizontalVelocityIndicator with the given x and y offsets and
+     * dimensions and passes it a Rocket to track the horizontal velocity of.
+     * @param xOffset the HorizontalVelocityIndicator's x offset
+     * @param yOffset the HorizontalVelocityIndicator's y offset
+     * @param width the HorizontalVelocityIndicator's width
+     * @param height the HorizontalVelocityIndicator's height
+     * @param rocket the Rocket the HorizontalVelocityIndicator should track
+     * the horizontal velocity of
+     */
 	public HorizontalVelocityIndicator(double xOffset, double yOffset, 
 			double width, double height, Rocket rocket) {
 		
@@ -17,6 +31,15 @@ public class HorizontalVelocityIndicator extends VelocityIndicator {
 		
     }
     
+    /**
+     * Creates a HorizontalVelocityIndicator with the given x offset and
+     * dimensions and passes it a Rocket to track the horizontal velocity of.
+     * @param xOffset the HorizontalVelocityIndicator's x offset
+     * @param width the HorizontalVelocityIndicator's width
+     * @param height the HorizontalVelocityIndicator's height
+     * @param rocket the Rocket the HorizontalVelocityIndicator should track
+     * the horizontal velocity of
+     */
     public HorizontalVelocityIndicator(double xOffset,  
 			double width, double height, Rocket rocket) {
 		
