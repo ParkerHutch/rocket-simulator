@@ -1,3 +1,4 @@
 .settings/
 bin
 /target/
+dependency-reduced-pom.xml
