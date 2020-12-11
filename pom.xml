@@ -30,19 +30,6 @@
       </plugin>
 
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <configuration>
-            <archive>
-                <manifest>
-                    <addClasspath>true</addClasspath>
-                    <mainClass>Starter</mainClass>
-                </manifest>
-            </archive>
-        </configuration>
-        </plugin>
-
-      <plugin>
         <artifactId>maven-shade-plugin</artifactId>
         <version>3.2.1</version>
         <executions>
@@ -61,6 +48,7 @@
             </execution>
         </executions>
     </plugin>
+    
     </plugins>
   </build>
 </project>
