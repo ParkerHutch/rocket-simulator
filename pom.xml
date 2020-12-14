@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>RocketSimulator</groupId>
   <artifactId>RocketSimulator</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>1.0.0</version>
   <dependencies>
     <dependency>
       <groupId>org.openjfx</groupId>
