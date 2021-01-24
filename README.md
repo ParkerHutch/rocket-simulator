@@ -4,7 +4,7 @@ An interactive rocket landing simulator
 ![Hoverslam gif](https://thumbs.gfycat.com/TanJitteryBuffalo-size_restricted.gif)
 
 # Controls
-Use W, A, S, and D to control the rocket in interactive mode.
+Use W, A, and D to control the rocket in interactive mode.
 
 # Execution
 
