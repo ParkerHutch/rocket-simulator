@@ -19,6 +19,8 @@ The [src](src/) folder is broken into subfolders for the different parts of the 
 - [util](src/util/): Code for objects that are useful in many areas of the simulator, like a [2D vector](src/util/Vector2D.java) container.
 
 # Features
+## Graphics and Physics
+All of the graphical effects, including the rocket engine's particle effects, the rocket's shape, and the world in the background, were developed using basic shapes in the JavaFX library. Physics effects, such as velocity and acceleration due to gravity, were also personally programmed.
 ## Automatic Rocket Landing
 The rocket can land itself, using some pre-programmed kinematics logic in [ManeuverCalculator.java](src/rocket/ManeuverCalculator.java). See the gif above for a demonstration.
 ## Interactive Rocket Landing
