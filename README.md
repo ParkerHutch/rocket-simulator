@@ -22,7 +22,7 @@ The [src](src/) folder is broken into subfolders for the different parts of the 
 ## Graphics and Physics
 All of the graphical effects, including the rocket engine's particle effects, the rocket's shape, and the world in the background, were developed using basic shapes in the JavaFX library. Physics effects, such as velocity and acceleration due to gravity, were also personally programmed.
 ## Automatic Rocket Landing
-The rocket can land itself, using some pre-programmed kinematics logic in [ManeuverCalculator.java](src/rocket/ManeuverCalculator.java). See the gif above for a demonstration.
+The rocket can land itself even when given an unknown initial velocity and height, using some pre-programmed kinematics logic in [ManeuverCalculator.java](src/rocket/ManeuverCalculator.java). See the gif above for a demonstration.
 ## Interactive Rocket Landing
 The user can attempt to land the rocket themselves, using the ![controls](#controls) shown above. After the rocket touches the ground, the program will show the user some information about their landing, like the speed and angle of the rocket, and whether the landing was successful or if it was a crash.
 ## Random Terrain Generation
