@@ -20,9 +20,11 @@ The [src](src/) folder is broken into subfolders for the different parts of the 
 
 # Features
 ## Automatic Rocket Landing
-The rocket can land itself, using some pre-programmed kinematics logic in [ManeuverCalculator.java](src/rocket/ManeuverCalculator.java).
+The rocket can land itself, using some pre-programmed kinematics logic in [ManeuverCalculator.java](src/rocket/ManeuverCalculator.java). See the gif above for a demonstration.
+## Interactive Rocket Landing
+The user can attempt to land the rocket themselves, using the ![controls](#controls) shown above. After the rocket touches the ground, the program will show the user some information about their landing, like the speed and angle of the rocket, and whether the landing was successful or if it was a crash.
 ## Random Terrain Generation
-The terrain is generated randomly in the [MountainManager.java](src/world/MountainManager.java) file.
+The terrain is generated randomly in the [MountainManager.java](src/world/MountainManager.java) file. 
 ## User Interface
 ### Main Menu
 Select Automatic to see an automatic rocket landing, or Interactive to try landing it yourself!
